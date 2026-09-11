@@ -1,0 +1,51 @@
+dist/assets/index-DCJjV2Cu.js
+  s_14c2e7268276f3::t_d7e92d4f78d62f 1-9
+dist/assets/index-DsdwBVsV.css
+  s_14c2e7268276f3::t_58f7be812bd0c5 1
+dist/index.html
+  s_14c2e7268276f3::t_68ea66ddb61ea5 1-14
+node_modules/.vite/deps/_metadata.json
+  s_14c2e7268276f3::t_e41a9d04d1c3b5 1-50
+node_modules/.vite/deps/react-bootstrap.js
+  s_14c2e7268276f3::t_8053ffc355ad65 1-8768
+node_modules/.vite/deps/react-bootstrap.js.map
+  s_14c2e7268276f3::t_0a5276535a574b 1
+node_modules/.vite/deps/react-dom.js
+  s_14c2e7268276f3::t_0f9b1f70329177 1-198
+node_modules/.vite/deps/react-dom.js.map
+  s_14c2e7268276f3::t_e2db9251924ec2 1
+node_modules/.vite/deps/react-dom_client.js
+  s_14c2e7268276f3::t_ee3fd07a621430 1-15850
+node_modules/.vite/deps/react-dom_client.js.map
+  s_14c2e7268276f3::t_6dbda065953cdf 1
+node_modules/.vite/deps/react.js
+  s_14c2e7268276f3::t_9bbeb27cbbf02d 1-788
+node_modules/.vite/deps/react.js.map
+  s_14c2e7268276f3::t_e820e71ccc2f29 1
+node_modules/.vite/deps/react_jsx-dev-runtime.js
+  s_14c2e7268276f3::t_0958b75bf02196 1-210
+node_modules/.vite/deps/react_jsx-dev-runtime.js.map
+  s_14c2e7268276f3::t_51bb110a6d7927 1
+node_modules/.vite/deps/react_jsx-runtime.js
+  s_14c2e7268276f3::t_b557c68b88ade6 1-221
+node_modules/.vite/deps/react_jsx-runtime.js.map
+  s_14c2e7268276f3::t_628657a030b92f 1
+node_modules/.vite/deps/rolldown-runtime-BPOCksWG.js
+  s_14c2e7268276f3::t_03fb3b5717d8a1 1-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "91728ff6e83d528e7497f21af74784ca5439c05b",
+  "prompts": {},
+  "sessions": {
+    "s_14c2e7268276f3": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "41307e74-b7e0-488f-9bc8-f491102481f2",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "DanTheBrazuca <dars120308@gmail.com>"
+    }
+  }
+}
