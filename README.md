@@ -1,6 +1,6 @@
 # Legados Culturais — React
 
-Front-end responsivo inspirado nas telas fornecidas: página inicial/biblioteca, cadastro e login.
+Portal de recursos escritos e visuais sobre Patrimônio Cultural
 
 ## Rodar localmente
 
@@ -15,5 +15,3 @@ Rotas visuais disponíveis:
 - `/` — página inicial
 - `/cadastro` — cadastro
 - `/login` — login
-
-Os formulários são apenas visuais, sem backend, autenticação ou envio de dados.
