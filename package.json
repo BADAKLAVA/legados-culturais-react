@@ -1,0 +1,19 @@
+{
+  "name": "legados-culturais",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "bootstrap": "^5.3.8",
+    "react": "latest",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "latest",
+    "vite": "latest"
+  }
+}
