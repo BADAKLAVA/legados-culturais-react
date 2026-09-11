@@ -43,7 +43,7 @@ button {
   background: rgba(255, 253, 231, 0.88);
   border-radius: 46px;
   box-shadow: var(--shadow);
-  display: grid;
+  display: grid !important;
   grid-template-columns: 240px 1fr auto;
   align-items: center;
   gap: 28px;
@@ -61,6 +61,9 @@ button {
   justify-content: center;
   gap: 26px;
   font-size: 14px;
+}
+.main-nav .nav-link {
+  padding: 0;
 }
 .main-nav a {
   transition: opacity 0.2s ease;
@@ -532,11 +535,11 @@ input[type="radio"]:checked::after {
     width: calc(100% - 24px);
     margin-top: 12px;
     border-radius: 28px;
-    padding: 11px 18px;
+    padding: 11px 14px;
     gap: 10px;
   }
   .brand img {
-    width: 145px;
+    width: 135px;
   }
   .main-nav {
     gap: 16px;
@@ -548,10 +551,11 @@ input[type="radio"]:checked::after {
     gap: 7px;
   }
   .btn-small {
-    min-width: unset;
+    min-width: 0;
     min-height: 39px;
-    padding: 0 13px;
+    padding: 0 10px;
     font-size: 12px;
+    white-space: nowrap;
   }
   .hero-inner {
     width: calc(100% - 36px);
@@ -692,17 +696,25 @@ input[type="radio"]:checked::after {
 }
 
 @media (max-width: 420px) {
-  .header-actions .btn-small:first-child {
-    display: none;
-  }
   .site-header {
     grid-template-columns: 1fr auto;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .brand img {
-    width: 135px;
+    width: 116px;
   }
   .main-nav {
-    grid-template-columns: 1 / -1;
+    gap: 11px;
+    font-size: 11px;
+  }
+  .header-actions {
+    gap: 4px;
+  }
+  .btn-small {
+    min-height: 36px;
+    padding: 0 8px;
+    font-size: 11px;
   }
   .hero h1 {
     font-size: 2rem;
