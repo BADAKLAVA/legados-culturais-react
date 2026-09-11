@@ -1,0 +1,25 @@
+dist/index.html
+  s_14c2e7268276f3::t_30a319c8334c2b 8-9
+dist/assets/index-D6kjum9o.js
+  s_14c2e7268276f3::t_30a319c8334c2b 1-9
+src/styles.css
+  s_14c2e7268276f3::t_4b3ba508c5b884 46,65-67,538,542,554,556,558,701-702,705,708-717
+dist/assets/index-DdpTnLXf.css
+  s_14c2e7268276f3::t_30a319c8334c2b 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "aa8d0b4f3f2881a9fd9b48245dcf6ec38bb0514f",
+  "prompts": {},
+  "sessions": {
+    "s_14c2e7268276f3": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "41307e74-b7e0-488f-9bc8-f491102481f2",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "DanTheBrazuca <dars120308@gmail.com>"
+    }
+  }
+}
