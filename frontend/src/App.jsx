@@ -199,9 +199,11 @@ function Cadastro() {
           <div className="state-city-row">
             <label className="field state-field">
               <span>Estado</span>
-              <Button type="button" className="select-button">
+              <select className="select-button">
                 Selecionar
-              </Button>
+                <option value="someOption">Some option</option>
+                <option value="otherOption">Other option</option>
+              </select>
             </label>
             <Input label="Cidade" placeholder="Cidade" className="city-field" />
           </div>
