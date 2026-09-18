@@ -10,7 +10,7 @@ class Usuario {
     private string $email;
     private string $senha;
     private string $telefone;
-    private DateTime $dataNascimento 
+    private DateTime $dataNascimento; 
     private string $sexo;
     private string $genero;
     private string $imagemPerfil;
