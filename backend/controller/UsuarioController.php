@@ -9,21 +9,21 @@ class UsuarioController {
     }
 
     public function cadastrar() {
-        $nome = $_POST["nome"];
-        $sobrenome = $_POST["sobrenome"];
-        $email = $_POST["email"];
-        $senha = $_POST["senha"];
-        $telefone = $_POST["telefone"];
-        $dataNascimento = $_POST["dataNascimento"];
-        $sexo = $_POST["sexo"];
-        $genero = $_POST["genero"];
-        $outroGenero = $_POST["outroGenero"];
-        $estado = $_POST["estado"];
-        $cidade = $_POST["cidade"];
-        $bairro = $_POST["bairro"];
-        $logradouro = $_POST["logradouro"];
-        $numero = $_POST["numero"];
-        $complemento = $_POST["complemento"];
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $nome = $dados["nome"];
+        $sobrenome = $dados["sobrenome"];
+        $email = $dados["email"];
+        $senha = $dados["senha"];
+        $telefone = $dados["telefone"];
+        $dataNascimento = $dados["dataNascimento"];
+        $sexo = $dados["sexo"];
+        $genero = $dados["genero"];
+        $estado = $dados["estado"];
+        $cidade = $dados["cidade"];
+        $bairro = $dados["bairro"];
+        $logradouro = $dados["logradouro"];
+        $numero = $dados["numero"];
+        $complemento = $dados["complemento"];
 
         $resultado = $this->usuario->criarUsuario(
             $nome,

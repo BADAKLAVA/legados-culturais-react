@@ -1,6 +1,7 @@
 <?php 
-require_once "Endereco.php";
-require_once "config/database.php";
+
+//require_once "Endereco.php";
+//require_once "config/database.php";
 use DateTime;
 
 class Usuario {
@@ -25,7 +26,6 @@ class Usuario {
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
-    
     }
 
     public function criarUsuario(
@@ -44,7 +44,7 @@ class Usuario {
         $numero,
         $complemento
     ) {
-        $sql = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, dataNascimento, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->pdo->prepare($sql);
 
