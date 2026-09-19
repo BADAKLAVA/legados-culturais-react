@@ -1,0 +1,42 @@
+frontend/src/styles.css
+  s_b1211b7dbc577b::t_19247d6bad5d2e 118-119,379-386,512-515,533,536-537,542-543,583-585
+  s_b1211b7dbc577b::t_8209a0b9a19b85 59-62
+  s_b1211b7dbc577b::t_15ff68bfcded70 529
+  s_b1211b7dbc577b::t_0f90d74d6bd8c9 64,83,106-110,115-117,538,544,577
+frontend/dist/index.html
+  s_b1211b7dbc577b::t_6c70972b8ce4c7 8-9
+  s_b1211b7dbc577b::t_b0117336709ef9 1-7,10-14
+frontend/src/App.jsx
+  s_b1211b7dbc577b::t_19247d6bad5d2e 22,30-45,155-160,162,166-168,317,324,328,368-386,390,394,411-415,421-425,428,433-438,444-449,456-460,464-466,468-469,472,479-483,487-491,496-498,505-509,513-517,529-533,537-539,546-548,551-553,560,595,600-603,608,614-616,621,626-628,636-638,644-646,680,682,685,693-697,705,709-710,712,714-716,720-724,726,728
+  s_b1211b7dbc577b::t_3fb29a4192672a 404-406
+  s_b1211b7dbc577b::t_d97769bceb67c2 180-182,698-700
+  h_2d3fee16c6ce59 161,327,363,387-389,427,429,471,473,495,499,545,549-550,554,594,596,607,609,620,622
+  s_b1211b7dbc577b::t_e16c93263fd8d4 751
+frontend/dist/assets/index-5th8rhhD.js
+  s_b1211b7dbc577b::t_6c70972b8ce4c7 1-9
+frontend/dist/assets/index-XA8m9x34.css
+  s_b1211b7dbc577b::t_6c70972b8ce4c7 1
+frontend/node_modules/.vite/deps/_metadata.json
+  h_2d3fee16c6ce59 2-3,5,10,16,22,28,34,40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "67d832d4e3c389c4f529bc2c3a85f64534144b8f",
+  "prompts": {},
+  "humans": {
+    "h_2d3fee16c6ce59": {
+      "author": "DanTheBrazuca <dars120308@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b1211b7dbc577b": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "57ce5ea1-bd9f-4fdb-b9c1-bef104d11822",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "DanTheBrazuca <dars120308@gmail.com>"
+    }
+  }
+}
