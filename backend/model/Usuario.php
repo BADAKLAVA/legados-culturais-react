@@ -1,8 +1,10 @@
 <?php 
-require_once 'Endereco.php':
+require_once "Endereco.php";
+require_once "config/database.php";
 use DateTime;
 
 class Usuario {
+    private PDO $pdo;
     private int $idUsuario;
     private string $tipo;
     private string $nome;
@@ -13,9 +15,60 @@ class Usuario {
     private DateTime $dataNascimento; 
     private string $sexo;
     private string $genero;
+    private string $estado;
+    private string $cidade;
+    private string $bairro;
+    private string $logradouro;
+    private string $numero;
+    private string $complemento;
     private string $imagemPerfil;
-    private Endereco $endereco;
 
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
+    
+    }
+
+    public function criarUsuario(
+        $nome,
+        $sobrenome,
+        $email,
+        $senha,
+        $telefone,
+        $dataNascimento,
+        $sexo,
+        $genero,
+        $estado,
+        $cidade,
+        $bairro,
+        $logradouro,
+        $numero,
+        $complemento
+    ) {
+        $sql = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, dataNascimento, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            $nome,
+            $sobrenome,
+            $email,
+            $senha,
+            $telefone,
+            $dataNascimento,
+            $sexo,
+            $genero,
+            $estado,
+            $cidade,
+            $bairro,
+            $logradouro,
+            $numero,
+            $complemento
+        ]);
+    }
+
+    
+
+    /*
     public function getIdUsuario(): int {
         return $this->idUsuario;
     }
@@ -62,7 +115,7 @@ class Usuario {
 
     public function getEndereco(): Endereco {
         return $this->endereco;
-    }
+    }*/
 }
 
 ?>
