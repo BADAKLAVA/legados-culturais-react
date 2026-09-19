@@ -13,7 +13,7 @@ class UsuarioController {
         $nome = $dados["nome"];
         $sobrenome = $dados["sobrenome"];
         $email = $dados["email"];
-        $senha = $dados["senha"];
+        $senha = password_hash($dados["senha"], PASSWORD_DEFAULT);
         $telefone = $dados["telefone"];
         $dataNascimento = $dados["dataNascimento"];
         $sexo = $dados["sexo"];
@@ -46,7 +46,32 @@ class UsuarioController {
     }
 
     public function login() {
-        
+        $dados = json_decode(file_get_contents("php://input"), true);
+        $email = $dados["email"];
+        $senha = $dados["senha"];
+
+        $usuarioDados = $this->usuario->buscarEmail($email);
+
+        if(!$usuarioDados) {
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Usuário inválido"
+            ]);
+            return;
+        }
+
+        if(!password_verify($senha, $usuarioDados["senha"])) {
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Senha errada"
+            ]);
+            return;
+        }
+
+        $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
+        $_SESSION["tipo"] = $usuarioDados["tipo"];
+
+        echo json_encode(["sucesso" => true]);
     }
 }
 

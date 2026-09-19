@@ -28,6 +28,7 @@ class Usuario {
         $this->pdo = $pdo;
     }
 
+    //CRUD -> CREATE
     public function criarUsuario(
         $nome,
         $sobrenome,
@@ -66,56 +67,13 @@ class Usuario {
         ]);
     }
 
-    
-
-    /*
-    public function getIdUsuario(): int {
-        return $this->idUsuario;
+    //CRUD -> READ
+    public function buscarEmail($email) {
+        $sql = "SELECT email FROM usuario WHERE = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    public function getTipo(): string {
-        return $this->tipo;
-    }
-
-    public function getNome(): string {
-        return $this->nome;
-    }
-
-    public function getSobrenome(): string {
-        return $this->sobrenome;
-    }
-
-    public function getEmail(): string {
-        return $this->email;
-    }
-
-    public function getSenha(): string {
-        return $this->senha;
-    }
-
-    public function getTelefone(): string {
-        return $this->telefone;
-    }
-
-    public function getDataNascimento(): DateTime {
-        return $this->dataNascimento;
-    }
-
-    public function getSexo(): string {
-        return $this->sexo;
-    }
-
-    public function getGenero(): string {
-        return $this->genero;
-    }
-
-    public function getImagemPerfil(): string {
-        return $this->imagemPerfil;
-    }
-
-    public function getEndereco(): Endereco {
-        return $this->endereco;
-    }*/
 }
 
 ?>
