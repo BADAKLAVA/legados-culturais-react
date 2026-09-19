@@ -618,17 +618,6 @@ function Login() {
   return (
     <main className="login-page">
       <section className="login-panel">
-<<<<<<< HEAD
-        <img className="login-logo" src={logo} alt="Legados Culturais" />
-        <div className="login-content">
-          <h1>Entrar</h1>
-          <div className="account-type">
-            <span>Tipo de conta:</span>
-            <select className="select-button">
-                <option value="User">Usuário</option>
-                <option value="Adm">Admin</option>
-            </select>
-=======
         <form className="login-form" aria-label="Formulário de login" onSubmit={validarLogin}>
           <img className="login-logo" src={logo} alt="Legados Culturais" />
           <div className="login-content">
@@ -662,7 +651,6 @@ function Login() {
             <Button type="submit" className="btn-orange btn-large login-submit">
               Entrar
             </Button>
->>>>>>> 4c6dc18 (Mais backend)
           </div>
         </form>
       </section>
