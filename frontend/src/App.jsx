@@ -274,7 +274,7 @@ function Cadastro() {
 
   const [erros, setErros] = useState({});
 
-  function cadastrar(event) {
+  async function cadastrar(event) {
     event.preventDefault();
     const novosErros = {};
 
@@ -306,8 +306,14 @@ function Cadastro() {
       novosErros.genero = "Selecione o gênero.";
     }
 
-    if (genero === "Outro" && !outroGenero.trim()) {
-      novosErros.outroGenero = "Especifique o gênero.";
+    let generoFinal = genero;
+
+    if (genero === "Outro") {
+      if(!outroGenero.trim()) {
+        novosErros.outroGenero = "Especifique o gênero.";
+      } else {
+        generoFinal = outroGenero
+      } 
     }
 
     if (!estado) {
@@ -336,17 +342,46 @@ function Cadastro() {
       telefone,
       dataNascimento,
       sexo,
-      genero,
-      outroGenero,
+      generoFinal,
       estado,
       cidade,
       bairro,
       logradouro,
       numero,
-      complemento,
+      complemento
     });
 
-    alert("Cadastro realizado com sucesso!");
+    //enviar para o back
+    // use "/backend/routes.php?rota=cadastro" quando não for teste local
+    const resposta = await fetch("http://localhost:8000/routes.php?rota=cadastro", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        nome: nome,
+        sobrenome: sobrenome,
+        email: email,
+        senha: senha,
+        telefone: telefone,
+        dataNascimento: dataNascimento,
+        sexo: sexo,
+        genero: generoFinal,
+        estado: estado,
+        cidade: cidade,
+        bairro: bairro,
+        logradouro: logradouro,
+        numero: numero,
+        complemento: complemento
+      })
+    });
+
+    const dados = await resposta.json();
+
+    if(resposta.ok) {
+      alert("Cadastro realizado com sucesso");
+    } else {
+      alert("Erro ao cadastrar!");
+    }
+
   }
 
   return (
@@ -426,7 +461,7 @@ function Cadastro() {
                 type="radio" 
                 name="sexo" 
                 label="Masculino" 
-                value="Masculino"
+                value="m"
                 onChange={(e) => setSexo(e.target.value)}
               />
               <Form.Check 
@@ -434,7 +469,7 @@ function Cadastro() {
                 type="radio" 
                 name="sexo" 
                 label="Feminino" 
-                value="Feminino"
+                value="f"
                 onChange={(e) => setSexo(e.target.value)}
               />
               {erros.sexo && <span className="form-error" style={{ display: "block" }}>{erros.sexo}</span>}
