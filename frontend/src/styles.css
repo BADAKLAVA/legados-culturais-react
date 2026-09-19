@@ -56,7 +56,12 @@ button {
   width: 205px;
   height: auto;
 }
+.site-header .navbar-collapse {
+  grid-column: 2 / -1;
+  min-width: 0;
+}
 .main-nav {
+  flex: 1;
   display: flex;
   justify-content: center;
   gap: 26px;
@@ -75,6 +80,7 @@ button {
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-left: auto;
 }
 
 .btn {
@@ -97,8 +103,18 @@ button {
   background: var(--orange);
   color: #222;
 }
+.btn.btn-orange:hover,
+.btn.btn-orange:focus-visible {
+  background: #f3b96b;
+  color: #222;
+}
 .btn-green {
   background: var(--green-2);
+  color: #fffde9;
+}
+.btn.btn-green:hover,
+.btn.btn-green:focus-visible {
+  background: #718541;
   color: #fffde9;
 }
 .btn-small {
@@ -360,6 +376,14 @@ button {
   color: #e5a253;
   opacity: 1;
 }
+.form-error {
+  display: block;
+  margin-top: 2px;
+  color: #c62828;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+}
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -485,6 +509,10 @@ input[type="radio"]:checked::after {
   border-radius: 12px;
   font-size: 24px;
 }
+.login-content .form-error {
+  margin: -16px 0 24px;
+  font-size: 16px;
+}
 .login-submit {
   display: flex;
   margin: 96px auto 0;
@@ -498,18 +526,22 @@ input[type="radio"]:checked::after {
   background-repeat: no-repeat;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 991.98px) {
   .site-header {
     grid-template-columns: 1fr auto;
   }
-  .main-nav {
+  .site-header .navbar-collapse {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+  .main-nav {
+    flex: initial;
     padding: 0 0 8px;
   }
   .header-actions {
-    grid-column: 2;
-    grid-row: 1;
+    justify-content: center;
+    padding-bottom: 8px;
+    margin-left: 0;
   }
   .brand {
     grid-column: 1;
@@ -542,10 +574,14 @@ input[type="radio"]:checked::after {
     width: 135px;
   }
   .main-nav {
+    flex: initial;
     gap: 16px;
     font-size: 12px;
     overflow-x: auto;
     justify-content: flex-start;
+  }
+  .site-header .navbar-collapse {
+    padding-top: 12px;
   }
   .header-actions {
     gap: 7px;

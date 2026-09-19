@@ -19,7 +19,7 @@ const reviews = [
 
 function Header() {
   return (
-    <Navbar as="header" className="site-header">
+    <Navbar as="header" expand="lg" className="site-header">
       <Navbar.Brand
         className="brand"
         href="/"
@@ -27,19 +27,22 @@ function Header() {
       >
         <img src={logo} alt="Legados Culturais" />
       </Navbar.Brand>
-      <Nav as="nav" className="main-nav" aria-label="Navegação principal">
-        <Nav.Link href="#sobre">Quem somos</Nav.Link>
-        <Nav.Link href="#contato">Contato</Nav.Link>
-        <Nav.Link href="#biblioteca">Biblioteca</Nav.Link>
-      </Nav>
-      <div className="header-actions">
-        <Button as="a" className="btn-orange btn-small" href="/login">
-          Entrar
-        </Button>
-        <Button as="a" className="btn-green btn-small" href="/cadastro">
-          Cadastrar
-        </Button>
-      </div>
+      <Navbar.Toggle aria-controls="main-navigation" aria-label="Abrir menu" />
+      <Navbar.Collapse id="main-navigation">
+        <Nav as="nav" className="main-nav" aria-label="Navegação principal">
+          <Nav.Link href="#sobre">Quem somos</Nav.Link>
+          <Nav.Link href="#contato">Contato</Nav.Link>
+          <Nav.Link href="#biblioteca">Biblioteca</Nav.Link>
+        </Nav>
+        <div className="header-actions">
+          <Button as="a" className="btn-orange btn-small" href="/login">
+            Entrar
+          </Button>
+          <Button as="a" className="btn-green btn-small" href="/cadastro">
+            Cadastrar
+          </Button>
+        </div>
+      </Navbar.Collapse>
     </Navbar>
   );
 }
@@ -149,13 +152,20 @@ function Home() {
   );
 }
 
-function Input({ label, placeholder, type = "text", className = "", value, onChange }) {
+function Input({
+  label,
+  placeholder,
+  type = "text",
+  className = "",
+  value,
+  onChange,
+}) {
   return (
     <Form.Group className={`field ${className}`} controlId={label}>
       <Form.Label>{label}</Form.Label>
-      <Form.Control 
-        type={type} 
-        placeholder={placeholder} 
+      <Form.Control
+        type={type}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
@@ -167,7 +177,9 @@ function Cadastro() {
   return (
     <main className="form-page cadastro-page">
       <section className="form-card cadastro-card">
-        <img className="form-logo" src={logo} alt="Legados Culturais" />
+        <a href="/" aria-label="Voltar para a página inicial">
+          <img className="form-logo" src={logo} alt="Legados Culturais" />
+        </a>
         <h1>Cadastro</h1>
         <div className="form-fields">
           <Input label="Nome" placeholder="Nome" />
@@ -302,18 +314,18 @@ function Cadastro() {
       novosErros.sexo = "Selecione o sexo.";
     }
 
-     if (!genero) {
+    if (!genero) {
       novosErros.genero = "Selecione o gênero.";
     }
 
     let generoFinal = genero;
 
     if (genero === "Outro") {
-      if(!outroGenero.trim()) {
+      if (!outroGenero.trim()) {
         novosErros.outroGenero = "Especifique o gênero.";
       } else {
-        generoFinal = outroGenero
-      } 
+        generoFinal = outroGenero;
+      }
     }
 
     if (!estado) {
@@ -348,149 +360,161 @@ function Cadastro() {
       bairro,
       logradouro,
       numero,
-      complemento
+      complemento,
     });
 
     //enviar para o back
     // use "/backend/routes.php?rota=cadastro" quando não for teste local
-    const resposta = await fetch("http://localhost:8000/routes.php?rota=cadastro", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        nome: nome,
-        sobrenome: sobrenome,
-        email: email,
-        senha: senha,
-        telefone: telefone,
-        dataNascimento: dataNascimento,
-        sexo: sexo,
-        genero: generoFinal,
-        estado: estado,
-        cidade: cidade,
-        bairro: bairro,
-        logradouro: logradouro,
-        numero: numero,
-        complemento: complemento
-      })
-    });
+    const resposta = await fetch(
+      "http://localhost:8000/routes.php?rota=cadastro",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: nome,
+          sobrenome: sobrenome,
+          email: email,
+          senha: senha,
+          telefone: telefone,
+          dataNascimento: dataNascimento,
+          sexo: sexo,
+          genero: generoFinal,
+          estado: estado,
+          cidade: cidade,
+          bairro: bairro,
+          logradouro: logradouro,
+          numero: numero,
+          complemento: complemento,
+        }),
+      },
+    );
 
     const dados = await resposta.json();
 
-    if(resposta.ok) {
+    if (resposta.ok) {
       alert("Cadastro realizado com sucesso");
     } else {
       alert("Erro ao cadastrar!");
     }
-
   }
 
   return (
     <main className="form-page cadastro-page">
       <section className="form-card cadastro-card">
-        <img className="form-logo" src={logo} alt="Legados Culturais" />
+        <a href="/" aria-label="Voltar para a página inicial">
+          <img className="form-logo" src={logo} alt="Legados Culturais" />
+        </a>
         <h1>Cadastro</h1>
         <form onSubmit={cadastrar}>
           <div className="form-fields">
             <div>
-              <Input 
-                label="Nome" 
-                placeholder="Nome" 
-                value={nome} 
-                onChange={(e) => setNome(e.target.value)} 
+              <Input
+                label="Nome"
+                placeholder="Nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
               />
               {erros.nome && <span className="form-error">{erros.nome}</span>}
             </div>
 
             <div>
-              <Input 
-                label="Sobrenome" 
-                placeholder="Sobrenome" 
-                value={sobrenome} 
-                onChange={(e) => setSobrenome(e.target.value)} 
+              <Input
+                label="Sobrenome"
+                placeholder="Sobrenome"
+                value={sobrenome}
+                onChange={(e) => setSobrenome(e.target.value)}
               />
-              {erros.sobrenome && <span className="form-error">{erros.sobrenome}</span>}
+              {erros.sobrenome && (
+                <span className="form-error">{erros.sobrenome}</span>
+              )}
             </div>
 
             <div>
-              <Input 
-                label="E-mail" 
-                placeholder="E-mail" 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
+              <Input
+                label="E-mail"
+                placeholder="E-mail"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               {erros.email && <span className="form-error">{erros.email}</span>}
             </div>
 
             <div>
-              <Input 
-                label="Senha" 
-                placeholder="Senha" 
-                type="password" 
-                value={senha} 
-                onChange={(e) => setSenha(e.target.value)} 
+              <Input
+                label="Senha"
+                placeholder="Senha"
+                type="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
               />
               {erros.senha && <span className="form-error">{erros.senha}</span>}
             </div>
 
             <div className="field-row compact-row">
               <div>
-                <Input 
-                  label="Telefone" 
-                  placeholder="(11) 11111-1111" 
-                  value={telefone} 
-                  onChange={(e) => setTelefone(e.target.value)} 
+                <Input
+                  label="Telefone"
+                  placeholder="(11) 11111-1111"
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
                 />
               </div>
               <div>
-                <Input 
-                  label="Data de nascimento" 
-                  placeholder="dd/mm/aaaa" 
+                <Input
+                  label="Data de nascimento"
+                  placeholder="dd/mm/aaaa"
                   type="date"
-                  value={dataNascimento} 
-                  onChange={(e) => setDataNascimento(e.target.value)} 
+                  value={dataNascimento}
+                  onChange={(e) => setDataNascimento(e.target.value)}
                 />
-                {erros.dataNascimento && <span className="form-error">{erros.dataNascimento}</span>}
+                {erros.dataNascimento && (
+                  <span className="form-error">{erros.dataNascimento}</span>
+                )}
               </div>
             </div>
 
             <fieldset className="radio-group">
               <legend>Sexo:</legend>
-              <Form.Check 
-                inline 
-                type="radio" 
-                name="sexo" 
-                label="Masculino" 
+              <Form.Check
+                inline
+                type="radio"
+                name="sexo"
+                label="Masculino"
                 value="m"
                 onChange={(e) => setSexo(e.target.value)}
               />
-              <Form.Check 
-                inline 
-                type="radio" 
-                name="sexo" 
-                label="Feminino" 
+              <Form.Check
+                inline
+                type="radio"
+                name="sexo"
+                label="Feminino"
                 value="f"
                 onChange={(e) => setSexo(e.target.value)}
               />
-              {erros.sexo && <span className="form-error" style={{ display: "block" }}>{erros.sexo}</span>}
+              {erros.sexo && (
+                <span className="form-error" style={{ display: "block" }}>
+                  {erros.sexo}
+                </span>
+              )}
             </fieldset>
 
             <fieldset className="radio-group gender-group">
               <legend>Gênero:</legend>
               <div className="gender-options">
-                <Form.Check 
-                  inline 
-                  type="radio" 
-                  name="genero" 
-                  label="Masculino" 
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Masculino"
                   value="Masculino"
                   onChange={(e) => setGenero(e.target.value)}
                 />
-                <Form.Check 
-                  inline 
-                  type="radio" 
-                  name="genero" 
-                  label="Feminino" 
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Feminino"
                   value="Feminino"
                   onChange={(e) => setGenero(e.target.value)}
                 />
@@ -502,30 +526,38 @@ function Cadastro() {
                   value="Não binário"
                   onChange={(e) => setGenero(e.target.value)}
                 />
-                <Form.Check 
-                  inline 
-                  type="radio" 
-                  name="genero" 
-                  label="Outro:" 
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Outro:"
                   value="Outro"
                   onChange={(e) => setGenero(e.target.value)}
                 />
-                <Form.Control 
-                  className="other-input" 
-                  placeholder="Outro" 
+                <Form.Control
+                  className="other-input"
+                  placeholder="Outro"
                   value={outroGenero}
                   onChange={(e) => setOutroGenero(e.target.value)}
                   disabled={genero !== "Outro"}
                 />
               </div>
-              {erros.genero && <span className="form-error" style={{ display: "block" }}>{erros.genero}</span>}
-              {erros.outroGenero && <span className="form-error" style={{ display: "block" }}>{erros.outroGenero}</span>}
+              {erros.genero && (
+                <span className="form-error" style={{ display: "block" }}>
+                  {erros.genero}
+                </span>
+              )}
+              {erros.outroGenero && (
+                <span className="form-error" style={{ display: "block" }}>
+                  {erros.outroGenero}
+                </span>
+              )}
             </fieldset>
 
             <div className="state-city-row">
               <label className="field state-field">
                 <span>Estado</span>
-                <select 
+                <select
                   className="select-button"
                   value={estado}
                   onChange={(e) => setEstado(e.target.value)}
@@ -559,35 +591,41 @@ function Cadastro() {
                   <option value="SE">SE</option>
                   <option value="TO">TO</option>
                 </select>
-                {erros.estado && <span className="form-error">{erros.estado}</span>}
+                {erros.estado && (
+                  <span className="form-error">{erros.estado}</span>
+                )}
               </label>
 
               <div>
-                <Input 
-                  label="Cidade" 
-                  placeholder="Cidade" 
-                  className="city-field" 
+                <Input
+                  label="Cidade"
+                  placeholder="Cidade"
+                  className="city-field"
                   value={cidade}
                   onChange={(e) => setCidade(e.target.value)}
                 />
-                {erros.cidade && <span className="form-error">{erros.cidade}</span>}
+                {erros.cidade && (
+                  <span className="form-error">{erros.cidade}</span>
+                )}
               </div>
             </div>
 
             <div>
-              <Input 
-                label="Bairro" 
-                placeholder="Bairro" 
+              <Input
+                label="Bairro"
+                placeholder="Bairro"
                 value={bairro}
                 onChange={(e) => setBairro(e.target.value)}
               />
-              {erros.bairro && <span className="form-error">{erros.bairro}</span>}
+              {erros.bairro && (
+                <span className="form-error">{erros.bairro}</span>
+              )}
             </div>
 
             <div>
-              <Input 
-                label="Logradouro" 
-                placeholder="Logradouro" 
+              <Input
+                label="Logradouro"
+                placeholder="Logradouro"
                 value={logradouro}
                 onChange={(e) => setLogradouro(e.target.value)}
               />
@@ -595,17 +633,17 @@ function Cadastro() {
 
             <div className="field-row address-row">
               <div>
-                <Input 
-                  label="Número" 
-                  placeholder="Número" 
+                <Input
+                  label="Número"
+                  placeholder="Número"
                   value={numero}
                   onChange={(e) => setNumero(e.target.value)}
                 />
               </div>
               <div>
-                <Input 
-                  label="Complemento" 
-                  placeholder="Complemento" 
+                <Input
+                  label="Complemento"
+                  placeholder="Complemento"
                   value={complemento}
                   onChange={(e) => setComplemento(e.target.value)}
                 />
@@ -623,7 +661,6 @@ function Cadastro() {
 }
 
 function Login() {
-
   const [tipo, setTipo] = useState("User");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -640,12 +677,12 @@ function Login() {
     setErroEmail("");
     setErroSenha("");
 
-    if(email === "") {
+    if (email === "") {
       setErroEmail("Insira o e-mail*");
-    } else if(!padraoEmail.test(email)) {
+    } else if (!padraoEmail.test(email)) {
       setErroEmail("E-mail inválido*");
     }
-    if(senha === "") {
+    if (senha === "") {
       setErroSenha("Digite a senha*");
     }
   }
@@ -653,36 +690,42 @@ function Login() {
   return (
     <main className="login-page">
       <section className="login-panel">
-        <form className="login-form" aria-label="Formulário de login" onSubmit={validarLogin}>
-          <img className="login-logo" src={logo} alt="Legados Culturais" />
+        <form
+          className="login-form"
+          aria-label="Formulário de login"
+          onSubmit={validarLogin}
+        >
+          <a href="/" aria-label="Voltar para a página inicial">
+            <img className="login-logo" src={logo} alt="Legados Culturais" />
+          </a>
           <div className="login-content">
             <h1>Entrar</h1>
             <div className="account-type">
               <span>Tipo de conta:</span>
-              <select 
+              <select
                 className="select-button"
                 onChange={(e) => setTipo(e.target.value)}
               >
-                  <option value="User">Usuário</option>
-                  <option value="Adm">Admin</option>
+                <option value="User">Usuário</option>
+                <option value="Adm">Admin</option>
               </select>
-              {erroTipo && (<span>{erroTipo}</span>)}
+              {erroTipo && <span className="form-error">{erroTipo}</span>}
             </div>
-            <Input 
-              label="E-mail" 
-              placeholder="E-mail"  
+            <Input
+              label="E-mail"
+              placeholder="E-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            {erroEmail && (<span>{erroEmail}</span>)}
-            <Input 
-              label="Senha" 
-              placeholder="Senha" 
-              type="password" 
+            {erroEmail && <span className="form-error">{erroEmail}</span>}
+            <Input
+              label="Senha"
+              placeholder="Senha"
+              type="password"
               value={senha}
-              onChange={(e) => setSenha(e.target.value)}  
+              onChange={(e) => setSenha(e.target.value)}
             />
-            {erroSenha && (<span>{erroSenha}</span>)}
+            {erroSenha && <span className="form-error">{erroSenha}</span>}
             <Button type="submit" className="btn-orange btn-large login-submit">
               Entrar
             </Button>
