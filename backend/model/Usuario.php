@@ -68,12 +68,21 @@ class Usuario {
     }
 
     //CRUD -> READ
+    public function listarInformacoes($id_usuario) {
+        $sql = "SELECT * FROM usuario WHERE id_usuario = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id_usuario]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    //CRUD -> READ
     public function buscarEmail($email) {
-        $sql = "SELECT email FROM usuario WHERE = ?";
+        $sql = "SELECT * FROM usuario WHERE email = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 }
 
 ?>
