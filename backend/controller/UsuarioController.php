@@ -46,33 +46,45 @@ class UsuarioController {
     }
 
     public function login() {
-        $dados = json_decode(file_get_contents("php://input"), true);
-        $email = $dados["email"];
-        $senha = $dados["senha"];
+    
+    $dados = json_decode(file_get_contents("php://input"), true);
 
-        $usuarioDados = $this->usuario->buscarEmail($email);
+    $email = $dados["email"];
+    $senha = $dados["senha"];
 
-        if(!$usuarioDados) {
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Usuário inválido"
-            ]);
-            return;
-        }
+    $usuarioDados = $this->usuario->buscarEmail($email);
 
-        if(!password_verify($senha, $usuarioDados["senha"])) {
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Senha errada"
-            ]);
-            return;
-        }
+    if (!$usuarioDados) {
 
-        $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
-        $_SESSION["tipo"] = $usuarioDados["tipo"];
+        http_response_code(401);
 
-        echo json_encode(["sucesso" => true]);
+        echo json_encode([
+            "sucesso" => false,
+            "erro" => "Usuário inválido"
+        ]);
+
+        return;
     }
+
+    if (!password_verify($senha, $usuarioDados["senha"])) {
+
+        http_response_code(401);
+
+        echo json_encode([
+            "sucesso" => false,
+            "erro" => "Senha errada"
+        ]);
+
+        return;
+    }
+
+    $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
+    $_SESSION["tipo"] = $usuarioDados["tipo"];
+
+    echo json_encode([
+        "sucesso" => true
+    ]);
+}
 }
 
 ?>

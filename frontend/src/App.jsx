@@ -661,7 +661,7 @@ function Cadastro() {
 }
 
 function Login() {
-  const [tipo, setTipo] = useState("User");
+  const [tipo, setTipo] = useState("us");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -671,21 +671,53 @@ function Login() {
 
   const padraoEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  function validarLogin(e) {
+  async function validarLogin(e) {
     e.preventDefault();
-    //inicia as mensagens de erro vazias
+
     setErroEmail("");
     setErroSenha("");
 
+    let temErro = false;
+
     if (email === "") {
-      setErroEmail("Insira o e-mail*");
+        setErroEmail("Insira o e-mail*");
+        temErro = true;
     } else if (!padraoEmail.test(email)) {
-      setErroEmail("E-mail inválido*");
+        setErroEmail("E-mail inválido*");
+        temErro = true;
     }
+
     if (senha === "") {
-      setErroSenha("Digite a senha*");
+        setErroSenha("Digite a senha*");
+        temErro = true;
     }
-  }
+
+    if (temErro) {
+        return;
+    }
+
+    const resposta = await fetch(
+        "http://localhost:8000/routes.php?rota=login",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+                tipo: tipo,
+                email: email,
+                senha: senha
+            }),
+        }
+    );
+
+    const dados = await resposta.json();
+
+    if (resposta.ok) {
+        window.location.href = "http://localhost:8000/teste.php";
+    } else {
+        setErroSenha(dados.erro);
+    }
+}
 
   return (
     <main className="login-page">
@@ -706,8 +738,8 @@ function Login() {
                 className="select-button"
                 onChange={(e) => setTipo(e.target.value)}
               >
-                <option value="User">Usuário</option>
-                <option value="Adm">Admin</option>
+                <option value="us">Usuário</option>
+                <option value="ad">Admin</option>
               </select>
               {erroTipo && <span className="form-error">{erroTipo}</span>}
             </div>
