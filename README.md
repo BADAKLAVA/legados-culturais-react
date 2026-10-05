@@ -14,5 +14,6 @@ Depois, abra a URL mostrada pelo Vite.
 
 Rotas visuais disponíveis:
 - `/` — página inicial
+- `/biblioteca` — biblioteca de materiais
 - `/cadastro` — cadastro
 - `/login` — login
