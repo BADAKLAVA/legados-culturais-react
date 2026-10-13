@@ -850,8 +850,8 @@ function Cadastro() {
 
     setErros(novosErros);
     if (Object.keys(novosErros).length > 0) return;
-
-    const resposta = await fetch("http://localhost:8000/routes.php?rota=cadastro", {
+    //http://localhos/routes.php?rota=cadastro
+    const resposta = await fetch("/backend/routes.php?rota=cadastro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1036,7 +1036,7 @@ function Login() {
     }
     if (temErro) return;
 
-    const resposta = await fetch("http://localhost:8000/routes.php?rota=login", {
+    const resposta = await fetch("/backend/routes.php?rota=login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
