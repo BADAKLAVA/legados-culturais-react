@@ -1,16 +1,12 @@
 FROM node:22-alpine AS frontend-build
 
-WORKDIR /frontend
+WORKDIR /app/frontend
 
 COPY frontend/package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY frontend/ ./
-
-RUN ls -l node_modules/.bin/vite
-RUN cat package.json
 RUN npm run build
-
 
 FROM php:8.2-cli
 
