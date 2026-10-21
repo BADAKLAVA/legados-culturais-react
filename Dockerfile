@@ -1,26 +1,46 @@
+
+# Etapa 1: construir o frontend React
 FROM node:22-alpine AS frontend-build
 
 WORKDIR /app/frontend
 
-COPY frontend/package*.json ./
-RUN npm install
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
 
 COPY frontend/ ./
 RUN npm run build
 
-FROM php:8.2-cli
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Etapa 2: preparar o backend PHP
+FROM php:8.2-cli AS production
 
-RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pgsql pdo_pgsql && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Extensões necessárias para conectar ao PostgreSQL/Neon
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libpq-dev \
+    && docker-php-ext-install pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+# Copiar o backend
 COPY backend/ /app/backend/
-RUN composer install --working-dir=/app/backend --no-dev --optimize-autoloader
 
-COPY --from=frontend-build /frontend/dist/ /app/
+# Instalar o Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Instalar dependências PHP, incluindo vlucas/phpdotenv,
+# caso o backend tenha composer.json e composer.lock
+RUN composer install \
+    --working-dir=/app/backend \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
+
+# Copiar o React compilado para a raiz pública
+COPY --from=frontend-build /app/frontend/dist/ /app/
+
+# Porta utilizada pelo Render
 EXPOSE 10000
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-10000} -t /app"]
+# Iniciar o servidor PHP na porta fornecida pelo Render
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-10000} -t /app /app/backend/router.php"]
