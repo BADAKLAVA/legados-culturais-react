@@ -1,30 +1,31 @@
-
 <?php
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$root = '/app';
 
-// Deixar as rotas e os arquivos PHP do backend
-// serem processados normalmente pelo servidor.
-if (str_starts_with($uri, '/backend/')) {
-    return false;
-}
-
-// A raiz pública contém o index.html e os arquivos
-// compilados do React.
-$arquivo = realpath('/app' . $uri);
+// Se o caminho corresponder a um arquivo existente,
+// deixar o servidor PHP servi-lo diretamente.
+$file = realpath($root . $uri);
 
 if (
-    $arquivo !== false &&
-    str_starts_with($arquivo, '/app/') &&
-    is_file($arquivo)
+    $file !== false &&
+    str_starts_with($file, $root . '/') &&
+    is_file($file)
 ) {
     return false;
 }
 
-// Para rotas do React que não correspondem a arquivos,
-// entregar a página principal.
-if (is_file('/app/index.html')) {
-    readfile('/app/index.html');
+// Se o arquivo solicitado parecer um recurso estático
+// (JS, CSS, imagens etc.) e não existir, retornar 404.
+if (preg_match('/\.[a-zA-Z0-9]+$/', $uri)) {
+    http_response_code(404);
+    echo 'Arquivo não encontrado.';
+    return true;
+}
+
+// As demais rotas podem ser tratadas pelo React.
+if (is_file($root . '/index.html')) {
+    readfile($root . '/index.html');
     return true;
 }
 
