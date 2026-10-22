@@ -1,44 +1,41 @@
-
 <?php
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$root = '/app';
+$publicDir = realpath(__DIR__ . '/../public');
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Encaminha a API para o arquivo correto.
-if ($uri === '/routes.php') {
+// 1. Encaminhar login e cadastro para as rotas do backend.
+if ($path === '/routes.php') {
     require __DIR__ . '/routes/routes.php';
-    return true;
+    exit;
 }
 
-// Encaminha teste.php, caso seja acessado pela URL.
-if ($uri === '/teste.php') {
-    require __DIR__ . '/teste.php';
-    return true;
+// 2. Verificar se a pasta pública existe.
+if ($publicDir === false) {
+    http_response_code(500);
+    echo 'Diretório público não encontrado.';
+    exit;
 }
 
-// Deixa o servidor PHP entregar arquivos estáticos existentes.
-$file = realpath($root . $uri);
+// 3. Entregar arquivos existentes do frontend.
+$file = realpath($publicDir . $path);
 
 if (
+    $path !== '/' &&
     $file !== false &&
-    str_starts_with($file, $root . '/') &&
+    str_starts_with($file, $publicDir . DIRECTORY_SEPARATOR) &&
     is_file($file)
 ) {
     return false;
 }
 
-// Não retorna o HTML do React para arquivos inexistentes.
-if (preg_match('/\.[a-zA-Z0-9]+$/', $uri)) {
-    http_response_code(404);
-    echo 'Arquivo não encontrado.';
-    return true;
+// 4. Entregar o React para a página inicial e outras URLs do frontend.
+$index = $publicDir . '/index.html';
+
+if (is_file($index)) {
+    header('Content-Type: text/html; charset=utf-8');
+    readfile($index);
+    exit;
 }
 
-// Fallback para as rotas do React.
-if (is_file($root . '/index.html')) {
-    readfile($root . '/index.html');
-    return true;
-}
-
-http_response_code(404);
-echo 'Página não encontrada.';
+http_response_code(500);
+echo 'Arquivo index.html não encontrado.';
