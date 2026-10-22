@@ -4,13 +4,19 @@
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $root = '/app';
 
-// Encaminha as requisições da API para o arquivo de rotas.
+// Encaminha a API para o arquivo correto.
 if ($uri === '/routes.php') {
-    require $root . '/backend/routes/routes.php';
+    require __DIR__ . '/routes/routes.php';
     return true;
 }
 
-// Serve arquivos estáticos existentes.
+// Encaminha teste.php, caso seja acessado pela URL.
+if ($uri === '/teste.php') {
+    require __DIR__ . '/teste.php';
+    return true;
+}
+
+// Deixa o servidor PHP entregar arquivos estáticos existentes.
 $file = realpath($root . $uri);
 
 if (
@@ -21,14 +27,14 @@ if (
     return false;
 }
 
-// Não devolve o index.html para recursos inexistentes.
+// Não retorna o HTML do React para arquivos inexistentes.
 if (preg_match('/\.[a-zA-Z0-9]+$/', $uri)) {
     http_response_code(404);
     echo 'Arquivo não encontrado.';
     return true;
 }
 
-// Permite que o React controle as demais rotas.
+// Fallback para as rotas do React.
 if (is_file($root . '/index.html')) {
     readfile($root . '/index.html');
     return true;
