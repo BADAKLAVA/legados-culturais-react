@@ -1,7 +1,6 @@
 <?php 
 
-//require_once "Endereco.php";
-//require_once "config/database.php";
+require_once "config/database.php";
 use DateTime;
 
 class Usuario {
