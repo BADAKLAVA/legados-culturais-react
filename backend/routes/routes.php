@@ -2,18 +2,8 @@
 
 session_start();
 
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-
-if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    http_response_code(200);
-    exit;
-}
-
-require_once "config/database.php";
-require_once 'controller/UsuarioController.php';
+require_once __DIR__ . "config/database.php";
+require_once __DIR__ . "controller/UsuarioController.php";
 
 $controller = new UsuarioController($pdo);
 
@@ -23,10 +13,23 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $rota = $_GET['rota'] ?? '';
 
-if ($method === "POST" && $uri === "/routes.php" && $rota === "cadastro") {
+if ($uri !== "/routes.php") {
+    http_response_code(404);
+    echo json_encode(["erro" => "Rota não encontrada"]);
+    exit;
+}
+
+if ($method === "POST" && $rota === "cadastro") {
     $controller->cadastrar();
+    exit;
 }
-elseif ($method === "POST" && $uri === "/routes.php" && $rota === "login") {
+elseif ($method === "POST" && $rota === "login") {
     $controller->login();
+    exit;
 }
+
+http_response_code(404);
+header("Content-Type: application/json; charset=UTF-8");
+echo json_encode(["erro" => "Operação não encontrada"]);
+
 ?>

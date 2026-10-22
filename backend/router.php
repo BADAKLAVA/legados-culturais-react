@@ -1,10 +1,16 @@
+
 <?php
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $root = '/app';
 
-// Se o caminho corresponder a um arquivo existente,
-// deixar o servidor PHP servi-lo diretamente.
+// Encaminha as requisições da API para o arquivo de rotas.
+if ($uri === '/routes.php') {
+    require $root . '/backend/routes/routes.php';
+    return true;
+}
+
+// Serve arquivos estáticos existentes.
 $file = realpath($root . $uri);
 
 if (
@@ -15,15 +21,14 @@ if (
     return false;
 }
 
-// Se o arquivo solicitado parecer um recurso estático
-// (JS, CSS, imagens etc.) e não existir, retornar 404.
+// Não devolve o index.html para recursos inexistentes.
 if (preg_match('/\.[a-zA-Z0-9]+$/', $uri)) {
     http_response_code(404);
     echo 'Arquivo não encontrado.';
     return true;
 }
 
-// As demais rotas podem ser tratadas pelo React.
+// Permite que o React controle as demais rotas.
 if (is_file($root . '/index.html')) {
     readfile($root . '/index.html');
     return true;
