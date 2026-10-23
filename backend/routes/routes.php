@@ -22,11 +22,19 @@ if ($uri !== "/routes.php") {
     echo json_encode(["erro" => "Rota não encontrada"]);
     exit;
 }
+if ($method === "POST" && $rota === "cadastro") {
+    error_log("Entrou no controller de cadastro");
 
+    $controller->cadastrar();
+
+    error_log("Saiu do controller de cadastro");
+    exit;
+}/*
 if ($method === "POST" && $rota === "cadastro") {
     $controller->cadastrar();
     exit;
-} elseif ($method === "POST" && $rota === "login") {
+} */
+if ($method === "POST" && $rota === "login") {
     $controller->login();
     exit;
 }

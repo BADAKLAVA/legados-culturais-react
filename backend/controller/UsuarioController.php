@@ -10,6 +10,13 @@ class UsuarioController {
 
     
     public function cadastrar() {
+        error_log("Iniciou o método cadastrar");
+
+        $dados = json_decode(file_get_contents("php://input"), true);
+
+        error_log("JSON recebido: " . json_encode(
+            array_keys($dados ?? [])
+        ));
         $dados = json_decode(file_get_contents("php://input"), true);
         $nome = $dados["nome"];
         $sobrenome = $dados["sobrenome"];
