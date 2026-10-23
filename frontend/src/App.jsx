@@ -854,6 +854,7 @@ function Cadastro() {
     const resposta = await fetch("/routes.php?rota=cadastro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         nome,
         sobrenome,
