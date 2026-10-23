@@ -13,6 +13,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $rota = $_GET['rota'] ?? '';
 
+error_log("Método recebido: " . $method);
+error_log("URI recebida: " . $uri);
+error_log("Rota recebida: " . $rota);
+
 if ($uri !== "/routes.php") {
     http_response_code(404);
     echo json_encode(["erro" => "Rota não encontrada"]);
