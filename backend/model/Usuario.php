@@ -55,6 +55,9 @@ class Usuario {
         error_log("DEPOIS DO PREPARE");
         error_log(print_r($stmt, true));
 
+        error_log("Nome: " . var_export($nome, true));
+        error_log("Email: " . var_export($email, true));
+
         $resultado = $stmt->execute([
             $nome,
             $sobrenome,
