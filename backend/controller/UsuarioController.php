@@ -8,7 +8,7 @@ class UsuarioController {
         $this->usuario = new Usuario($pdo);
     }
 
-    /*
+    
     public function cadastrar() {
         error_log("Iniciou o método cadastrar");
 
@@ -51,80 +51,7 @@ class UsuarioController {
         );
 
         echo json_encode(["sucesso" => $resultado]);
-    }*/
-    
-public function cadastrar() {
-    header("Content-Type: application/json; charset=UTF-8");
-
-    try {
-        error_log("ETAPA 1: iniciou cadastro");
-
-        $dados = json_decode(file_get_contents("php://input"), true);
-
-        if (!is_array($dados)) {
-            throw new Exception("JSON inválido ou ausente");
-        }
-
-        error_log("ETAPA 2: JSON decodificado");
-
-        $campos = [
-            "nome", "sobrenome", "email", "senha", "telefone",
-            "dataNascimento", "sexo", "genero", "estado", "cidade",
-            "bairro", "logradouro", "numero", "complemento"
-        ];
-
-        foreach ($campos as $campo) {
-            if (!array_key_exists($campo, $dados)) {
-                throw new Exception("Campo ausente: " . $campo);
-            }
-        }
-
-        error_log("ETAPA 3: campos validados");
-
-        $dados["senha"] = password_hash(
-            $dados["senha"],
-            PASSWORD_DEFAULT
-        );
-
-        error_log("ETAPA 4: chamando criarUsuario");
-
-        $resultado = $this->usuario->criarUsuario(
-            $dados["nome"],
-            $dados["sobrenome"],
-            $dados["email"],
-            $dados["senha"],
-            $dados["telefone"],
-            $dados["dataNascimento"],
-            $dados["sexo"],
-            $dados["genero"],
-            $dados["estado"],
-            $dados["cidade"],
-            $dados["bairro"],
-            $dados["logradouro"],
-            $dados["numero"],
-            $dados["complemento"]
-        );
-
-        error_log("ETAPA 5: resultado do INSERT = " .
-            ($resultado ? "true" : "false"));
-
-        http_response_code($resultado ? 201 : 500);
-
-        echo json_encode([
-            "sucesso" => $resultado
-        ]);
-
-    } catch (Throwable $e) {
-        error_log("ERRO NO CADASTRO: " . $e->getMessage());
-
-        http_response_code(500);
-
-        echo json_encode([
-            "sucesso" => false,
-            "erro" => "Não foi possível concluir o cadastro."
-        ]);
     }
-}
 
    /* 
 public function cadastrar() {
@@ -199,7 +126,13 @@ public function cadastrar() {
 
     public function login() {
     
+    error_log("Login iniciado");
+
     $dados = json_decode(file_get_contents("php://input"), true);
+
+    error_log("JSON recebido: " . json_encode(
+            array_keys($dados ?? [])
+        ));
 
     $email = $dados["email"];
     $senha = $dados["senha"];
