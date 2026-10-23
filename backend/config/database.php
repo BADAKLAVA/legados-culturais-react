@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
-$dotenv->load();
+$dotenv->safeLoad();
 
 $pdo = new PDO(
     "pgsql:host=" . $_ENV["DB_HOST"] .
