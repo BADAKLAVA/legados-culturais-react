@@ -921,8 +921,8 @@ function Cadastro() {
 
             <fieldset className="radio-group">
               <legend>Sexo:</legend>
-              <Form.Check inline type="radio" name="sexo" label="Masculino" value="Masculino" onChange={(e) => setSexo(e.target.value)} />
-              <Form.Check inline type="radio" name="sexo" label="Feminino" value="Feminino" onChange={(e) => setSexo(e.target.value)} />
+              <Form.Check inline type="radio" name="sexo" label="Masculino" value="m" onChange={(e) => setSexo(e.target.value)} />
+              <Form.Check inline type="radio" name="sexo" label="Feminino" value="f" onChange={(e) => setSexo(e.target.value)} />
               {erros.sexo && <span className="form-error" style={{ display: "block" }}>{erros.sexo}</span>}
             </fieldset>
 
