@@ -45,7 +45,11 @@ class Usuario {
     ) {
         $sql = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        error_log($sql);
+
         $stmt = $this->pdo->prepare($sql);
+
+        error_log($stmt);
 
         return $stmt->execute([
             $nome,

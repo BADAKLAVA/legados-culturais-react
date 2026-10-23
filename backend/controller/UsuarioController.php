@@ -17,7 +17,7 @@ class UsuarioController {
         error_log("JSON recebido: " . json_encode(
             array_keys($dados ?? [])
         ));
-        $dados = json_decode(file_get_contents("php://input"), true);
+        
         $nome = $dados["nome"];
         $sobrenome = $dados["sobrenome"];
         $email = $dados["email"];
