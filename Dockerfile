@@ -16,7 +16,7 @@ RUN npm run build
 # ==========================================
 # ETAPA 2: Preparar o backend PHP
 # ==========================================
-FROM php:8.2-cli AS production
+FROM php:8.2.35-cli AS production
 
 # Dependências do PostgreSQL, ZIP e Composer
 RUN apt-get update \
