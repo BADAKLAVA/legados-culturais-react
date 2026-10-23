@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS usuario(
 	complemento VARCHAR(50),
 	caminho_foto_perfil VARCHAR(255),
 
+	CONSTRAINT uk_email 
+		UNIQUE(email),
 	CONSTRAINT uk_telefone 
 		UNIQUE (telefone),
 	CONSTRAINT pk_usuario 
