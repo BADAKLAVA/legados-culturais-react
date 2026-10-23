@@ -57,7 +57,7 @@ class Usuario {
 
         error_log("Nome: " . var_export($nome, true));
         error_log("Email: " . var_export($email, true));
-
+/*
         $resultado = $stmt->execute([
             $nome,
             $sobrenome,
@@ -73,7 +73,31 @@ class Usuario {
             $logradouro,
             $numero,
             $complemento
-        ]);
+        ]);*/
+
+        try {
+            $resultado = $stmt->execute([
+                $nome,
+                $sobrenome,
+                $email,
+                $senha,
+                $telefone,
+                $dataNascimento,
+                $sexo,
+                $genero,
+                $estado,
+                $cidade,
+                $bairro,
+                $logradouro,
+                $numero,
+                $complemento
+            ]);
+
+            error_log("DEPOIS DO EXECUTE");
+            error_log("RESULTADO: " . var_export($resultado, true));
+        } catch (\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+        }
     
         error_log("DEPOIS DO EXECUTE");
         error_log("RESULTADO: " . var_export($resultado, true));
