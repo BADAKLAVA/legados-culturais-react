@@ -1046,7 +1046,7 @@ function Login() {
 
     const dados = await resposta.json();
     if (resposta.ok) {
-      window.location.href = "/teste.php";
+      window.location.href = "/teste/.php";
     } else {
       setErroSenha(dados.erro);
     }
