@@ -47,24 +47,15 @@ class Usuario {
 
         $sql = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        error_log($sql);
+        error_log("PDO: " . get_class($this->pdo));
+        error_log("SQL: " . $sql);
 
-        try {
-            error_log("PDO: " . get_class($this->pdo));
-            error_log("SQL: " . $sql);
+        $stmt = $this->pdo->prepare($sql);
 
-            $stmt = $this->pdo->prepare($sql);
-
-            error_log("DEPOIS DO PREPARE");
-        } catch (\Throwable $e) {
-            error_log("ERRO: " . $e->getMessage());
-            error_log("ARQUIVO: " . $e->getFile());
-            error_log("LINHA: " . $e->getLine());
-        }
-
+        error_log("DEPOIS DO PREPARE");
         error_log($stmt);
 
-        return $stmt->execute([
+        $resultado = $stmt->execute([
             $nome,
             $sobrenome,
             $email,
@@ -80,8 +71,12 @@ class Usuario {
             $numero,
             $complemento
         ]);
-    }
+    
+        error_log("DEPOIS DO EXECUTE");
+        error_log("RESULTADO: " . var_export($resultado, true));
 
+        return $resultado;
+    }
     //CRUD -> READ
     public function listarInformacoes($id_usuario) {
         $sql = "SELECT * FROM usuario WHERE id_usuario = ?";
