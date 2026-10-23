@@ -53,7 +53,7 @@ class Usuario {
         $stmt = $this->pdo->prepare($sql);
 
         error_log("DEPOIS DO PREPARE");
-        error_log($stmt);
+        error_log(print_r($stmt, true));
 
         $resultado = $stmt->execute([
             $nome,
