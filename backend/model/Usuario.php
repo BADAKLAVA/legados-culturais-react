@@ -4,23 +4,6 @@ use DateTime;
 
 class Usuario {
     private PDO $pdo;
-    private int $idUsuario;
-    private string $tipo;
-    private string $nome;
-    private string $sobrenome;
-    private string $email;
-    private string $senha;
-    private string $telefone;
-    private DateTime $dataNascimento; 
-    private string $sexo;
-    private string $genero;
-    private string $estado;
-    private string $cidade;
-    private string $bairro;
-    private string $logradouro;
-    private string $numero;
-    private string $complemento;
-    private string $imagemPerfil;
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
@@ -28,6 +11,7 @@ class Usuario {
 
     //CRUD -> CREATE
     public function criarUsuario(
+        $tipo,
         $nome,
         $sobrenome,
         $email,
@@ -43,40 +27,17 @@ class Usuario {
         $numero,
         $complemento
     ) {
-        error_log("Chegou no Usuario model");
-
-        $sql = "INSERT INTO usuario(nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        error_log("PDO: " . get_class($this->pdo));
-        error_log("SQL: " . $sql);
+        $sql = "INSERT INTO usuario(tipo, nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->pdo->prepare($sql);
 
-        error_log("DEPOIS DO PREPARE");
         error_log(print_r($stmt, true));
 
-        error_log("Nome: " . var_export($nome, true));
-        error_log("Email: " . var_export($email, true));
-/*
-        $resultado = $stmt->execute([
-            $nome,
-            $sobrenome,
-            $email,
-            $senha,
-            $telefone,
-            $dataNascimento,
-            $sexo,
-            $genero,
-            $estado,
-            $cidade,
-            $bairro,
-            $logradouro,
-            $numero,
-            $complemento
-        ]);*/
+        $resultado = null;
 
         try {
             $resultado = $stmt->execute([
+                $tipo,
                 $nome,
                 $sobrenome,
                 $email,
@@ -93,32 +54,81 @@ class Usuario {
                 $complemento
             ]);
 
-            error_log("DEPOIS DO EXECUTE");
-            error_log("RESULTADO: " . var_export($resultado, true));
+            return $resultado;
+
         } catch (\Throwable $e) {
             error_log("ERRO: " . $e->getMessage());
+            error_log("RESULTADO: " . var_export($resultado, true));
+            return null;
         }
-    
-        error_log("DEPOIS DO EXECUTE");
-        error_log("RESULTADO: " . var_export($resultado, true));
-
-        return $resultado;
-    }
-    //CRUD -> READ
-    public function listarInformacoes($id_usuario) {
-        $sql = "SELECT * FROM usuario WHERE id_usuario = ?";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$id_usuario]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    //public function getId() {}
+
     //CRUD -> READ
-    public function buscarEmail($email) {
-        $sql = "SELECT * FROM usuario WHERE email = ?";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    //procurar coluna de um determinado usuario
+    public function obterColunaUsuario($coluna, $idUsuario) {
+        $resultado = null;
+        try {
+            $sql = "SELECT ? FROM usuario WHERE id_usuario = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$coluna, $idUsuario]); 
+            $resultado = $stmt->fetchColumn();
+            return $resultado;
+        } catch (\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+            error_log("RESULTADO: " . var_export($resultado, true));
+            return null;
+        }
     }
+
+    //CRUD -> READ
+    //procura uma coluna com determinado valor
+    public function pesquisarColuna(string $coluna, $valor) {
+        $resultado = null;
+        try {
+            $sql = "SELECT ? FROM usuario WHERE ? = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$coluna, $coluna, $valor]);
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $stmt->fetchColumn();
+        } catch (\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+            error_log("RESULTADO: " . var_export($resultado, true));
+            return null;
+        }
+    }
+
+    //CRUD -> READ
+    //lista todos os dados havendo uma condição ou não
+    public function listarDados($coluna = null, $valor = null) {
+        $resultado = null;
+        try {
+            if($coluna && $valor) {
+                $sql = "SELECT * FROM usuario WHERE ? = ?";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([$coluna, $valor]);
+            } else {
+                $sql = "SELECT * FROM usuario";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute();
+            }
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $resultado;
+        } catch (\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+            error_log("RESULTADO: " . var_export($resultado, true));
+            return null;
+        }
+    }
+
+   //CRUD -> UPDATE
+    public function atualizarColuna($idUsuario, $coluna, $valor) {
+        $sql = "UPDATE usuario SET ? = ? WHERE id_usuario = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$coluna, $valor, $idUsuario]);
+        
+   }
 
 }
 
