@@ -1,7 +1,5 @@
 <?php 
 
-use DateTime;
-
 class Usuario {
     private PDO $pdo;
 
@@ -90,7 +88,7 @@ class Usuario {
             $sql = "SELECT $coluna FROM usuario WHERE $coluna = ?";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([$valor]);
-            $resultado = $stmt->fetchColumn(PDO::FETCH_ASSOC);
+            $resultado = $stmt->fetchColumn();
             return $resultado;
         } catch (\Throwable $e) {
             error_log("ERRO: " . $e->getMessage());
