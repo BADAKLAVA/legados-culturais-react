@@ -87,11 +87,11 @@ class Usuario {
     public function pesquisarColuna(string $coluna, $valor) {
         $resultado = null;
         try {
-            $sql = "SELECT ? FROM usuario WHERE ? = ?";
+            $sql = "SELECT $coluna FROM usuario WHERE $coluna = ?";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([$coluna, $coluna, $valor]);
-            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $stmt->fetchColumn();
+            $stmt->execute([$valor]);
+            $resultado = $stmt->fetchColumn(PDO::FETCH_ASSOC);
+            return $resultado;
         } catch (\Throwable $e) {
             error_log("ERRO: " . $e->getMessage());
             error_log("RESULTADO: " . var_export($resultado, true));
@@ -104,10 +104,10 @@ class Usuario {
     public function listarDados($coluna = null, $valor = null) {
         $resultado = null;
         try {
-            if($coluna && $valor) {
-                $sql = "SELECT * FROM usuario WHERE ? = ?";
+            if($coluna !== null && $valor !== null) {
+                $sql = "SELECT * FROM usuario WHERE $coluna = ?";
                 $stmt = $this->pdo->prepare($sql);
-                $stmt->execute([$coluna, $valor]);
+                $stmt->execute([$valor]);
             } else {
                 $sql = "SELECT * FROM usuario";
                 $stmt = $this->pdo->prepare($sql);
