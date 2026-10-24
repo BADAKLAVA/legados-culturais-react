@@ -9,6 +9,7 @@ class UsuarioController {
     }
 
     public function cadastrar() {
+        header("Content-Type: application/json; charset=utf-8");
         error_log("Iniciou o método cadastrar");
 
         $dados = json_decode(file_get_contents("php://input"), true);
