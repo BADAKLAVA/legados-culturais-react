@@ -39,11 +39,18 @@ if ($method === "POST") {
         $controller->cadastrar();
          error_log("Saiu do controller de cadastro");
         exit;
-    } 
-    /*
+    }
     if($rota === "login") {
-        if($tipo )
-    }*/
+        if($tipo === "cliente") {
+            error_log("Entrando no control para logar o cliente");
+            $controller = new UsuarioController(new Usuario($pdo));
+        }
+        if($tipo === "administrador") {
+            error_log("Entrando no control para logar o adm");
+            $controller = new UsuarioController(new Administrador($pdo));
+        }
+        exit;
+    }
 }
 
 http_response_code(404);

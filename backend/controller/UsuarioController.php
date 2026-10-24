@@ -88,79 +88,8 @@ class UsuarioController {
         }
     }
 
-    /* 
-    public function cadastrar() {
-    header("Content-Type: application/json; charset=UTF-8");
-
-    try {
-        $dados = json_decode(file_get_contents("php://input"), true);
-
-        if (!is_array($dados)) {
-            http_response_code(400);
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Dados JSON inválidos."
-            ]);
-            return;
-        }
-
-        $nome = $dados["nome"] ?? null;
-        $sobrenome = $dados["sobrenome"] ?? null;
-        $email = $dados["email"] ?? null;
-        $senhaOriginal = $dados["senha"] ?? null;
-
-        if (!$nome || !$sobrenome || !$email || !$senhaOriginal) {
-            http_response_code(400);
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Campos obrigatórios ausentes."
-            ]);
-            return;
-        }
-
-        $senha = password_hash($senhaOriginal, PASSWORD_DEFAULT);
-
-        $resultado = $this->usuario->criarUsuario(
-            $nome,
-            $sobrenome,
-            $email,
-            $senha,
-            $dados["telefone"] ?? null,
-            $dados["dataNascimento"] ?? null,
-            $dados["sexo"] ?? null,
-            $dados["genero"] ?? null,
-            $dados["estado"] ?? null,
-            $dados["cidade"] ?? null,
-            $dados["bairro"] ?? null,
-            $dados["logradouro"] ?? null,
-            $dados["numero"] ?? null,
-            $dados["complemento"] ?? null
-        );
-
-        if (!$resultado) {
-            http_response_code(500);
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "O banco não confirmou a inserção."
-            ]);
-            return;
-        }
-
-        echo json_encode(["sucesso" => true]);
-
-    } catch (Throwable $e) {
-        error_log("Erro no cadastro: " . $e->getMessage());
-
-        http_response_code(500);
-        echo json_encode([
-            "sucesso" => false,
-            "erro" => "Erro interno ao cadastrar usuário."
-        ]);
-    }
-    }*/
-
     public function login() {
-    
+        header("Content-Type: application/json; charset=UTF-8");
         error_log("Login iniciado");
 
         $dados = json_decode(file_get_contents("php://input"), true);
@@ -172,7 +101,23 @@ class UsuarioController {
         $email = $dados["email"];
         $senha = $dados["senha"];
 
-        $usuarioDados = $this->usuario->listarDados("email", $email);
+        error_log("EMAIL: $email");
+        error_log("SENHA: $senha");
+
+        try {
+            $usuarioDados = $this->usuario->listarDados("email", $email);
+        } catch (\Throwable $e) {
+            error_log("Erro ao pegar email");
+            error_log("ERRO: " . $e->getMessage());
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Erro no login. Tente novamente"
+            ]);
+            return;
+        }
+
+        error_log($usuarioDados["email"]);
+        error_log($usuarioDados["senha"]);
 
         if (!$usuarioDados["email"]) {
 
@@ -197,6 +142,9 @@ class UsuarioController {
 
         $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
         $_SESSION["tipo"] = $usuarioDados["tipo"];
+
+        error_log($_SESSION["id_usuario"]);
+        error_log($_SESSION["tipo"]);
 
         echo json_encode([
             "sucesso" => true
