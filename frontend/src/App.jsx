@@ -875,13 +875,7 @@ function Cadastro() {
       }),
     });
 
-    //const dados = await resposta.json();
-    const texto = await resposta.text();
-
-    console.log("Status:", resposta.status);
-    console.log("Resposta recebida:", texto);
-
-    const dados = JSON.parse(texto);
+    const dados = await resposta.json();
 
     if (resposta.ok && dados.sucesso) {
       window.alert("Cadastro realizado com sucesso");
