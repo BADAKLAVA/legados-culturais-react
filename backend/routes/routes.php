@@ -4,6 +4,8 @@ session_start();
 
 require_once dirname(__DIR__) . '/config/database.php';
 require_once dirname(__DIR__) . '/controller/UsuarioController.php';
+require_once dirname(__DIR__) . '/model/Cliente.php';
+require_once dirname(__DIR__) . '/model/Administrador.php';
 
 header("Content-Type: application/json; charset=UTF-8");
 
