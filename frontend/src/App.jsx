@@ -806,6 +806,7 @@ function Input({ label, placeholder, type = "text", className = "", value, onCha
 }
 
 function Cadastro() {
+  const tipo = "us";
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
@@ -851,11 +852,12 @@ function Cadastro() {
     setErros(novosErros);
     if (Object.keys(novosErros).length > 0) return;
     //http://localhos/routes.php?rota=cadastro
-    const resposta = await fetch("/routes.php?rota=cadastro", {
+    const resposta = await fetch("/routes.php?rota=cadastro&tipo=cliente", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
+        tipo,
         nome,
         sobrenome,
         email,
@@ -873,10 +875,12 @@ function Cadastro() {
       }),
     });
 
-    if (resposta.ok) {
+    const dados = await resposta.json();
+
+    if (resposta.ok && dados.sucesso) {
       window.alert("Cadastro realizado com sucesso");
     } else {
-      window.alert("Erro ao cadastrar!");
+      window.alert(dados.erro);
     }
   }
 
@@ -1037,7 +1041,13 @@ function Login() {
     }
     if (temErro) return;
 
-    const resposta = await fetch("/routes.php?rota=login", {
+    let rotaTipo;
+    if(tipo == "us") {
+      rotaTipo = "usuario";
+    } else {
+      rotaTipo = "administrador";
+    }
+    const resposta = await fetch("/routes.php?rota=login&tipo=" . rotaTipo, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -1045,8 +1055,9 @@ function Login() {
     });
 
     const dados = await resposta.json();
-    if (resposta.ok) {
-      window.location.assign("/biblioteca");
+
+    if (resposta.ok && dados.sucesso) {
+      window.location.assign("/teste.php");
     } else {
       setErroSenha(dados.erro);
     }

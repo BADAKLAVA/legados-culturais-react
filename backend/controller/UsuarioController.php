@@ -4,11 +4,10 @@ require_once __DIR__ . "/../model/Usuario.php";
 class UsuarioController {
     private Usuario $usuario;
 
-    public function __construct($pdo) {
-        $this->usuario = new Usuario($pdo);
+    public function __construct(Usuario $usuario) {
+        $this->usuario = $usuario;
     }
 
-    
     public function cadastrar() {
         error_log("Iniciou o método cadastrar");
 
@@ -18,6 +17,7 @@ class UsuarioController {
             array_keys($dados ?? [])
         ));
         
+        $tipo = $dados["tipo"];
         $nome = $dados["nome"];
         $sobrenome = $dados["sobrenome"];
         $email = $dados["email"];
@@ -33,28 +33,60 @@ class UsuarioController {
         $numero = $dados["numero"];
         $complemento = $dados["complemento"];
 
-        $resultado = $this->usuario->criarUsuario(
-            $nome,
-            $sobrenome,
-            $email,
-            $senha,
-            $telefone,
-            $dataNascimento,
-            $sexo,
-            $genero,
-            $estado,
-            $cidade,
-            $bairro,
-            $logradouro,
-            $numero,
-            $complemento
-        );
+        $emailExistente = $this->usuario->pesquisarColuna("email", $email);
+        $telefoneExistente = $this->usuario->pesquisarColuna("telefone", $email);
 
-        echo json_encode(["sucesso" => $resultado]);
+        if($emailExistente == null || $telefoneExistente == null) {
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Erro. Tente novamente"
+            ]);
+            return;
+        }
+        if($emailExistente) {
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Uma conta com este e-mail já existe"
+            ]);
+            return;
+        }
+        if($telefoneExistente) {
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Uma conta com este telefone já existe"
+            ]);
+            return;
+        }
+        try {
+            $resultado = $this->usuario->criarUsuario(
+                $tipo,
+                $nome,
+                $sobrenome,
+                $email,
+                $senha,
+                $telefone,
+                $dataNascimento,
+                $sexo,
+                $genero,
+                $estado,
+                $cidade,
+                $bairro,
+                $logradouro,
+                $numero,
+                $complemento
+            );
+            echo json_encode(["sucesso" => $resultado]);
+        } catch (\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Erro ao cadastrar"
+            ]);
+        }
     }
 
-   /* 
-public function cadastrar() {
+    /* 
+    public function cadastrar() {
     header("Content-Type: application/json; charset=UTF-8");
 
     try {
@@ -122,54 +154,50 @@ public function cadastrar() {
             "erro" => "Erro interno ao cadastrar usuário."
         ]);
     }
-}*/
+    }*/
 
     public function login() {
     
-    error_log("Login iniciado");
+        error_log("Login iniciado");
 
-    $dados = json_decode(file_get_contents("php://input"), true);
+        $dados = json_decode(file_get_contents("php://input"), true);
 
-    error_log("JSON recebido: " . json_encode(
-            array_keys($dados ?? [])
-        ));
+        error_log("JSON recebido: " . json_encode(
+                array_keys($dados ?? [])
+            ));
 
-    $email = $dados["email"];
-    $senha = $dados["senha"];
+        $email = $dados["email"];
+        $senha = $dados["senha"];
 
-    $usuarioDados = $this->usuario->buscarEmail($email);
+        $usuarioDados = $this->usuario->listarDados("email", $email);
 
-    if (!$usuarioDados) {
+        if (!$usuarioDados["email"]) {
 
-        http_response_code(401);
+            http_response_code(401);
+
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Usuário inválido"
+            ]);
+            return;
+        }
+        if (!password_verify($senha, $usuarioDados["senha"])) {
+
+            http_response_code(401);
+
+            echo json_encode([
+                "sucesso" => false,
+                "erro" => "Senha errada"
+            ]);
+            return;
+        }
+
+        $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
+        $_SESSION["tipo"] = $usuarioDados["tipo"];
 
         echo json_encode([
-            "sucesso" => false,
-            "erro" => "Usuário inválido"
+            "sucesso" => true
         ]);
-
-        return;
     }
-
-    if (!password_verify($senha, $usuarioDados["senha"])) {
-
-        http_response_code(401);
-
-        echo json_encode([
-            "sucesso" => false,
-            "erro" => "Senha errada"
-        ]);
-
-        return;
-    }
-
-    $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
-    $_SESSION["tipo"] = $usuarioDados["tipo"];
-
-    echo json_encode([
-        "sucesso" => true
-    ]);
 }
-}
-
 ?>
