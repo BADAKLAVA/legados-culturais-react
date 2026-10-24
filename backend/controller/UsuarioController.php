@@ -17,7 +17,7 @@ class UsuarioController {
             array_keys($dados ?? [])
         ));
         
-        $tipo = $dados["tipo"];
+        $tipo = $dados["tipoUsuario"];
         $nome = $dados["nome"];
         $sobrenome = $dados["sobrenome"];
         $email = $dados["email"];
@@ -33,31 +33,33 @@ class UsuarioController {
         $numero = $dados["numero"];
         $complemento = $dados["complemento"];
 
-        $emailExistente = $this->usuario->pesquisarColuna("email", $email);
-        $telefoneExistente = $this->usuario->pesquisarColuna("telefone", $email);
-
-        if($emailExistente == null || $telefoneExistente == null) {
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Erro. Tente novamente"
-            ]);
-            return;
-        }
-        if($emailExistente) {
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Uma conta com este e-mail já existe"
-            ]);
-            return;
-        }
-        if($telefoneExistente) {
-            echo json_encode([
-                "sucesso" => false,
-                "erro" => "Uma conta com este telefone já existe"
-            ]);
-            return;
-        }
         try {
+            $emailExistente = $this->usuario->pesquisarColuna("email", $email);
+            $telefoneExistente = $this->usuario->pesquisarColuna("telefone", $telefone);
+
+            if($emailExistente === null || $telefoneExistente === null) {
+                http_response_code(500);
+
+                echo json_encode([
+                    "sucesso" => false,
+                    "erro" => "Erro. Tente novamente"
+                ]);
+                return;
+            }
+            if($emailExistente !== false) {
+                echo json_encode([
+                    "sucesso" => false,
+                    "erro" => "Uma conta com este e-mail já existe"
+                ]);
+                return;
+            }
+            if($telefoneExistente !== false) {
+                echo json_encode([
+                    "sucesso" => false,
+                    "erro" => "Uma conta com este telefone já existe"
+                ]);
+                return;
+            }
             $resultado = $this->usuario->criarUsuario(
                 $tipo,
                 $nome,

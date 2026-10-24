@@ -806,7 +806,7 @@ function Input({ label, placeholder, type = "text", className = "", value, onCha
 }
 
 function Cadastro() {
-  const tipo = "us";
+  const tipoUsuario = "us";
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
@@ -857,7 +857,7 @@ function Cadastro() {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
-        tipo,
+        tipoUsuario,
         nome,
         sobrenome,
         email,
