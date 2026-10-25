@@ -1047,7 +1047,8 @@ function Login() {
     } else {
       rotaTipo = "administrador";
     }
-    const resposta = await fetch("/routes.php?rota=login&tipo=" . rotaTipo, {
+    
+    const resposta = await fetch(`/routes.php?rota=login&tipo=${rotaTipo}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
