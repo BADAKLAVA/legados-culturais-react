@@ -41,12 +41,12 @@ if ($method === "POST") {
          error_log("Saiu do controller de cadastro");
         exit;
     }
-    error_log("Fim de um id");
+    error_log("Fim de um if");
     if ($rota === "login") {
         error_log("Rota login");
         if($tipo === "cliente") {
             error_log("Entrando no control para logar o cliente");
-            $controller = new UsuarioController(new Usuario($pdo));
+            $controller = new UsuarioController(new Cliente($pdo));
         }
         if($tipo === "administrador") {
             error_log("Entrando no control para logar o adm");
