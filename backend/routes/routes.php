@@ -19,6 +19,7 @@ $tipo = $_GET['tipo'] ?? '';
 error_log("Método recebido: " . $method);
 error_log("URI recebida: " . $uri);
 error_log("Rota recebida: " . $rota);
+error_log("Tipo " . $tipo);
 
 if ($uri !== "/routes.php") {
     http_response_code(404);
