@@ -142,9 +142,11 @@ class UsuarioController {
 
         if($this->sessionExiste() === true) {
             if($usuarioDados["id_usuario"] = $_SESSION["id_usuario"]) {
+                error_log("Login já existe");
                 echo json_encode([
                     "sucesso" => true
                 ]);
+                return;
             }
         }
 
