@@ -1043,7 +1043,7 @@ function Login() {
 
     let rotaTipo;
     if(tipo == "us") {
-      rotaTipo = "usuario";
+      rotaTipo = "cliente";
     } else {
       rotaTipo = "administrador";
     }
