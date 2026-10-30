@@ -140,6 +140,14 @@ class UsuarioController {
             return;
         }
 
+        if($this->sessionExiste() === true) {
+            if($usuarioDados["id_usuario"] = $_SESSION["id_usuario"]) {
+                echo json_encode([
+                    "sucesso" => true
+                ]);
+            }
+        }
+
         $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
         $_SESSION["tipo"] = $usuarioDados["tipo"];
 
@@ -149,6 +157,14 @@ class UsuarioController {
         echo json_encode([
             "sucesso" => true
         ]);
+    }
+
+    public function sessionExiste() {
+        if(isset($_SESSION["id_usuario"]) && isset($_SESSION["tipo"])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 ?>
