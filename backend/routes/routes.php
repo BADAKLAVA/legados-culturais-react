@@ -40,7 +40,8 @@ if ($method === "POST") {
          error_log("Saiu do controller de cadastro");
         exit;
     }
-    if($rota === "login") {
+    elseif ($rota === "login") {
+        error_log("Rota login");
         if($tipo === "cliente") {
             error_log("Entrando no control para logar o cliente");
             $controller = new UsuarioController(new Usuario($pdo));
