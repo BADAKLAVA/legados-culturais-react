@@ -41,7 +41,8 @@ if ($method === "POST") {
          error_log("Saiu do controller de cadastro");
         exit;
     }
-    elseif ($rota === "login") {
+    error_log("Fim de um id");
+    if ($rota === "login") {
         error_log("Rota login");
         if($tipo === "cliente") {
             error_log("Entrando no control para logar o cliente");
