@@ -49,6 +49,7 @@ if ($method === "POST") {
             error_log("Entrando no control para logar o adm");
             $controller = new UsuarioController(new Administrador($pdo));
         }
+        $controller->login();
         exit;
     }
 }
