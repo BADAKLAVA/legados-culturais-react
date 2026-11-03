@@ -32,7 +32,7 @@ class EmailService {
             $mail->isHTML(true);
             $mail->Subject = "Recuperacao de senha - Legados Culturais";
             
-            $link = "https://https://legados-culturais-react.onrender.com/resetar-senha?token=" . urldecode($token);
+            $link = "https:https://legados-culturais-react.onrender.com/resetar-senha?token=" . urlencode($token);
 
             $mail->Body = "
                 <h2>Recuperação de senha</h2>
