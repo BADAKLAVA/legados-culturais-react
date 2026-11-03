@@ -1630,3 +1630,20 @@ input[type="radio"]:checked::after {
     font-size: 15px;
   }
 }
+
+.forgot-password {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.forgot-password a {
+  color: #d97832;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}

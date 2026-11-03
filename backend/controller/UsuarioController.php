@@ -1,5 +1,6 @@
 <?php 
 require_once __DIR__ . "/../model/Usuario.php";
+require_once __DIR__ . "/../model/RecuperacaoSenha.php";
 
 class UsuarioController {
     private Usuario $usuario;
@@ -140,7 +141,7 @@ class UsuarioController {
             return;
         }
 
-        if ($this->sessionExiste() === true && $usuarioDados["id_usuario"] = $_SESSION["id_usuario"]) {
+        if ($this->sessionExiste() === true && $usuarioDados["id_usuario"] === $_SESSION["id_usuario"]) {
             error_log("Login já existe");
             echo json_encode([
                 "sucesso" => true

@@ -108,3 +108,19 @@ CREATE TABLE IF NOT EXISTS detalhe_tag(
 	CONSTRAINT fk_detalhe_tag_tag
 		FOREIGN KEY (id_tag) REFERENCES tag(id_tag)
 );
+
+CREATE TABLE recuperacao_senha (
+    id_recuperacao_senha INTEGER GENERATED ALWAYS AS IDENTITY,
+    id_usuario INTEGER NOT NULL,
+    token VARCHAR(64) NOT NULL,
+    expiracao TIMESTAMPTZ NOT NULL,
+    utilizado BOOLEAN NOT NULL DEFAULT FALSE,
+
+	CONSTRAINT pk_recuperacao_senha
+		PRIMARY KEY (id_recuperacao_senha),
+	CONSTRAINT fk_recuperacao_usuario
+		FOREIGN KEY (id_usuario)
+			REFERENCES usuario(id_usuario),
+	CONSTRAINT uk_token
+		UNIQUE (token)
+);

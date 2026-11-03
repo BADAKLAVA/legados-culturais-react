@@ -2,10 +2,19 @@
 
 session_start();
 
+//arquivos necessarios
 require_once dirname(__DIR__) . '/config/database.php';
+require_once dirname(__DIR__) . '/service/EmailService.php';
+
+//controllers
 require_once dirname(__DIR__) . '/controller/UsuarioController.php';
+require_once dirname(__DIR__) . '/controller/RecuperacaoSenhaController.php';
+
+//models
+require_once dirname(__DIR__) . '/model/Usuario.php';
 require_once dirname(__DIR__) . '/model/Cliente.php';
 require_once dirname(__DIR__) . '/model/Administrador.php';
+require_once dirname(__DIR__) . '/model/RecuperacaoSenha.php';
 
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -54,6 +63,21 @@ if ($method === "POST") {
         }
         $controller->login();
         exit;
+    }
+    if($rota === "solicitar-recuperacao" || $rota === "redefinir-senha") {
+        $usuario = new Usuario($pdo);
+        $recuperacaoSenha = new RecuperacaoSenha($pdo);
+        $emailService = new EmailService();
+        $recuperacaoSenhaController = new RecuperacaoSenhaController($usuario, $recuperacaoSenha, $emailService, $pdo);
+
+        if($rota === "solicitar-recuperacao") {
+            $recuperacaoSenhaController->solicitarRecuperacao();
+            exit;
+        }
+        if($rota === "redefinir-senha") {
+            $recuperacaoSenhaController->redefinirSenha();
+            exit;
+        }
     }
 }
 

@@ -805,6 +805,69 @@ function Input({ label, placeholder, type = "text", className = "", value, onCha
   );
 }
 
+function RecuperarSenha() {
+  const [email, setEmail] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
+  
+  const padraoEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+  async function validarEmail(e) {
+    e.preventDefault();
+    setErroEmail("");
+
+    if (email === "") {
+      setErroEmail("Insira o e-mail*");
+      return;
+    } else if (!padraoEmail.test(email)) {
+      setErroEmail("E-mail inválido*");
+      return;
+    }
+    try {
+      const resposta = await fetch(`/routes.php?rota=solicitar-recuperacao`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({email}),
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok && dados.sucesso) { 
+        window.alert(dados.mensagem || "Se o e-mail estiver cadastrado, você receberá as instruções para recuperar sua senha.");
+      } else {
+        setErroEmail(dados.erro || "Não foi possível solicitar a recuperação.");
+      }
+    } catch (erro) {
+      setErroEmail("Erro ao se comunicar com o servidor.");
+    }
+  }
+  
+  return (
+    <main className="form-page cadastro-page">
+      <section className="form-card cadastro-card">
+        <a href="/login" aria-label="Voltar para o login">
+          <img className="form-logo" src={logo} alt="Legados Culturais" />
+        </a>
+        <h1>Recuperar Senha</h1>
+        <form onSubmit={validarEmail}>
+          <div className="form-fields">
+            <Input 
+              label="E-mail" 
+              type="email"
+              placeholder="E-mail" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} />
+            {erroEmail && <span className="form-error">{erroEmail}</span>}
+          </div>
+          <Button type="submit" className="btn-orange btn-large form-submit">
+            Enviar
+          </Button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
 function Cadastro() {
   const tipoUsuario = "us";
   const [nome, setNome] = useState("");
@@ -1084,6 +1147,9 @@ function Login() {
             {erroEmail && <span className="form-error">{erroEmail}</span>}
             <Input label="Senha" placeholder="Senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
             {erroSenha && <span className="form-error">{erroSenha}</span>}
+            <div className="forgot-password">
+              <a href="/recuperar-senha">Esqueci a minha senha?</a>
+            </div>
             <Button type="submit" className="btn-orange btn-large login-submit">
               Entrar
             </Button>
@@ -1110,6 +1176,7 @@ export default function App() {
   if (path === "/biblioteca" || path === "/biblioteca/") return <LibraryPage repos={repos} setRepos={setRepos} navigate={navigate} />;
   if (path === "/biblioteca/usuarios" || path === "/biblioteca/usuarios/") return <UsersPage />;
   if (path === "/biblioteca/novo" || path === "/biblioteca/novo/") return <FormPage repos={repos} setRepos={setRepos} navigate={navigate} mode="create" />;
+  if(path === "/recuperar-senha" || path === "/recuperar-senha/") return <RecuperarSenha />;
 
   const repoMatch = path.match(/^\/biblioteca\/repositorio\/(\d+)$/);
   if (repoMatch) {

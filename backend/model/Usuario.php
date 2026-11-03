@@ -25,15 +25,14 @@ class Usuario {
         $numero,
         $complemento
     ) {
-        $sql = "INSERT INTO usuario(tipo, nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        $stmt = $this->pdo->prepare($sql);
-
-        error_log(print_r($stmt, true));
-
         $resultado = null;
-
         try {
+            $sql = "INSERT INTO usuario(tipo, nome, sobrenome, email, senha, telefone, data_nascimento, sexo, genero, estado, cidade, bairro, logradouro, numero, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            error_log(print_r($stmt, true));
+
             $resultado = $stmt->execute([
                 $tipo,
                 $nome,
@@ -68,9 +67,9 @@ class Usuario {
     public function obterColunaUsuario($coluna, $idUsuario) {
         $resultado = null;
         try {
-            $sql = "SELECT ? FROM usuario WHERE id_usuario = ?";
+            $sql = "SELECT $coluna FROM usuario WHERE id_usuario = ?";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([$coluna, $idUsuario]); 
+            $stmt->execute([$idUsuario]); 
             $resultado = $stmt->fetchColumn();
             return $resultado;
         } catch (\Throwable $e) {
@@ -120,12 +119,20 @@ class Usuario {
         }
     }
 
-   //CRUD -> UPDATE
+    //CRUD -> UPDATE
     public function atualizarColuna($idUsuario, $coluna, $valor) {
-        $sql = "UPDATE usuario SET ? = ? WHERE id_usuario = ?";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$coluna, $valor, $idUsuario]);
-        
+        error_log("Atualizar coluna");
+        $resultado = null;
+        try {
+            $sql = "UPDATE usuario SET $coluna = ? WHERE id_usuario = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $resultado = $stmt->execute([$valor, $idUsuario]);
+            return $resultado;
+        } catch(\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+            error_log("RESULTADO: " . var_export($resultado, true));
+            return null;
+        }
    }
 
 }
