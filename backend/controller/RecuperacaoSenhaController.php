@@ -70,7 +70,11 @@ class RecuperacaoSenhaController {
             $tokenHash = hash("sha256", $token);
             $expiracao = (new DateTimeImmutable("+30 minutes"))->format("Y-m-d H:i:sP"); 
 
+            error_log("1 - Antes de criar a recuperação");
+
             $resultado = $this->recuperacaoSenha->criarRecuperacaoSenha($usuarioDados["id_usuario"], $tokenHash, $expiracao);
+
+            error_log("2 - Recuperação criada. Antes de enviar o e-mail");
 
             if($resultado !== true) {
                 error_log("Erro ao criar token de recuperação.");
@@ -83,6 +87,8 @@ class RecuperacaoSenhaController {
             }
 
             $enviado = $this->emailService->enviarRecuperacao($email, $token);
+
+            error_log("3 - Depois de enviar o e-mail");
 
             if ($enviado !== true) {
 
