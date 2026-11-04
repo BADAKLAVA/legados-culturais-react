@@ -13,6 +13,11 @@ class EmailService {
         try {
             //configurar SMTP
             $mail->isSMTP();
+
+            $mail->SMTPDebug = 2;
+            $mail->Debugoutput = 'error_log';
+            $mail->Timeout = 15;
+
             $mail->Host = getenv("SMTP_HOST");
             $mail->SMTPAuth = true;
             $mail->Username = getenv("SMTP_USER");
@@ -32,7 +37,7 @@ class EmailService {
             $mail->isHTML(true);
             $mail->Subject = "Recuperacao de senha - Legados Culturais";
             
-            $link = "https:https://legados-culturais-react.onrender.com/resetar-senha?token=" . urlencode($token);
+            $link = "https://legados-culturais-react.onrender.com/resetar-senha?token=" . urlencode($token);
 
             $mail->Body = "
                 <h2>Recuperação de senha</h2>
@@ -54,6 +59,7 @@ class EmailService {
 
         } catch (Exception $e) {
             error_log("Erro ao enviar email: " . $mail->ErrorInfo);
+            error_log("Detalhes PHPMailer: " . $mail->ErrorInfo);
             return false;
         }
     }
