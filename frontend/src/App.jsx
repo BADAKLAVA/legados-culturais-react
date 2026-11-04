@@ -805,6 +805,90 @@ function Input({ label, placeholder, type = "text", className = "", value, onCha
   );
 }
 
+function ResetarSenha() {
+
+  const parametros = new URLSearchParams(window.location.search);
+  const token = parametros.get("token");
+
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [erroInput, setErroInput] = useState("");
+
+  async function validarSenha(e) {
+    e.preventDefault();
+    setErroInput("");
+
+    if(!token) {
+      setErroInput("Token de recuperação inválido");
+      return;
+    }
+
+    if (senha.length < 8) {
+      setErroInput("*A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
+    if(senha !== confirmarSenha) {
+      setErroInput("*As senhas devem ser iguais.");
+      return;
+    }
+    
+    try{
+      const resposta = await fetch(`/routes.php?rota=redefinir-senha`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({token, senha, confirmarSenha}),
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok && dados.sucesso) { 
+        window.alert(dados.mensagem || "Senha resetada com sucesso.");
+      } else {
+        setErroInput(dados.erro || "Não foi possível resetar a senha.");
+      }
+    } catch(erro) {
+      setErroInput("Erro ao se comunicar com o servidor. Tente novamente.")
+    }
+  }
+
+  return (
+    <main className="form-page cadastro-page">
+      <section className="form-card cadastro-card">
+        <a href="/login" aria-label="Voltar para o login">
+          <img className="form-logo" src={logo} alt="Legados Culturais" />
+        </a>
+        <h1>Recuperar Senha</h1>
+        <form onSubmit={validarSenha}>
+          <div className="form-fields">
+            <Input 
+              label="Senha" 
+              placeholder="Senha" 
+              type="password" 
+              value={senha} 
+              onChange={(e) => setSenha(e.target.value)} 
+            />
+          </div>
+          <div className="form-fields">
+            <Input 
+              label="Confirmar senha" 
+              placeholder="Insira a mesma senha" 
+              type="password" 
+              value={confirmarSenha} 
+              onChange={(e) => setConfirmarSenha(e.target.value)} 
+            />
+            {erroInput && <span className="form-error">{erroInput}</span>}
+          </div>
+          <Button type="submit" className="btn-orange btn-large form-submit">
+            Resetar senha
+          </Button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
 function RecuperarSenha() {
   const [email, setEmail] = useState("");
   const [erroEmail, setErroEmail] = useState("");
@@ -1177,6 +1261,7 @@ export default function App() {
   if (path === "/biblioteca/usuarios" || path === "/biblioteca/usuarios/") return <UsersPage />;
   if (path === "/biblioteca/novo" || path === "/biblioteca/novo/") return <FormPage repos={repos} setRepos={setRepos} navigate={navigate} mode="create" />;
   if(path === "/recuperar-senha" || path === "/recuperar-senha/") return <RecuperarSenha />;
+  if(path === "/resetar-senha" || path === "/resetar-senha/") return <ResetarSenha />;
 
   const repoMatch = path.match(/^\/biblioteca\/repositorio\/(\d+)$/);
   if (repoMatch) {
