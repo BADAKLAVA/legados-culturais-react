@@ -55,7 +55,12 @@ class EmailService {
                 Este link expira em 30 minutos.
             ";
 
-            return $mail->send();
+            error_log("4 - Iniciando envio SMTP");
+            $resultado = $mail->send();
+            error_log("5 - Resultado do envio: " . var_export($resultado, true));
+            return $resultado;
+
+            //return $mail->send();
 
         } catch (Exception $e) {
             error_log("Erro ao enviar email: " . $mail->ErrorInfo);
