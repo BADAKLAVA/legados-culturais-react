@@ -31,8 +31,6 @@ class Usuario {
 
             $stmt = $this->pdo->prepare($sql);
 
-            error_log(print_r($stmt, true));
-
             $resultado = $stmt->execute([
                 $tipo,
                 $nome,
@@ -59,8 +57,6 @@ class Usuario {
             return null;
         }
     }
-
-    //public function getId() {}
 
     //CRUD -> READ
     //procurar coluna de um determinado usuario

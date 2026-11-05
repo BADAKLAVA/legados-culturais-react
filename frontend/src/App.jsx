@@ -320,20 +320,19 @@ function LibraryNav({ active }) {
 
 function LibraryPage({ repos, setRepos, navigate }) {
     useEffect(() => {
-      async function fetchRepos() {
-        try {
-          const response = await fetch("/routes.php?rota=repositorios");
-          const data = await response.json();
-          if (response.ok && data.sucesso) {
-            setRepos(data.repositorios);
-          }
-        } catch (error) {
-          console.error("Erro ao carregar repositórios do PHP:", error);
-        }
+  async function fetchRepos() {
+    try {
+      const response = await fetch("/routes.php?rota=repositorios");
+      const data = await response.json();
+      if (response.ok && data.sucesso) {
+        setRepos(data.repositorios);
       }
-      fetchRepos();
-    }, 
-  [setRepos]);
+    } catch (error) {
+      console.error("Erro ao carregar repositórios do PHP:", error);
+    }
+  }
+  fetchRepos();
+}, [setRepos]);
   const [search, setSearch] = useState("");
   const [selectedTag, setSelectedTag] = useState(null);
   const [filterType, setFilterType] = useState("Todos os tipos");
