@@ -39,5 +39,12 @@ class Repositorio {
     }
 
     //CRUD -> READ
-    //public function 
+    //seleciona as informacoes necessarias para
+    //que a tela de biblioteca funcione
+    public function exibirRepositorio() {
+        $repositorios = null;
+        try {
+            $sql = "SELECT "
+        }
+    } 
 }

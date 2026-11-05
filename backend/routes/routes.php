@@ -80,6 +80,12 @@ if ($method === "POST") {
         }
     }
 }
+//GET
+if($method === "GET") {
+    if($rota === "repositorios") {
+        
+    }
+}
 
 http_response_code(404);
 echo json_encode(["erro" => "Operação não encontrada"]);

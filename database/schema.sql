@@ -25,6 +25,14 @@ CREATE TABLE IF NOT EXISTS usuario(
 		PRIMARY KEY (id_usuario)
 );
 
+
+SELECT
+	r.id_repositorio as id,
+	r.titulo as title,
+	r.descricao as "description",
+	
+
+
 CREATE TABLE IF NOT EXISTS repositorio(
 	id_repositorio INTEGER GENERATED ALWAYS AS IDENTITY,
 	titulo VARCHAR(100) NOT NULL,
@@ -103,6 +111,8 @@ CREATE TABLE IF NOT EXISTS detalhe_tag(
 
 	CONSTRAINT pk_detalhe_tag
 		PRIMARY KEY (id_detalhe_tag),
+	CONSTRAINT uk_repositorio_tag
+		UNIQUE (id_repositorio, id_tag),
 	CONSTRAINT fk_detalhe_tag_repositorio
 		FOREIGN KEY (id_repositorio) REFERENCES repositorio(id_repositorio),
 	CONSTRAINT fk_detalhe_tag_tag
