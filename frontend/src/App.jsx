@@ -322,7 +322,7 @@ function LibraryPage({ repos, setRepos, navigate }) {
     useEffect(() => {
   async function fetchRepos() {
     try {
-      const response = await fetch("/routes.php?rota=repositorios");
+      const response = await fetch("/routes.php?rota=exibirRepositorios");
       const data = await response.json();
       if (response.ok && data.sucesso) {
         setRepos(data.repositorios);
