@@ -318,170 +318,6 @@ function LibraryNav({ active }) {
   );
 }
 
-/*
-function LibraryPage({ repos, setRepos, navigate }) {
-  const [search, setSearch] = useState("");
-  const [selectedTag, setSelectedTag] = useState(null);
-  const [filterType, setFilterType] = useState("Todos os tipos");
-  const [sort, setSort] = useState("A-Z");
-
-  const allTags = Array.from(new Set(repos.flatMap((repo) => repo.tags)));
-
-  const filteredRepos = [...repos]
-    .filter((repo) => {
-      const query = search.trim().toLowerCase();
-      const matchesQuery =
-        !query ||
-        `${repo.title} ${repo.description} ${repo.tags.join(" ")}`
-          .toLowerCase()
-          .includes(query);
-      const matchesTag = !selectedTag || repo.tags.includes(selectedTag);
-      const matchesType = filterType === "Todos os tipos" || repo.type === filterType;
-      return matchesQuery && matchesTag && matchesType;
-    })
-    .sort((a, b) => {
-      if (sort === "Z-A") return b.title.localeCompare(a.title, "pt-BR");
-      if (sort === "Mais recentes") return b.date.localeCompare(a.date);
-      if (sort === "Mais antigos") return a.date.localeCompare(b.date);
-      if (sort === "Populares") return b.id - a.id;
-      return a.title.localeCompare(b.title, "pt-BR");
-    });
-
-  const addTag = () => {
-    const value = window.prompt("Adicionar tag:", "#");
-    const normalized = value ? value.trim() : "";
-    if (!normalized) return;
-    const tag = normalized.startsWith("#") ? normalized : `#${normalized}`;
-    if (!allTags.includes(tag)) {
-      setRepos((previous) =>
-        previous.map((repo) => ({
-          ...repo,
-          tags: repo.tags,
-        })),
-      );
-    }
-    setSelectedTag(tag);
-  };
-
-  return (
-    <div className="library-app">
-      <LibraryNav active="library" />
-      <main className="main">
-        <a href="/" className="brand brand-link" aria-label="Voltar para a página inicial">
-          <img className="brand-logo" src={logo} alt="Legados Culturais" />
-        </a>
-
-        <h1 className="page-title">Biblioteca</h1>
-
-        <div className="search-wrap">
-          <div className="search">
-            <input
-              type="text"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Buscar por título descrição"
-            />
-            <button type="button" title="Buscar" dangerouslySetInnerHTML={{ __html: icons.search }} />
-          </div>
-        </div>
-
-        <div className="add-row">
-          <button type="button" className="add-repo" title="Adicionar repositório" onClick={() => navigate("/biblioteca/novo")} dangerouslySetInnerHTML={{ __html: icons.cloudPlus }} />
-        </div>
-
-        <div className="tags-block">
-          <div className="tags-label">Tags:</div>
-          <div className="tags-row">
-            {allTags.map((tag, index) => (
-              <span
-                key={`${tag}-${index}`}
-                className={`tag-chip ${selectedTag === tag ? "active" : ""}`}
-                onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    setSelectedTag(selectedTag === tag ? null : tag);
-                  }
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-            <button type="button" className="add-tag-circle" title="Adicionar tag" onClick={addTag}>
-              +
-            </button>
-          </div>
-        </div>
-
-        <div className="control-row">
-          <div className="control-group">
-            <div className="control-label">Filtrar:</div>
-            <select className="select" value={filterType} onChange={(event) => setFilterType(event.target.value)}>
-              <option>Todos os tipos</option>
-              <option>Link</option>
-              <option>TXT</option>
-              <option>Documento</option>
-              <option>Imagem</option>
-            </select>
-          </div>
-          <div className="control-group">
-            <div className="control-label">Ordenar por:</div>
-            <select className="select" value={sort} onChange={(event) => setSort(event.target.value)}>
-              <option>A-Z</option>
-              <option>Z-A</option>
-              <option>Mais recentes</option>
-              <option>Mais antigos</option>
-              <option>Populares</option>
-            </select>
-          </div>
-        </div>
-
-        {filteredRepos.length ? (
-          <div className="repo-grid">
-            {filteredRepos.map((repo) => (
-              <article key={repo.id} className="repo-card" onClick={() => navigate(`/biblioteca/repositorio/${repo.id}`)}>
-                <div className="repo-card-icon" dangerouslySetInnerHTML={{ __html: repoTypeIcon(repo.type) }} />
-                <div className="repo-card-body">
-                  <div className="repo-card-title">{repo.title}</div>
-                  <div className="repo-card-desc">{repo.description}</div>
-                </div>
-                <div className="card-actions">
-                  <button
-                    type="button"
-                    className="icon-action edit"
-                    title="Editar"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      navigate(`/biblioteca/editar/${repo.id}`);
-                    }}
-                    dangerouslySetInnerHTML={{ __html: icons.edit }}
-                  />
-                  <button
-                    type="button"
-                    className="icon-action delete"
-                    title="Excluir"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (window.confirm("Deseja excluir este repositório?")) {
-                        setRepos((previous) => previous.filter((item) => item.id !== repo.id));
-                      }
-                    }}
-                    dangerouslySetInnerHTML={{ __html: icons.trash }}
-                  />
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="empty">Nenhum repositório encontrado.</div>
-        )}
-      </main>
-    </div>
-  );
-}*/
-
 function LibraryPage({ repos, setRepos, navigate }) {
     useEffect(() => {
       async function fetchRepos() {
@@ -806,33 +642,37 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async (event) => {
+  event.preventDefault();
 
-    const nextRepo = {
-      id: existing?.id || Math.max(0, ...repos.map((repo) => repo.id)) + 1,
-      title: form.title.trim() || "Título do repositório",
-      description: form.description || "",
-      tags: form.tags,
-      type: "Nuvem",
-      date: existing?.date || new Date().toLocaleDateString("pt-BR"),
-      comments: existing?.comments || [
-        {
-          name: "Lorem Ipsum",
-          text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-      ],
-    };
-
-    if (mode === "edit") {
-      setRepos((previous) => previous.map((repo) => (Number(repo.id) === Number(existing.id) ? nextRepo : repo)));
-    } else {
-      setRepos((previous) => [nextRepo, ...previous]);
-    }
-
-    navigate("/biblioteca");
+  const payload = {
+    title: form.title.trim() || "Título do repositório",
+    description: form.description || "",
+    tags: form.tags,
   };
 
+  try {
+    const rota = mode === "edit" 
+      ? `/routes.php?rota=editar-repositorio&id=${existing?.id}` 
+      : "/routes.php?rota=criar-repositorio";
+
+    const resposta = await fetch(rota, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const dados = await resposta.json();
+
+    if (resposta.ok && dados.sucesso) {
+      navigate("/biblioteca");
+    } else {
+      window.alert(dados.erro || "Erro ao salvar repositório");
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+  }
+};
   return (
     <div className="library-app">
       <LibraryNav active="library" />
