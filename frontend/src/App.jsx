@@ -598,6 +598,7 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
     description: existing?.description || "",
     tags: existing?.tags || [],
     fileName: "",
+    fileType: "",
     fileOk: false,
   });
   const [tagInput, setTagInput] = useState("");
@@ -609,6 +610,7 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
         description: existing.description,
         tags: existing.tags,
         fileName: "",
+        fileType: "",
         fileOk: false,
       });
     }
@@ -618,6 +620,7 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
         description: "",
         tags: [],
         fileName: "",
+        fileType: "",
         fileOk: false,
       });
     }
@@ -647,6 +650,8 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
   const payload = {
     title: form.title.trim() || "Título do repositório",
     description: form.description || "",
+    fileName: "",
+    fileType: "",
     tags: form.tags,
   };
 
@@ -769,6 +774,7 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
                     setForm((previous) => ({
                       ...previous,
                       fileName: file ? file.name : "",
+                      fileType: file ? file.type : "",
                       fileOk: Boolean(file),
                     }));
                   }}
