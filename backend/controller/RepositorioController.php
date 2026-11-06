@@ -25,5 +25,10 @@ class RepositorioController {
 
              return;
         }
+
+        echo json_encode([
+            "sucesso" => true,
+            "repositorios" => $resposta
+        ]);
     }
 }
