@@ -52,7 +52,10 @@ class Repositorio {
                 r.descricao AS \"description\",
                 r.tipo AS \"type\",
                 r.data_repositorio AS \"date\",
-                STRING_AGG(t.nome, ', ') AS \"tags\"
+                COALESCE(
+                    JSON_AGG(t.nome) FILTER (WHERE t.nome IS NOT NULL),
+                    '[]'::json
+                ) AS \"tags\"
             FROM repositorio AS r
             LEFT JOIN detalhe_tag AS dt
                 ON r.id_repositorio = dt.id_repositorio
