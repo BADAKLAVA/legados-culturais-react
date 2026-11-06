@@ -67,6 +67,14 @@ class Repositorio {
 
         $stmt = $this->pdo->query($sql);
         $repositorios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Converte o JSON das tags em arrays PHP
+        foreach ($repositorios as &$repo) {
+            $repo['tags'] = json_decode($repo['tags'], true);
+        }
+
+        unset($repo);
+
         return $repositorios;
 
         } catch (\Throwable $e) {
