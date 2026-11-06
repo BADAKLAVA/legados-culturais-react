@@ -42,6 +42,7 @@ class Repositorio {
     //seleciona as informacoes necessarias para
     //que a tela de biblioteca funcione
     public function exibirRepositorio() {
+        error_log("Exibir repositorios no model");
         $repositorios = null;
         try {
             $sql = "
@@ -60,9 +61,14 @@ class Repositorio {
             GROUP BY r.id_repositorio
             ORDER BY r.id_repositorio ASC
         ";
+
+        $stmt = $this->pdo->query($sql);
+        $repositorios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $repositorios;
+
         } catch (\Throwable $e) {
             error_log("ERRO: " . $e->getMessage());
-            error_log("RESULTADO: " . var_export($resultado, true));
+            error_log("RESULTADO: " . var_export($repositorios, true));
             return null;
         }
     } 

@@ -9,7 +9,7 @@ require_once dirname(__DIR__) . '/service/EmailService.php';
 //controllers
 require_once dirname(__DIR__) . '/controller/UsuarioController.php';
 require_once dirname(__DIR__) . '/controller/RecuperacaoSenhaController.php';
-require_once dirname(__DIR__) . "/controller/RepositorioController.php";
+require_once dirname(__DIR__) . '/controller/RepositorioController.php';
 
 //models
 require_once dirname(__DIR__) . '/model/Usuario.php';

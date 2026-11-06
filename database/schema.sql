@@ -25,14 +25,6 @@ CREATE TABLE IF NOT EXISTS usuario(
 		PRIMARY KEY (id_usuario)
 );
 
-
-SELECT
-	r.id_repositorio as id,
-	r.titulo as title,
-	r.descricao as "description",
-	
-
-
 CREATE TABLE IF NOT EXISTS repositorio(
 	id_repositorio INTEGER GENERATED ALWAYS AS IDENTITY,
 	titulo VARCHAR(100) NOT NULL,
