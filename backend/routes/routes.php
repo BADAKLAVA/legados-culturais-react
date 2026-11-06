@@ -9,12 +9,14 @@ require_once dirname(__DIR__) . '/service/EmailService.php';
 //controllers
 require_once dirname(__DIR__) . '/controller/UsuarioController.php';
 require_once dirname(__DIR__) . '/controller/RecuperacaoSenhaController.php';
+require_once dirname(__DIR__) . "/controller/RepositorioController.php";
 
 //models
 require_once dirname(__DIR__) . '/model/Usuario.php';
 require_once dirname(__DIR__) . '/model/Cliente.php';
 require_once dirname(__DIR__) . '/model/Administrador.php';
 require_once dirname(__DIR__) . '/model/RecuperacaoSenha.php';
+require_once dirname(__DIR__) . '/model/Repositorio.php';
 
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -82,9 +84,14 @@ if ($method === "POST") {
 }
 //GET
 if($method === "GET") {
-    if($rota === "repositorios") {
-        
+    if($rota === "exibirRepositorios") {
+        error_log("Para criar objetos de $rota");
+        $repositorio = new Repositorio($pdo);
+        $repositorioController = new RepositorioController($repositorio);
+        error_log("Criou os objetos");
+        $repositorioController->exibirRepositorio();
     }
+    exit;
 }
 
 http_response_code(404);
