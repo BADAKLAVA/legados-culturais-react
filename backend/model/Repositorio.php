@@ -44,7 +44,26 @@ class Repositorio {
     public function exibirRepositorio() {
         $repositorios = null;
         try {
-            $sql = "SELECT "
+            $sql = "
+            SELECT
+                r.id_repositorio AS id,
+                r.titulo AS title,
+                r.descricao AS \"description\",
+                r.tipo AS \"type\",
+                r.data_repositorio AS \"date\",
+                STRING_AGG(t.nome, ', ') AS \"tags\"
+            FROM repositorio AS r
+            LEFT JOIN detalhe_tag AS dt
+                ON r.id_repositorio = dt.id_repositorio
+            LEFT JOIN tag AS t
+                ON dt.id_tag = t.id_tag
+            GROUP BY r.id_repositorio
+            ORDER BY r.id_repositorio ASC
+        ";
+        } catch (\Throwable $e) {
+            error_log("ERRO: " . $e->getMessage());
+            error_log("RESULTADO: " . var_export($resultado, true));
+            return null;
         }
     } 
 }
