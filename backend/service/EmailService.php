@@ -7,7 +7,6 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 class EmailService {
 
-    
     public function enviarRecuperacao($destinatario, $token) {
         try {
             $apiKey = getenv("RESEND_API_KEY");
