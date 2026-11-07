@@ -51,6 +51,8 @@ class RepositorioController {
                 return;
             }
 
+            $caminho = "teste.txt";
+            
             // Validação das tags
             $tags = $this->validarTag($tags);
 
