@@ -42,6 +42,8 @@ class RepositorioController {
 
         try {
 
+            $caminho = "teste.txt";
+            
             // Validação dos dados
             if ($this->validarDados(
                 $titulo,
@@ -50,8 +52,6 @@ class RepositorioController {
             ) === false) {
                 return;
             }
-
-            $caminho = "teste.txt";
             
             // Validação das tags
             $tags = $this->validarTag($tags);
