@@ -12,23 +12,28 @@ class Repositorio {
         $titulo,
         $descricao = null,
         $caminho,
-        $dataRepositorio
+        $tipo,
+        $dataRepositorio,
     ) {
         error_log("Chegou para criar no model do repositorio");
         $resultado = null;
         try {
             $sql = "
                 INSERT INTO repositorio(
-                titulo, descricao, caminho, data_repositorio
-                ) VALUES (?, ?, ?, ?)
+                titulo, descricao, tipo, caminho, data_repositorio
+                ) VALUES (?, ?, ?, ?, ?) RETURNING id_repositorio
             ";
 
             $stmt = $this->pdo->prepare($sql);
             error_log("Preparando para inserir");
 
             $resultado = $stmt->execute([
-                $titulo, $descricao, $caminho, $dataRepositorio
-            ]); 
+                $titulo, $descricao, $tipo, $caminho, $dataRepositorio
+            ]);
+            
+            if($resultado) {
+                return $stmt->fetchColumn();
+            }
 
             return $resultado;
         } catch (\Throwable $e) {
@@ -52,6 +57,7 @@ class Repositorio {
                 r.descricao AS \"description\",
                 r.tipo AS \"type\",
                 r.data_repositorio AS \"date\",
+                r.caminho AS \"fileName\",
                 COALESCE(
                     JSON_AGG(t.nome) FILTER (WHERE t.nome IS NOT NULL),
                     '[]'::json

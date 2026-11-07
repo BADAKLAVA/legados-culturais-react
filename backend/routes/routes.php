@@ -17,6 +17,7 @@ require_once dirname(__DIR__) . '/model/Cliente.php';
 require_once dirname(__DIR__) . '/model/Administrador.php';
 require_once dirname(__DIR__) . '/model/RecuperacaoSenha.php';
 require_once dirname(__DIR__) . '/model/Repositorio.php';
+require_once dirname(__DIR__) . '/model/Tag.php';
 
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -26,11 +27,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $rota = $_GET['rota'] ?? '';
 $tipo = $_GET['tipo'] ?? '';
+$id = $_GET['id'] ?? '';
 
 error_log("Método recebido: " . $method);
 error_log("URI recebida: " . $uri);
 error_log("Rota recebida: " . $rota);
-error_log("Tipo " . $tipo);
+error_log("Tipo: " . $tipo);
+error_log("Id: " . $id);
 
 if ($uri !== "/routes.php") {
     http_response_code(404);
@@ -67,10 +70,7 @@ if ($method === "POST") {
         exit;
     }
     if($rota === "solicitar-recuperacao" || $rota === "redefinir-senha") {
-        $usuario = new Usuario($pdo);
-        $recuperacaoSenha = new RecuperacaoSenha($pdo);
-        $emailService = new EmailService();
-        $recuperacaoSenhaController = new RecuperacaoSenhaController($usuario, $recuperacaoSenha, $emailService, $pdo);
+        $recuperacaoSenhaController = new RecuperacaoSenhaController(new Usuario($pdo), new RecuperacaoSenha($pdo), new EmailService(), $pdo);
 
         if($rota === "solicitar-recuperacao") {
             $recuperacaoSenhaController->solicitarRecuperacao();
@@ -81,15 +81,19 @@ if ($method === "POST") {
             exit;
         }
     }
+    if($rota === "criar-repositoro") {
+        $repositorioController = new RepositorioController(new Repositorio($pdo), new Tag($pdo));
+        $repositorioController->criar();
+        exit;
+    }
 }
 //GET
 if($method === "GET") {
     if($rota === "exibirRepositorios") {
         error_log("Para criar objetos de $rota");
-        $repositorio = new Repositorio($pdo);
-        $repositorioController = new RepositorioController($repositorio);
+        $repositorioController = new RepositorioController(new Repositorio($pdo), new Tag($pdo));
         error_log("Criou os objetos");
-        $repositorioController->exibirRepositorio();
+        //$repositorioController->exibir();
     }
     exit;
 }
