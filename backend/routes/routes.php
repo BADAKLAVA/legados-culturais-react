@@ -93,7 +93,7 @@ if($method === "GET") {
         error_log("Para criar objetos de $rota");
         $repositorioController = new RepositorioController(new Repositorio($pdo), new Tag($pdo));
         error_log("Criou os objetos");
-        //$repositorioController->exibir();
+        $repositorioController->exibir();
     }
     exit;
 }
