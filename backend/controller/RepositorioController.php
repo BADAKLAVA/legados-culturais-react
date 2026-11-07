@@ -28,6 +28,7 @@ class RepositorioController {
         $descricao = trim($dados["description"] ?? '');
         $descricao = $descricao === '' ? null : $descricao;
         $caminho = trim($dados["fileName"] ?? '');
+        error_log("caminho: " . $caminho);
         $tipo = trim($dados["fileType"] ?? '');
 
         $tags = $dados["tags"] ?? [];
