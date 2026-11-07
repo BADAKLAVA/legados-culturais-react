@@ -81,6 +81,7 @@ if ($method === "POST") {
             exit;
         }
     }
+    error_log("Chega no if de criar repositorio");
     if($rota === "criar-repositoro") {
         error_log("Criar repositorio");
         $repositorioController = new RepositorioController(new Repositorio($pdo), new Tag($pdo));
