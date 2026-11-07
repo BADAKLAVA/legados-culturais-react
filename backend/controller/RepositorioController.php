@@ -156,6 +156,7 @@ class RepositorioController {
     public function validarDados($titulo, $caminho, $tipo) {
         if(empty($titulo)) {
             http_response_code(400);
+            error_log("titulo nao existe");
             echo json_encode([
                 "sucesso" => false,
                 "erro" => "O título não pode estar vazio"
@@ -165,9 +166,10 @@ class RepositorioController {
 
         if(empty($caminho)) {
             http_response_code(400);
+            error_log("caminho nao existe");
             echo json_encode([
                 "sucesso" => false,
-                "erro" => "Erro ao criar o repositório"
+                "erro" => "Erro no caminho do arquivo"
             ]);
             return false;
         }
@@ -176,15 +178,17 @@ class RepositorioController {
 
         if(empty($tipo) ) {
             http_response_code(400);
+            error_log("tipo de arquivo nao existe");
             echo json_encode([
                 "sucesso" => false,
-                "erro" => "Erro ao criar o repositório"
+                "erro" => "Erro no tipo de arquivo"
             ]);
             return false;
         }
 
         if(!in_array($tipo, $tiposPermitidos, true)) {
             http_response_code(400);
+            error_log("tipo de arquivo nao permitido");
             echo json_encode([
                 "sucesso" => false,
                 "erro" => "O tipo de arquivo não é suportado"
@@ -197,6 +201,7 @@ class RepositorioController {
     public function validarTag($tags) {
         if (!is_array($tags)) {
             http_response_code(400);
+            error_log("tag nao eh uma array");
             echo json_encode([
                 "sucesso" => false,
                 "erro" => "Uma ou mais tags estão inválidas"
