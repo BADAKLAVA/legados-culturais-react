@@ -88,6 +88,7 @@ if ($method === "POST") {
         $repositorioController->criar();
         exit;
     }
+    error_log("Passa");
 }
 //GET
 if($method === "GET") {
