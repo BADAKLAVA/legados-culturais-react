@@ -43,6 +43,7 @@ class RepositorioController {
         try {
 
             $caminho = "teste.txt";
+            $tipo = ".txt";
             
             // Validação dos dados
             if ($this->validarDados(
