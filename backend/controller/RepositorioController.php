@@ -61,6 +61,8 @@ class RepositorioController {
                 return;
             }
 
+            error_log($tags);
+            
             // Criação do repositório
             $resultado = $this->repositorio->criarRepositorio(
                 $titulo,
