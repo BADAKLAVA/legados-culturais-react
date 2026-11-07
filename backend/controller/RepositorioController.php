@@ -61,7 +61,7 @@ class RepositorioController {
                 return;
             }
 
-            error_log($tags);
+            error_log(json_encode($tags));
             
             // Criação do repositório
             $resultado = $this->repositorio->criarRepositorio(
