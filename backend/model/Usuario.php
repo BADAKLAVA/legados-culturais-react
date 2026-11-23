@@ -131,6 +131,65 @@ class Usuario {
         }
    }
 
+
+    public function obterPerfil($idUsuario) {
+        try {
+            $sql = "SELECT id_usuario, nome, sobrenome, email, telefone,
+                           TO_CHAR(data_nascimento, 'YYYY-MM-DD') AS data_nascimento,
+                           sexo, genero, estado, cidade, bairro, logradouro, numero, complemento
+                    FROM usuario WHERE id_usuario = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$idUsuario]);
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        } catch (Throwable $e) {
+            error_log("Erro ao obter perfil: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function atualizarPerfil($idUsuario, array $dados) {
+        $camposPermitidos = [
+            'nome', 'sobrenome', 'email', 'telefone', 'data_nascimento', 'sexo',
+            'genero', 'estado', 'cidade', 'bairro', 'logradouro', 'numero', 'complemento'
+        ];
+        $campos = [];
+        $valores = [];
+        foreach ($camposPermitidos as $campo) {
+            if (array_key_exists($campo, $dados)) {
+                $campos[] = $campo . ' = ?';
+                $valores[] = $dados[$campo] === '' ? null : $dados[$campo];
+            }
+        }
+        if (!$campos) return false;
+
+        try {
+            $valores[] = $idUsuario;
+            $sql = 'UPDATE usuario SET ' . implode(', ', $campos) . ' WHERE id_usuario = ?';
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute($valores);
+        } catch (Throwable $e) {
+            error_log("Erro ao atualizar perfil: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function listarDownloads($idUsuario) {
+        try {
+            $sql = "SELECT h.data_historico, r.id_repositorio AS id, r.titulo AS titulo,
+                           COALESCE(r.descricao, '') AS descricao
+                    FROM historico h
+                    INNER JOIN repositorio r ON r.id_repositorio = h.id_repositorio
+                    WHERE h.id_usuario = ?
+                    ORDER BY h.data_historico DESC";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$idUsuario]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Throwable $e) {
+            error_log("Erro ao listar downloads: " . $e->getMessage());
+            return null;
+        }
+    }
+
 }
 
 ?>

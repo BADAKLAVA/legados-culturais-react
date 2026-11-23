@@ -4,9 +4,11 @@ require_once __DIR__ . "/../model/RecuperacaoSenha.php";
 
 class UsuarioController {
     private Usuario $usuario;
+    private string $tipoCadastro;
 
-    public function __construct(Usuario $usuario) {
+    public function __construct(Usuario $usuario, string $tipoCadastro = 'us') {
         $this->usuario = $usuario;
+        $this->tipoCadastro = $tipoCadastro === 'ad' ? 'ad' : 'us';
     }
 
     public function cadastrar() {
@@ -19,7 +21,8 @@ class UsuarioController {
             array_keys($dados ?? [])
         ));
         
-        $tipo = $dados["tipoUsuario"];
+        // O tipo da conta é definido pela rota, nunca pelo JSON enviado pelo cliente.
+        $tipo = $this->tipoCadastro;
         $nome = $dados["nome"];
         $sobrenome = $dados["sobrenome"];
         $email = $dados["email"];
@@ -99,11 +102,13 @@ class UsuarioController {
                 array_keys($dados ?? [])
             ));
 
-        $email = $dados["email"];
-        $senha = $dados["senha"];
-
-        error_log("EMAIL: $email");
-        error_log("SENHA: $senha");
+        $email = trim((string)($dados["email"] ?? ""));
+        $senha = (string)($dados["senha"] ?? "");
+        if ($email === "" || $senha === "") {
+            http_response_code(400);
+            echo json_encode(["sucesso" => false, "erro" => "Informe e-mail e senha."]);
+            return;
+        }
 
         try {
             $usuarioDados = $this->usuario->listarDados("email", $email);
@@ -117,10 +122,7 @@ class UsuarioController {
             return;
         }
 
-        error_log($usuarioDados["email"]);
-        error_log($usuarioDados["senha"]);
-
-        if (!$usuarioDados["email"]) {
+        if (!$usuarioDados || empty($usuarioDados["email"])) {
 
             http_response_code(401);
 
@@ -141,7 +143,7 @@ class UsuarioController {
             return;
         }
 
-        if ($this->sessionExiste() === true && $usuarioDados["id_usuario"] === $_SESSION["id_usuario"]) {
+        if ($this->sessionExiste() === true && (int)$usuarioDados["id_usuario"] === (int)$_SESSION["id_usuario"]) {
             error_log("Login já existe");
             echo json_encode([
                 "sucesso" => true
@@ -149,8 +151,10 @@ class UsuarioController {
             return;
         }
 
-        $_SESSION["id_usuario"] = $usuarioDados["id_usuario"];
-        $_SESSION["tipo"] = $usuarioDados["tipo"];
+        session_regenerate_id(true);
+        $_SESSION["id_usuario"] = (int)$usuarioDados["id_usuario"];
+        $tipoBanco = strtolower(trim((string)$usuarioDados["tipo"]));
+        $_SESSION["tipo"] = in_array($tipoBanco, ["ad", "adm", "administrador"], true) ? "adm" : "us";
 
         error_log($_SESSION["id_usuario"]);
         error_log($_SESSION["tipo"]);
@@ -161,7 +165,7 @@ class UsuarioController {
     }
 
     public function sessionExiste() {
-        if(isset($_SESSION["id_usuario"]) && isset($_SESSION["tipo"])) {
+        if(isset($_SESSION["id_usuario"]) && !empty($_SESSION["id_usuario"]) && isset($_SESSION["tipo"]) && !empty($_SESSION["tipo"])) {
             return true;
         } else {
             return false;

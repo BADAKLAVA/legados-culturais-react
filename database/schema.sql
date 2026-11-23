@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS repositorio(
 	descricao TEXT,
 	tipo VARCHAR(100) NOT NULL,
 	caminho VARCHAR(500),
+	nome_arquivo VARCHAR(255),
 	data_repositorio TIMESTAMP,
 
 	CONSTRAINT pk_repositorio
@@ -126,3 +127,5 @@ CREATE TABLE recuperacao_senha (
 	CONSTRAINT uk_token
 		UNIQUE (token)
 );
+-- Migração para bancos já criados antes do campo nome_arquivo.
+ALTER TABLE repositorio ADD COLUMN IF NOT EXISTS nome_arquivo VARCHAR(255);

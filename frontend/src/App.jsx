@@ -49,8 +49,7 @@ const initialRepos = [
   {
     id: 3,
     title: "Relatos da comunidade",
-    description:
-      "Coleção de relatos e entrevistas organizados por temática.",
+    description: "Coleção de relatos e entrevistas organizados por temática.",
     tags: ["#relatos", "#comunidade"],
     type: "TXT",
     date: "07/09/2026",
@@ -64,8 +63,7 @@ const initialRepos = [
   {
     id: 4,
     title: "Fotografias do acervo",
-    description:
-      "Imagens selecionadas do acervo digital da instituição.",
+    description: "Imagens selecionadas do acervo digital da instituição.",
     tags: ["#fotografia", "#acervo"],
     type: "Imagem",
     date: "03/09/2026",
@@ -107,20 +105,27 @@ const initialRepos = [
 ];
 
 const icons = {
-  home: "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 3 3 10v10a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1V10l-9-7Z\"/></svg>",
-  report: "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><rect x=\"4\" y=\"12\" width=\"3\" height=\"8\" rx=\"1\"/><rect x=\"10.5\" y=\"7\" width=\"3\" height=\"13\" rx=\"1\"/><rect x=\"17\" y=\"3\" width=\"3\" height=\"17\" rx=\"1\"/></svg>",
-  settings: "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"m19.43 12.98.04-.98-.04-.98 2.11-1.65-2-3.46-2.5 1a8 8 0 0 0-1.69-.98L15 3h-4l-.35 2.93c-.6.24-1.16.57-1.69.98l-2.5-1-2 3.46L6.57 11c-.03.32-.05.65-.05 1s.02.68.05 1l-2.11 1.65 2 3.46 2.5-1c.53.41 1.1.74 1.69.98L11 21h4l.35-2.93c.6-.24 1.16-.57 1.69-.98l2.5 1 2-3.46-2.11-1.65ZM13 15.5A3.5 3.5 0 1 1 13 8a3.5 3.5 0 0 1 0 7.5Z\"/></svg>",
-  user: "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21a8 8 0 0 1 16 0H4Z\"/></svg>",
-  search: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"10.8\" cy=\"10.8\" r=\"6.8\"/><path d=\"m16 16 5 5\"/></svg>",
-  cloudPlus: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.5 18H7a5 5 0 1 1 1.5-9.77A6.5 6.5 0 0 1 21 11.5a3.5 3.5 0 0 1-3.5 6.5H7.5Z\"/><path d=\"M12 12v5M9.5 14.5H14.5\"/></svg>",
-  cloudArrow: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.5 18H7a5 5 0 1 1 1.5-9.77A6.5 6.5 0 0 1 21 11.5a3.5 3.5 0 0 1-3.5 6.5H7.5Z\"/><path d=\"M12 16V8M9.5 10.5 12 8l2.5 2.5\"/></svg>",
-  edit: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m4 16.5-.7 4.2 4.2-.7L19.3 8.2a2.8 2.8 0 0 0-4-4L3.5 15.7Z\"/><path d=\"m14.2 6.3 3.5 3.5\"/></svg>",
-  trash: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 7h16M10 11v6M14 11v6M9 7l1-2h4l1 2M6 7l1 14h10l1-14\"/></svg>",
-  image: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"><rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"1\"/><circle cx=\"9\" cy=\"8\" r=\"1.4\"/><path d=\"m5.5 18 5.5-6 3.2 3.3 2.3-2.5 3 5.2\"/></svg>",
-  doc: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"><path d=\"M6 3h8l4 4v14H6z\"/><path d=\"M14 3v5h4M9 13h6M9 17h6\"/></svg>",
-  text: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M5 5h14M12 5v14M8 19h8\"/></svg>",
-  send: "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"m4 4 17 8-17 8 2-8-2-8Z\"/></svg>",
-  star: "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"m12 3 2.8 5.8 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.7l6.2-.9L12 3Z\"/></svg>",
+  home: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 3 10v10a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1V10l-9-7Z"/></svg>',
+  report:
+    '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="12" width="3" height="8" rx="1"/><rect x="10.5" y="7" width="3" height="13" rx="1"/><rect x="17" y="3" width="3" height="17" rx="1"/></svg>',
+  settings:
+    '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m19.43 12.98.04-.98-.04-.98 2.11-1.65-2-3.46-2.5 1a8 8 0 0 0-1.69-.98L15 3h-4l-.35 2.93c-.6.24-1.16.57-1.69.98l-2.5-1-2 3.46L6.57 11c-.03.32-.05.65-.05 1s.02.68.05 1l-2.11 1.65 2 3.46 2.5-1c.53.41 1.1.74 1.69.98L11 21h4l.35-2.93c.6-.24 1.16-.57 1.69-.98l2.5 1 2-3.46-2.11-1.65ZM13 15.5A3.5 3.5 0 1 1 13 8a3.5 3.5 0 0 1 0 7.5Z"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0H4Z"/></svg>',
+  search:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>',
+  cloudPlus:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 18H7a5 5 0 1 1 1.5-9.77A6.5 6.5 0 0 1 21 11.5a3.5 3.5 0 0 1-3.5 6.5H7.5Z"/><path d="M12 12v5M9.5 14.5H14.5"/></svg>',
+  cloudArrow:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 18H7a5 5 0 1 1 1.5-9.77A6.5 6.5 0 0 1 21 11.5a3.5 3.5 0 0 1-3.5 6.5H7.5Z"/><path d="M12 16V8M9.5 10.5 12 8l2.5 2.5"/></svg>',
+  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 16.5-.7 4.2 4.2-.7L19.3 8.2a2.8 2.8 0 0 0-4-4L3.5 15.7Z"/><path d="m14.2 6.3 3.5 3.5"/></svg>',
+  trash:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M9 7l1-2h4l1 2M6 7l1 14h10l1-14"/></svg>',
+  image:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><circle cx="9" cy="8" r="1.4"/><path d="m5.5 18 5.5-6 3.2 3.3 2.3-2.5 3 5.2"/></svg>',
+  doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>',
+  text: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5h14M12 5v14M8 19h8"/></svg>',
+  send: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m4 4 17 8-17 8 2-8-2-8Z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.7l6.2-.9L12 3Z"/></svg>',
 };
 
 function treeLogo() {
@@ -132,6 +137,11 @@ function repoTypeIcon(type) {
   if (type === "Documento") return icons.doc;
   if (type === "TXT") return icons.text;
   if (type === "Link") return icons.cloudArrow;
+  const extensao = String(type || "").toLowerCase();
+  if ([".png", ".jpg", ".jpeg", ".gif", ".webp"].includes(extensao))
+    return icons.image;
+  if (extensao === ".txt") return icons.text;
+  if ([".pdf", ".doc", ".docx", ".odt"].includes(extensao)) return icons.doc;
   return icons.cloudArrow;
 }
 
@@ -171,7 +181,11 @@ function useLibraryLocation() {
 function Header() {
   return (
     <Navbar as="header" expand="lg" className="site-header">
-      <Navbar.Brand className="brand" href="/" aria-label="Legados Culturais - início">
+      <Navbar.Brand
+        className="brand"
+        href="/"
+        aria-label="Legados Culturais - início"
+      >
         <img src={logo} alt="Legados Culturais" />
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="main-navigation" aria-label="Abrir menu" />
@@ -208,8 +222,8 @@ function Home() {
               tipos de materiais relacionados ao patrimônio cultural brasileiro.
             </p>
             <p>
-              Explore a nossa biblioteca e obtenha os materiais gratuitamente para
-              consulta e referência.
+              Explore a nossa biblioteca e obtenha os materiais gratuitamente
+              para consulta e referência.
             </p>
           </div>
           <a href="/biblioteca" className="btn btn-orange btn-large">
@@ -221,11 +235,27 @@ function Home() {
       <section className="contact-section" id="contato">
         <div className="section-inner contact-inner">
           <h2>Fale conosco</h2>
-          <div className="contact-form" aria-label="Formulário visual de contato">
+          <div
+            className="contact-form"
+            aria-label="Formulário visual de contato"
+          >
             <Form.Control type="text" placeholder="Nome" aria-label="Nome" />
-            <Form.Control type="email" placeholder="E-mail" aria-label="E-mail" />
-            <Form.Control type="text" placeholder="Assunto" aria-label="Assunto" />
-            <Form.Control as="textarea" placeholder="Mensagem" aria-label="Mensagem" rows={5} />
+            <Form.Control
+              type="email"
+              placeholder="E-mail"
+              aria-label="E-mail"
+            />
+            <Form.Control
+              type="text"
+              placeholder="Assunto"
+              aria-label="Assunto"
+            />
+            <Form.Control
+              as="textarea"
+              placeholder="Mensagem"
+              aria-label="Mensagem"
+              rows={5}
+            />
             <Button type="button" className="btn-orange contact-submit">
               Enviar mensagem
             </Button>
@@ -238,8 +268,8 @@ function Home() {
           <div className="signup-copy">
             <h2>Nos ajude</h2>
             <p>
-              Cadastre-se para ajudar-nos a conhecer melhor qual é o nosso público
-              e o seu feedback.
+              Cadastre-se para ajudar-nos a conhecer melhor qual é o nosso
+              público e o seu feedback.
             </p>
             <a href="/cadastro" className="btn btn-green btn-large">
               Cadastre-se
@@ -262,7 +292,10 @@ function Home() {
                     <span />
                   </div>
                   <div>
-                    <div className="stars" aria-label={`${stars} de 5 estrelas`}>
+                    <div
+                      className="stars"
+                      aria-label={`${stars} de 5 estrelas`}
+                    >
                       {"★".repeat(stars)}
                       {"☆".repeat(5 - stars)}
                     </div>
@@ -271,8 +304,8 @@ function Home() {
                 </div>
                 <div className="review-line" />
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
               </article>
             ))}
@@ -283,104 +316,172 @@ function Home() {
   );
 }
 
-function LibraryNav({ active }) {
+function LibraryNav({ active, session, navigate }) {
+  const isAdmin = session?.tipo === "adm";
   return (
-    <nav className="side-nav">
+    <nav className="side-nav" aria-label="Navegação da biblioteca">
       <button
         className={`nav-btn ${active === "library" ? "active" : ""}`}
         type="button"
         title="Biblioteca"
-        onClick={() => window.location.assign("/biblioteca")}
+        aria-label="Biblioteca"
+        onClick={() => navigate("/biblioteca")}
         dangerouslySetInnerHTML={{ __html: icons.home }}
       />
+      {isAdmin && (
+        <button
+          className={`nav-btn ${active === "users" ? "active" : ""}`}
+          type="button"
+          title="Relatório de usuários"
+          aria-label="Relatório de usuários"
+          onClick={() => navigate("/biblioteca/usuarios")}
+          dangerouslySetInnerHTML={{ __html: icons.report }}
+        />
+      )}
       <button
-        className={`nav-btn ${active === "users" ? "active" : ""}`}
-        type="button"
-        title="Relatório de usuários"
-        onClick={() => window.location.assign("/biblioteca/usuarios")}
-        dangerouslySetInnerHTML={{ __html: icons.report }}
-      />
-      <button
-        className="nav-btn"
+        className={`nav-btn ${active === "settings" ? "active" : ""}`}
         type="button"
         title="Configurações"
-        onClick={() => window.alert("Configurações: somente front-end por enquanto")}
+        aria-label="Configurações"
+        onClick={() => window.alert("Configurações: ainda não disponíveis.")}
         dangerouslySetInnerHTML={{ __html: icons.settings }}
       />
       <button
-        className="nav-btn"
+        className={`nav-btn ${active === "profile" ? "active" : ""}`}
         type="button"
         title="Perfil"
-        onClick={() => window.alert("Perfil: somente front-end por enquanto")}
+        aria-label="Perfil"
+        onClick={() => navigate(session?.id_usuario ? "/perfil" : "/login")}
         dangerouslySetInnerHTML={{ __html: icons.user }}
       />
     </nav>
   );
 }
 
-function LibraryPage({ repos, setRepos, navigate }) {
-    useEffect(() => {
-  async function fetchRepos() {
-    try {
-      const response = await fetch("/routes.php?rota=exibirRepositorios");
-      const data = await response.json();
-      if (response.ok && data.sucesso) {
-        setRepos(data.repositorios);
-      }
-    } catch (error) {
-      console.error("Erro ao carregar repositórios do PHP:", error);
-    }
-  }
-  fetchRepos();
-}, [setRepos]);
+function LibraryPage({ repos, setRepos, navigate, session }) {
   const [search, setSearch] = useState("");
   const [selectedTag, setSelectedTag] = useState(null);
   const [filterType, setFilterType] = useState("Todos os tipos");
   const [sort, setSort] = useState("A-Z");
+  const [catalogTags, setCatalogTags] = useState([]);
+  const isAdmin = session?.tipo === "adm";
 
-  const allTags = Array.from(new Set(repos.flatMap((repo) => repo.tags)));
+  useEffect(() => {
+    let ativo = true;
+    fetch("/routes.php?rota=exibirTags", { credentials: "include" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (ativo && data?.sucesso) setCatalogTags(data.tags || []);
+      })
+      .catch((error) => console.error("Erro ao carregar tags:", error));
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  const allTags = Array.from(
+    new Set([
+      ...catalogTags,
+      ...repos.flatMap((repo) => (Array.isArray(repo.tags) ? repo.tags : [])),
+    ]),
+  ).sort((a, b) => a.localeCompare(b, "pt-BR"));
 
   const filteredRepos = [...repos]
     .filter((repo) => {
       const query = search.trim().toLowerCase();
+      const tags = Array.isArray(repo.tags) ? repo.tags : [];
       const matchesQuery =
         !query ||
-        `${repo.title} ${repo.description} ${repo.tags.join(" ")}`
+        `${repo.title} ${repo.description} ${tags.join(" ")}`
           .toLowerCase()
           .includes(query);
-      const matchesTag = !selectedTag || repo.tags.includes(selectedTag);
-      const matchesType = filterType === "Todos os tipos" || repo.type === filterType;
+      const matchesTag = !selectedTag || tags.includes(selectedTag);
+      const matchesType =
+        filterType === "Todos os tipos" || repo.type === filterType;
       return matchesQuery && matchesTag && matchesType;
     })
     .sort((a, b) => {
       if (sort === "Z-A") return b.title.localeCompare(a.title, "pt-BR");
-      if (sort === "Mais recentes") return b.date.localeCompare(a.date);
-      if (sort === "Mais antigos") return a.date.localeCompare(b.date);
-      if (sort === "Populares") return b.id - a.id;
+      if (sort === "Mais recentes" || sort === "Mais antigos") {
+        const parseDate = (value) => {
+          const [day, month, year] = String(value || "")
+            .split("/")
+            .map(Number);
+          return year ? new Date(year, month - 1, day).getTime() : 0;
+        };
+        return sort === "Mais recentes"
+          ? parseDate(b.date) - parseDate(a.date)
+          : parseDate(a.date) - parseDate(b.date);
+      }
+      if (sort === "Populares") return Number(b.id) - Number(a.id);
       return a.title.localeCompare(b.title, "pt-BR");
     });
 
-  const addTag = () => {
+  const addTag = async () => {
+    if (!isAdmin) return;
     const value = window.prompt("Adicionar tag:", "#");
     const normalized = value ? value.trim() : "";
     if (!normalized) return;
     const tag = normalized.startsWith("#") ? normalized : `#${normalized}`;
-    if (!allTags.includes(tag)) {
-      setRepos((previous) =>
-        previous.map((repo) => ({
-          ...repo,
-          tags: repo.tags,
-        })),
-      );
+    if (tag.length > 20) {
+      window.alert("A tag pode ter no máximo 20 caracteres.");
+      return;
     }
-    setSelectedTag(tag);
+    try {
+      const response = await fetch("/routes.php?rota=criar-tag", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tag }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.sucesso) {
+        window.alert(data.erro || "Não foi possível adicionar a tag.");
+        return;
+      }
+      setCatalogTags((previous) =>
+        Array.from(new Set([...previous, data.tag])),
+      );
+      setSelectedTag(data.tag);
+    } catch (error) {
+      console.error("Erro ao adicionar tag:", error);
+      window.alert("Não foi possível conectar ao servidor.");
+    }
+  };
+
+  const excluirRepositorio = async (repo) => {
+    if (!isAdmin || !window.confirm("Deseja excluir este repositório?")) return;
+    try {
+      const response = await fetch(
+        `/routes.php?rota=excluir-repositorio&id=${repo.id}`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+      const data = await response.json();
+      if (!response.ok || !data.sucesso) {
+        window.alert(data.erro || "Não foi possível excluir o repositório.");
+        return;
+      }
+      setRepos((previous) =>
+        previous.filter((item) => Number(item.id) !== Number(repo.id)),
+      );
+    } catch (error) {
+      console.error("Erro ao excluir repositório:", error);
+      window.alert("Não foi possível conectar ao servidor.");
+    }
   };
 
   return (
     <div className="library-app">
-      <LibraryNav active="library" />
+      <LibraryNav active="library" session={session} navigate={navigate} />
       <main className="main">
-        <a href="/" className="brand brand-link" aria-label="Voltar para a página inicial">
+        <a
+          href="/"
+          className="brand brand-link"
+          aria-label="Voltar para a página inicial"
+        >
           <img className="brand-logo" src={logo} alt="Legados Culturais" />
         </a>
 
@@ -389,49 +490,81 @@ function LibraryPage({ repos, setRepos, navigate }) {
         <div className="search-wrap">
           <div className="search">
             <input
-              type="text"
+              type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Buscar por título descrição"
+              placeholder="Buscar por título, descrição ou tag"
+              aria-label="Buscar repositórios"
             />
-            <button type="button" title="Buscar" dangerouslySetInnerHTML={{ __html: icons.search }} />
+            <button
+              type="button"
+              title="Buscar"
+              aria-label="Buscar"
+              dangerouslySetInnerHTML={{ __html: icons.search }}
+            />
           </div>
         </div>
 
-        <div className="add-row">
-          <button type="button" className="add-repo" title="Adicionar repositório" onClick={() => navigate("/biblioteca/novo")} dangerouslySetInnerHTML={{ __html: icons.cloudPlus }} />
-        </div>
+        {isAdmin && (
+          <div className="add-row">
+            <button
+              type="button"
+              className="add-repo"
+              title="Adicionar repositório"
+              aria-label="Adicionar repositório"
+              onClick={() => navigate("/biblioteca/novo")}
+              dangerouslySetInnerHTML={{ __html: icons.cloudPlus }}
+            />
+          </div>
+        )}
 
         <div className="tags-block">
           <div className="tags-label">Tags:</div>
           <div className="tags-row">
-            {allTags.map((tag, index) => (
-              <span
-                key={`${tag}-${index}`}
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
                 className={`tag-chip ${selectedTag === tag ? "active" : ""}`}
                 onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    setSelectedTag(selectedTag === tag ? null : tag);
-                  }
-                }}
               >
                 {tag}
-              </span>
+              </button>
             ))}
-            <button type="button" className="add-tag-circle" title="Adicionar tag" onClick={addTag}>
-              +
-            </button>
+            {isAdmin && (
+              <button
+                type="button"
+                className="add-tag-circle"
+                title="Adicionar tag"
+                aria-label="Adicionar tag"
+                onClick={addTag}
+              >
+                +
+              </button>
+            )}
+            {selectedTag && (
+              <button
+                type="button"
+                className="clear-tag"
+                onClick={() => setSelectedTag(null)}
+              >
+                Limpar filtro
+              </button>
+            )}
           </div>
         </div>
 
         <div className="control-row">
           <div className="control-group">
-            <div className="control-label">Filtrar:</div>
-            <select className="select" value={filterType} onChange={(event) => setFilterType(event.target.value)}>
+            <label className="control-label" htmlFor="filter-type">
+              Filtrar:
+            </label>
+            <select
+              id="filter-type"
+              className="select"
+              value={filterType}
+              onChange={(event) => setFilterType(event.target.value)}
+            >
               <option>Todos os tipos</option>
               <option>Link</option>
               <option>TXT</option>
@@ -440,8 +573,15 @@ function LibraryPage({ repos, setRepos, navigate }) {
             </select>
           </div>
           <div className="control-group">
-            <div className="control-label">Ordenar por:</div>
-            <select className="select" value={sort} onChange={(event) => setSort(event.target.value)}>
+            <label className="control-label" htmlFor="sort-repos">
+              Ordenar por:
+            </label>
+            <select
+              id="sort-repos"
+              className="select"
+              value={sort}
+              onChange={(event) => setSort(event.target.value)}
+            >
               <option>A-Z</option>
               <option>Z-A</option>
               <option>Mais recentes</option>
@@ -454,36 +594,54 @@ function LibraryPage({ repos, setRepos, navigate }) {
         {filteredRepos.length ? (
           <div className="repo-grid">
             {filteredRepos.map((repo) => (
-              <article key={repo.id} className="repo-card" onClick={() => navigate(`/biblioteca/repositorio/${repo.id}`)}>
-                <div className="repo-card-icon" dangerouslySetInnerHTML={{ __html: repoTypeIcon(repo.type) }} />
+              <article
+                key={repo.id}
+                className="repo-card"
+                onClick={() => navigate(`/biblioteca/repositorio/${repo.id}`)}
+                tabIndex={0}
+                role="button"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter")
+                    navigate(`/biblioteca/repositorio/${repo.id}`);
+                }}
+              >
+                <div
+                  className="repo-card-icon"
+                  dangerouslySetInnerHTML={{ __html: repoTypeIcon(repo.type) }}
+                />
                 <div className="repo-card-body">
                   <div className="repo-card-title">{repo.title}</div>
                   <div className="repo-card-desc">{repo.description}</div>
+                  {repo.fileName && (
+                    <div className="repo-card-file">{repo.fileName}</div>
+                  )}
                 </div>
-                <div className="card-actions">
-                  <button
-                    type="button"
-                    className="icon-action edit"
-                    title="Editar"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      navigate(`/biblioteca/editar/${repo.id}`);
-                    }}
-                    dangerouslySetInnerHTML={{ __html: icons.edit }}
-                  />
-                  <button
-                    type="button"
-                    className="icon-action delete"
-                    title="Excluir"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (window.confirm("Deseja excluir este repositório?")) {
-                        setRepos((previous) => previous.filter((item) => item.id !== repo.id));
-                      }
-                    }}
-                    dangerouslySetInnerHTML={{ __html: icons.trash }}
-                  />
-                </div>
+                {isAdmin && (
+                  <div className="card-actions">
+                    <button
+                      type="button"
+                      className="icon-action edit"
+                      title="Editar"
+                      aria-label={`Editar ${repo.title}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        navigate(`/biblioteca/editar/${repo.id}`);
+                      }}
+                      dangerouslySetInnerHTML={{ __html: icons.edit }}
+                    />
+                    <button
+                      type="button"
+                      className="icon-action delete"
+                      title="Excluir"
+                      aria-label={`Excluir ${repo.title}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        excluirRepositorio(repo);
+                      }}
+                      dangerouslySetInnerHTML={{ __html: icons.trash }}
+                    />
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -495,20 +653,33 @@ function LibraryPage({ repos, setRepos, navigate }) {
   );
 }
 
-function RepositoryPage({ repos, navigate, repoId }) {
+function RepositoryPage({ repos, setRepos, navigate, repoId, session }) {
   const repo = repos.find((item) => Number(item.id) === Number(repoId));
+  const isAdmin = session?.tipo === "adm";
+  const canDownload = Boolean(session?.id_usuario && session?.tipo);
 
   if (!repo) {
-    return <LibraryPage repos={repos} setRepos={() => {}} navigate={navigate} />;
+    return (
+      <LibraryPage
+        repos={repos}
+        setRepos={setRepos}
+        navigate={navigate}
+        session={session}
+      />
+    );
   }
 
   return (
     <div className="library-app">
-      <LibraryNav active="library" />
+      <LibraryNav active="library" session={session} navigate={navigate} />
       <main className="main">
         <div className="repo-page">
           <div className="header-line">
-            <button type="button" className="back-btn" onClick={() => navigate("/biblioteca")}>
+            <button
+              type="button"
+              className="back-btn"
+              onClick={() => navigate("/biblioteca")}
+            >
               Voltar
             </button>
             <div />
@@ -519,7 +690,7 @@ function RepositoryPage({ repos, navigate, repoId }) {
           </div>
 
           <div className="repo-meta">
-            {repo.tags.map((tag) => (
+            {(repo.tags || []).map((tag) => (
               <span key={tag} className="tag-chip">
                 {tag}
               </span>
@@ -527,37 +698,78 @@ function RepositoryPage({ repos, navigate, repoId }) {
           </div>
 
           <div className="repo-info">
-            <div>
-              <div>Tipo de arquivo</div>
+            <div className="repo-file-details">
               <div>
-                <strong>Publicado em {repo.date}</strong>
+                <strong>Tipo de arquivo:</strong>{" "}
+                {repo.fileType || repo.type || "Não informado"}
+              </div>
+              {repo.fileName && (
+                <div>
+                  <strong>Arquivo:</strong> {repo.fileName}
+                </div>
+              )}
+              <div>
+                <strong>Publicado em:</strong>{" "}
+                {repo.date || "Data não informada"}
               </div>
             </div>
             <div className="repo-actions">
-              <span className="repo-action-label">Editar:</span>
-              <button
-                type="button"
-                className="repo-icon-btn edit"
-                title="Editar"
-                onClick={() => navigate(`/biblioteca/editar/${repo.id}`)}
-                dangerouslySetInnerHTML={{ __html: icons.edit }}
-              />
+              {isAdmin && (
+                <>
+                  <span className="repo-action-label">Editar:</span>
+                  <button
+                    type="button"
+                    className="repo-icon-btn edit"
+                    title="Editar"
+                    aria-label="Editar repositório"
+                    onClick={() => navigate(`/biblioteca/editar/${repo.id}`)}
+                    dangerouslySetInnerHTML={{ __html: icons.edit }}
+                  />
+                </>
+              )}
               <span className="repo-action-label">Baixar:</span>
-              <button type="button" className="repo-icon-btn download" title="Baixar" dangerouslySetInnerHTML={{ __html: icons.cloudArrow }} />
+              {canDownload ? (
+                <a
+                  className="repo-icon-btn download"
+                  title="Baixar"
+                  aria-label="Baixar arquivo"
+                  href={`/routes.php?rota=download-repositorio&id=${repo.id}`}
+                  dangerouslySetInnerHTML={{ __html: icons.cloudArrow }}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className="repo-icon-btn download disabled"
+                  title="Faça login para baixar"
+                  aria-label="Faça login para baixar"
+                  onClick={() => navigate("/login")}
+                  dangerouslySetInnerHTML={{ __html: icons.cloudArrow }}
+                />
+              )}
             </div>
           </div>
 
-          <div className="repo-description">{repo.description || "Sem descrição."}</div>
+          <div className="repo-description">
+            {repo.description || "Sem descrição."}
+          </div>
 
           <section className="comments">
             <h2>Comentários</h2>
             {(repo.comments || []).map((comment, index) => (
-              <div key={`${comment.name}-${index}`} className={`comment ${comment.indent ? "indent" : ""}`}>
+              <div
+                key={`${comment.name}-${index}`}
+                className={`comment ${comment.indent ? "indent" : ""}`}
+              >
                 <div className="comment-main">
                   <div className="comment-head">
-                    <div className="avatar" dangerouslySetInnerHTML={{ __html: icons.user }} />
+                    <div
+                      className="avatar"
+                      dangerouslySetInnerHTML={{ __html: icons.user }}
+                    />
                     <div>
-                      <span className="comment-role">{comment.admin ? "Administrador" : ""}</span>
+                      <span className="comment-role">
+                        {comment.admin ? "Administrador" : ""}
+                      </span>
                       <span className="comment-name">{comment.name}</span>
                     </div>
                   </div>
@@ -581,8 +793,19 @@ function RepositoryPage({ repos, navigate, repoId }) {
               </div>
             ))}
             <div className="comment-box">
-              <input type="text" placeholder="Comentar" />
-              <button type="button" title="Enviar" dangerouslySetInnerHTML={{ __html: icons.send }} />
+              <input
+                type="text"
+                placeholder={
+                  session?.id_usuario ? "Comentar" : "Entre para comentar"
+                }
+                disabled={!session?.id_usuario}
+              />
+              <button
+                type="button"
+                title="Enviar"
+                disabled={!session?.id_usuario}
+                dangerouslySetInnerHTML={{ __html: icons.send }}
+              />
             </div>
           </section>
         </div>
@@ -591,48 +814,103 @@ function RepositoryPage({ repos, navigate, repoId }) {
   );
 }
 
-function FormPage({ repos, setRepos, navigate, repoId, mode }) {
-  const existing = mode === "edit" ? repos.find((repo) => Number(repo.id) === Number(repoId)) : null;
+function PermissionNotice({
+  navigate,
+  message = "Você não tem permissão para acessar esta página.",
+}) {
+  return (
+    <div className="library-app">
+      <main className="main permission-page">
+        <div className="empty">
+          <p>{message}</p>
+          <button
+            type="button"
+            className="primary-btn"
+            onClick={() => navigate("/biblioteca")}
+          >
+            Voltar à biblioteca
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function FormPage({ repos, setRepos, navigate, repoId, mode, session }) {
+  const existing =
+    mode === "edit"
+      ? repos.find((repo) => Number(repo.id) === Number(repoId))
+      : null;
   const [form, setForm] = useState({
     title: existing?.title || "",
     description: existing?.description || "",
     tags: existing?.tags || [],
-    fileName: "",
-    fileType: "",
-    fileOk: false,
+    file: null,
+    fileName: existing?.fileName || "",
+    fileType: existing?.fileType || "",
   });
   const [tagInput, setTagInput] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (mode === "edit" && existing) {
       setForm({
-        title: existing.title,
-        description: existing.description,
-        tags: existing.tags,
-        fileName: "",
-        fileType: "",
-        fileOk: false,
+        title: existing.title || "",
+        description: existing.description || "",
+        tags: existing.tags || [],
+        file: null,
+        fileName: existing.fileName || "",
+        fileType: existing.fileType || "",
       });
-    }
-    if (mode !== "edit") {
+    } else if (mode !== "edit") {
       setForm({
         title: "",
         description: "",
         tags: [],
+        file: null,
         fileName: "",
         fileType: "",
-        fileOk: false,
       });
     }
   }, [existing, mode]);
+
+  if (session?.loading)
+    return (
+      <PermissionNotice
+        navigate={navigate}
+        message="Verificando permissões..."
+      />
+    );
+  if (session?.tipo !== "adm" || !session?.id_usuario) {
+    return (
+      <PermissionNotice
+        navigate={navigate}
+        message="Somente administradores podem criar ou editar repositórios."
+      />
+    );
+  }
+  if (mode === "edit" && !existing) {
+    return (
+      <PermissionNotice
+        navigate={navigate}
+        message="Repositório não encontrado."
+      />
+    );
+  }
 
   const addDraftTag = (value) => {
     const normalized = value.trim();
     if (!normalized) return;
     const tag = normalized.startsWith("#") ? normalized : `#${normalized}`;
+    if (tag.length > 20) {
+      window.alert("A tag pode ter no máximo 20 caracteres.");
+      return;
+    }
     setForm((previous) => ({
       ...previous,
-      tags: previous.tags.includes(tag) ? previous.tags : [...previous.tags, tag],
+      tags: previous.tags.includes(tag)
+        ? previous.tags
+        : [...previous.tags, tag],
     }));
     setTagInput("");
   };
@@ -645,63 +923,98 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
   };
 
   const handleSubmit = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
+    if (mode === "create" && !form.file) {
+      window.alert("Selecione o arquivo que será publicado.");
+      return;
+    }
+    setSaving(true);
+    const extensao = form.file?.name?.includes(".")
+      ? `.${form.file.name.split(".").pop().toLowerCase()}`
+      : form.fileType;
+    const dados = new FormData();
+    dados.append("title", form.title.trim());
+    dados.append("description", form.description || "");
+    dados.append("tags", JSON.stringify(form.tags));
+    dados.append("fileName", form.file?.name || form.fileName || "");
+    dados.append("fileType", extensao || "");
+    if (form.file) dados.append("arquivo", form.file);
 
-  const payload = {
-    title: form.title.trim() || "Título do repositório",
-    description: form.description || "",
-    fileName: "",
-    fileType: "",
-    tags: form.tags,
+    try {
+      const rota =
+        mode === "edit"
+          ? `/routes.php?rota=editar-repositorio&id=${existing.id}`
+          : "/routes.php?rota=criar-repositorio";
+      const resposta = await fetch(rota, {
+        method: "POST",
+        credentials: "include",
+        body: dados,
+      });
+      const retorno = await resposta.json();
+      if (!resposta.ok || !retorno.sucesso) {
+        window.alert(retorno.erro || "Erro ao salvar repositório.");
+        return;
+      }
+
+      const atualizacao = await fetch("/routes.php?rota=exibirRepositorios", {
+        credentials: "include",
+      });
+      const lista = await atualizacao.json();
+      if (atualizacao.ok && lista.sucesso) setRepos(lista.repositorios);
+      navigate("/biblioteca");
+    } catch (error) {
+      console.error("Erro ao salvar repositório:", error);
+      window.alert("Não foi possível conectar ao servidor.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  try {
-    const rota = mode === "edit" 
-      ? `/routes.php?rota=editar-repositorio&id=${existing?.id}` 
-      : "/routes.php?rota=criar-repositorio";
-
-    const resposta = await fetch(rota, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const dados = await resposta.json();
-
-    if (resposta.ok && dados.sucesso) {
+  const excluir = async () => {
+    if (!existing || !window.confirm("Deseja excluir este repositório?"))
+      return;
+    try {
+      const response = await fetch(
+        `/routes.php?rota=excluir-repositorio&id=${existing.id}`,
+        { method: "POST", credentials: "include" },
+      );
+      const data = await response.json();
+      if (!response.ok || !data.sucesso) {
+        window.alert(data.erro || "Não foi possível excluir o repositório.");
+        return;
+      }
+      setRepos((previous) =>
+        previous.filter((repo) => Number(repo.id) !== Number(existing.id)),
+      );
       navigate("/biblioteca");
-    } else {
-      window.alert(dados.erro || "Erro ao salvar repositório");
+    } catch (error) {
+      console.error("Erro ao excluir repositório:", error);
+      window.alert("Não foi possível conectar ao servidor.");
     }
-  } catch (error) {
-    console.error("Erro na requisição:", error);
-  }
-};
+  };
+
   return (
     <div className="library-app">
-      <LibraryNav active="library" />
+      <LibraryNav active="library" session={session} navigate={navigate} />
       <main className="main">
         <div className="form-page">
           <div className="form-top">
-            <button type="button" className="back-btn" onClick={() => navigate("/biblioteca")}>
+            <button
+              type="button"
+              className="back-btn"
+              onClick={() => navigate("/biblioteca")}
+            >
               Cancelar
             </button>
-            <h1 className="form-title">{mode === "edit" ? "Editar" : "Criar"} Repositório</h1>
-            {mode === "edit" && existing ? (
-              <button
-                type="button"
-                className="danger-btn"
-                onClick={() => {
-                  if (window.confirm("Deseja excluir este repositório?")) {
-                    setRepos((previous) => previous.filter((repo) => Number(repo.id) !== Number(existing.id)));
-                    navigate("/biblioteca");
-                  }
-                }}
-              >
+            <h1 className="form-title">
+              {mode === "edit" ? "Editar" : "Criar"} Repositório
+            </h1>
+            {mode === "edit" ? (
+              <button type="button" className="danger-btn" onClick={excluir}>
                 Excluir repositório
               </button>
             ) : (
-              <div style={{ width: "1px" }} />
+              <span />
             )}
           </div>
 
@@ -711,9 +1024,15 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
               <input
                 id="repo-title"
                 required
+                maxLength={100}
                 value={form.title}
                 placeholder="Título do repositório"
-                onChange={(event) => setForm((previous) => ({ ...previous, title: event.target.value }))}
+                onChange={(event) =>
+                  setForm((previous) => ({
+                    ...previous,
+                    title: event.target.value,
+                  }))
+                }
               />
             </div>
 
@@ -725,7 +1044,12 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
                 id="repo-description"
                 value={form.description}
                 placeholder="Descrição"
-                onChange={(event) => setForm((previous) => ({ ...previous, description: event.target.value }))}
+                onChange={(event) =>
+                  setForm((previous) => ({
+                    ...previous,
+                    description: event.target.value,
+                  }))
+                }
               />
             </div>
 
@@ -735,6 +1059,7 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
               </label>
               <input
                 id="repo-tags"
+                maxLength={20}
                 value={tagInput}
                 placeholder="Digite uma tag e pressione Enter"
                 onKeyDown={(event) => {
@@ -749,7 +1074,11 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
                 {form.tags.map((tag, index) => (
                   <span key={`${tag}-${index}`} className="form-tag">
                     {tag}
-                    <button type="button" onClick={() => removeDraftTag(index)}>
+                    <button
+                      type="button"
+                      aria-label={`Remover ${tag}`}
+                      onClick={() => removeDraftTag(index)}
+                    >
                       ×
                     </button>
                   </span>
@@ -757,35 +1086,67 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
               </div>
             </div>
 
-            {mode !== "edit" && (
-              <div className="upload-box">
-                <div className="upload-label">Fazer upload</div>
-                <div className="file-line">
-                  <span className="file-name">{form.fileName || "Nenhum arquivo selecionado"}</span>
-                  <button type="button" className="upload-btn" title="Selecionar arquivo" onClick={() => document.getElementById("file-input")?.click()} dangerouslySetInnerHTML={{ __html: icons.cloudPlus }} />
-                </div>
-                <input
-                  id="file-input"
-                  className="file-input"
-                  type="file"
-                  accept=".txt,.pdf,.doc,.docx,.odt,.png,.jpg,.jpeg,.gif,.webp"
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    setForm((previous) => ({
-                      ...previous,
-                      fileName: file ? file.name : "",
-                      fileType: file ? file.type : "",
-                      fileOk: Boolean(file),
-                    }));
-                  }}
-                />
-                {form.fileOk && <div className="success">Upload realizado com sucesso</div>}
+            <div className="upload-box">
+              <div className="upload-label">
+                {mode === "edit"
+                  ? "Substituir arquivo (opcional)"
+                  : "Selecionar arquivo"}
               </div>
-            )}
+              <div className="file-line">
+                <div className="file-selected-details">
+                  <span className="file-name">
+                    {form.file?.name ||
+                      form.fileName ||
+                      "Nenhum arquivo selecionado"}
+                  </span>
+                  {(form.file || form.fileType) && (
+                    <span className="file-type">
+                      Tipo:{" "}
+                      {form.file
+                        ? `.${form.file.name.split(".").pop().toLowerCase()}`
+                        : form.fileType}
+                    </span>
+                  )}
+                </div>
+                <label
+                  className="upload-btn"
+                  title="Selecionar arquivo"
+                  aria-label="Selecionar arquivo"
+                  htmlFor="file-input"
+                  dangerouslySetInnerHTML={{ __html: icons.cloudPlus }}
+                />
+              </div>
+              <input
+                id="file-input"
+                className="file-input"
+                type="file"
+                accept=".txt,.pdf,.doc,.docx,.odt,.png,.jpg,.jpeg,.gif,.webp"
+                required={mode === "create"}
+                onChange={(event) => {
+                  const file = event.target.files?.[0] || null;
+                  setForm((previous) => ({
+                    ...previous,
+                    file,
+                    fileName: file?.name || previous.fileName,
+                    fileType: file?.name?.includes(".")
+                      ? `.${file.name.split(".").pop().toLowerCase()}`
+                      : previous.fileType,
+                  }));
+                }}
+              />
+              <p className="upload-help">
+                Formatos permitidos: TXT, PDF, DOC, DOCX, ODT, PNG, JPG, GIF e
+                WEBP. Limite de 25 MB.
+              </p>
+            </div>
 
             <div className="form-footer">
-              <button type="submit" className="primary-btn">
-                {mode === "edit" ? "Salvar alterações" : "Criar repositório"}
+              <button type="submit" className="primary-btn" disabled={saving}>
+                {saving
+                  ? "Salvando..."
+                  : mode === "edit"
+                    ? "Salvar alterações"
+                    : "Criar repositório"}
               </button>
             </div>
           </form>
@@ -795,24 +1156,36 @@ function FormPage({ repos, setRepos, navigate, repoId, mode }) {
   );
 }
 
-function UsersPage() {
+function UsersPage({ session, navigate }) {
+  if (session?.tipo !== "adm" || !session?.id_usuario)
+    return (
+      <PermissionNotice
+        navigate={navigate}
+        message="Apenas administradores podem acessar o relatório de usuários."
+      />
+    );
   return (
     <div className="library-app">
-      <LibraryNav active="users" />
+      <LibraryNav active="users" session={session} navigate={navigate} />
       <main className="main">
         <div className="form-page">
           <div className="header-line">
-            <button type="button" className="back-btn" onClick={() => window.location.assign("/biblioteca")}>
+            <button
+              type="button"
+              className="back-btn"
+              onClick={() => navigate("/biblioteca")}
+            >
               Voltar
             </button>
-            <h1 className="form-title" style={{ margin: "0 auto", fontWeight: 400 }}>
-              Relatório de usuários
-            </h1>
-            <div style={{ width: "64px" }} />
+            <h1 className="form-title">Relatório de usuários</h1>
+            <span />
           </div>
           <div className="empty">
             <p>Área demonstrativa do front-end.</p>
-            <p>A tela fica acessível somente quando o perfil de administrador está ativo.</p>
+            <p>
+              A tela fica acessível somente quando o perfil de administrador
+              está ativo.
+            </p>
           </div>
         </div>
       </main>
@@ -820,17 +1193,337 @@ function UsersPage() {
   );
 }
 
-function Input({ label, placeholder, type = "text", className = "", value, onChange }) {
+function ProfilePage({ session, navigate }) {
+  const [currentTab, setCurrentTab] = useState("view");
+  const [loading, setLoading] = useState(false);
+  const [downloads, setDownloads] = useState([]);
+  const [formData, setFormData] = useState({
+    nome: "",
+    sobrenome: "",
+    email: "",
+    telefone: "",
+    data_nascimento: "",
+    sexo: "m",
+    genero: "",
+    estado: "",
+    cidade: "",
+    bairro: "",
+    logradouro: "",
+    numero: "",
+    complemento: "",
+  });
+
+  useEffect(() => {
+    if (!session?.id_usuario) return;
+    fetch("/routes.php?rota=perfil", { credentials: "include" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok || !data.sucesso)
+          throw new Error(data.erro || "Erro ao carregar perfil.");
+        setFormData((previous) => ({ ...previous, ...data.data }));
+      })
+      .catch((error) => console.error("Erro ao carregar perfil:", error));
+  }, [session?.id_usuario]);
+
+  const fetchDownloads = async () => {
+    try {
+      const response = await fetch("/routes.php?rota=downloads", {
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (!response.ok || !data.sucesso)
+        throw new Error(data.erro || "Erro ao carregar downloads.");
+      setDownloads(data.data || []);
+    } catch (error) {
+      console.error("Erro ao carregar downloads:", error);
+      window.alert("Não foi possível carregar o histórico de downloads.");
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((previous) => ({ ...previous, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch("/routes.php?rota=atualizar-perfil", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.sucesso)
+        throw new Error(data.erro || "Erro ao atualizar informações.");
+      window.alert("Informações atualizadas com sucesso!");
+      setCurrentTab("view");
+    } catch (error) {
+      window.alert(error.message || "Erro ao atualizar informações.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sair = async () => {
+    try {
+      await fetch("/routes.php?rota=logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } finally {
+      window.location.assign("/login");
+    }
+  };
+
+  if (!session?.id_usuario)
+    return (
+      <PermissionNotice
+        navigate={navigate}
+        message="Entre em uma conta para acessar seu perfil."
+      />
+    );
+
+  const sexoLabel =
+    formData.sexo === "m" || formData.sexo === "Masculino"
+      ? "Masculino"
+      : formData.sexo === "f" || formData.sexo === "Feminino"
+        ? "Feminino"
+        : "Não informado";
+  const profileFields = [
+    ["E-mail", formData.email],
+    ["Telefone", formData.telefone],
+    ["Data de nascimento", formData.data_nascimento],
+    ["Sexo", sexoLabel],
+    ["Gênero", formData.genero],
+    ["Estado", formData.estado],
+    ["Cidade", formData.cidade],
+    ["Bairro", formData.bairro],
+    ["Logradouro", formData.logradouro],
+    ["Número", formData.numero],
+    ["Complemento", formData.complemento || "Não informado"],
+  ];
+
+  return (
+    <div className="library-app">
+      <LibraryNav active="profile" session={session} navigate={navigate} />
+      <main className="main">
+        <section className="profile-page">
+          <div className="profile-header">
+            <div
+              className="profile-avatar"
+              dangerouslySetInnerHTML={{ __html: icons.user }}
+            />
+            <h1>
+              {formData.nome || "Nome"} {formData.sobrenome || "e sobrenome"}
+            </h1>
+            <div className="profile-actions">
+              {currentTab === "view" && (
+                <>
+                  <button
+                    type="button"
+                    className="profile-button"
+                    onClick={() => setCurrentTab("edit")}
+                  >
+                    Editar informações
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-button secondary"
+                    onClick={() => {
+                      fetchDownloads();
+                      setCurrentTab("downloads");
+                    }}
+                  >
+                    Histórico de downloads
+                  </button>
+                </>
+              )}
+              {currentTab === "edit" && (
+                <button
+                  type="button"
+                  className="profile-button"
+                  onClick={() => setCurrentTab("view")}
+                >
+                  Voltar
+                </button>
+              )}
+              {currentTab === "downloads" && (
+                <>
+                  <button
+                    type="button"
+                    className="profile-button"
+                    onClick={() => setCurrentTab("edit")}
+                  >
+                    Informações pessoais
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-button secondary"
+                    onClick={fetchDownloads}
+                  >
+                    Atualizar histórico
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                className="profile-button logout"
+                onClick={sair}
+              >
+                Sair
+              </button>
+            </div>
+          </div>
+
+          {currentTab === "view" && (
+            <section className="profile-section">
+              <h2>Informações pessoais</h2>
+              <div className="profile-grid">
+                {profileFields.map(([label, value]) => (
+                  <div className="profile-field" key={label}>
+                    <span>{label}</span>
+                    <strong>{value || "Não informado"}</strong>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {currentTab === "edit" && (
+            <form className="profile-form" onSubmit={handleSubmit}>
+              <h2>Editar informações</h2>
+              <div className="profile-edit-grid">
+                {[
+                  ["nome", "Nome"],
+                  ["sobrenome", "Sobrenome"],
+                  ["email", "E-mail"],
+                  ["telefone", "Telefone"],
+                  ["data_nascimento", "Data de nascimento"],
+                  ["genero", "Gênero"],
+                  ["estado", "Estado"],
+                  ["cidade", "Cidade"],
+                  ["bairro", "Bairro"],
+                  ["logradouro", "Logradouro"],
+                  ["numero", "Número"],
+                  ["complemento", "Complemento"],
+                ].map(([name, label]) => (
+                  <label className="profile-input-field" key={name}>
+                    {label}
+                    <input
+                      name={name}
+                      type={
+                        name === "email"
+                          ? "email"
+                          : name === "data_nascimento"
+                            ? "date"
+                            : "text"
+                      }
+                      required={[
+                        "nome",
+                        "sobrenome",
+                        "email",
+                        "data_nascimento",
+                        "genero",
+                        "estado",
+                        "cidade",
+                        "bairro",
+                      ].includes(name)}
+                      value={formData[name] || ""}
+                      onChange={handleChange}
+                    />
+                  </label>
+                ))}
+                <fieldset className="profile-input-field profile-sex-field">
+                  <legend>Sexo</legend>
+                  <label>
+                    <input
+                      type="radio"
+                      name="sexo"
+                      value="m"
+                      checked={
+                        formData.sexo === "m" || formData.sexo === "Masculino"
+                      }
+                      onChange={handleChange}
+                    />{" "}
+                    Masculino
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="sexo"
+                      value="f"
+                      checked={
+                        formData.sexo === "f" || formData.sexo === "Feminino"
+                      }
+                      onChange={handleChange}
+                    />{" "}
+                    Feminino
+                  </label>
+                </fieldset>
+              </div>
+              <button type="submit" className="primary-btn" disabled={loading}>
+                {loading ? "Salvando..." : "Salvar"}
+              </button>
+            </form>
+          )}
+
+          {currentTab === "downloads" && (
+            <section className="profile-section">
+              <h2>Downloads da conta</h2>
+              {downloads.length ? (
+                downloads.map((grupo) => (
+                  <div className="download-group" key={grupo.data}>
+                    <h3>Baixados em {grupo.data}</h3>
+                    {grupo.itens.map((item) => (
+                      <article className="download-item" key={item.id}>
+                        <span
+                          className="download-item-icon"
+                          dangerouslySetInnerHTML={{ __html: icons.cloudArrow }}
+                        />
+                        <div>
+                          <strong>{item.titulo}</strong>
+                          <p>{item.descricao}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ))
+              ) : (
+                <p className="profile-empty">Nenhum download registrado.</p>
+              )}
+            </section>
+          )}
+        </section>
+      </main>
+    </div>
+  );
+}
+
+function Input({
+  label,
+  placeholder,
+  type = "text",
+  className = "",
+  value,
+  onChange,
+}) {
   return (
     <Form.Group className={`field ${className}`} controlId={label}>
       <Form.Label>{label}</Form.Label>
-      <Form.Control type={type} placeholder={placeholder} value={value} onChange={onChange} />
+      <Form.Control
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
     </Form.Group>
   );
 }
 
 function ResetarSenha() {
-
   const parametros = new URLSearchParams(window.location.search);
   const token = parametros.get("token");
 
@@ -842,7 +1535,7 @@ function ResetarSenha() {
     e.preventDefault();
     setErroInput("");
 
-    if(!token) {
+    if (!token) {
       setErroInput("Token de recuperação inválido");
       return;
     }
@@ -852,28 +1545,28 @@ function ResetarSenha() {
       return;
     }
 
-    if(senha !== confirmarSenha) {
+    if (senha !== confirmarSenha) {
       setErroInput("*As senhas devem ser iguais.");
       return;
     }
-    
-    try{
+
+    try {
       const resposta = await fetch(`/routes.php?rota=redefinir-senha`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({token, senha, confirmarSenha}),
+        body: JSON.stringify({ token, senha, confirmarSenha }),
       });
 
       const dados = await resposta.json();
 
-      if (resposta.ok && dados.sucesso) { 
+      if (resposta.ok && dados.sucesso) {
         window.alert(dados.mensagem || "Senha resetada com sucesso.");
       } else {
         setErroInput(dados.erro || "Não foi possível resetar a senha.");
       }
-    } catch(erro) {
-      setErroInput("Erro ao se comunicar com o servidor. Tente novamente.")
+    } catch (erro) {
+      setErroInput("Erro ao se comunicar com o servidor. Tente novamente.");
     }
   }
 
@@ -886,21 +1579,21 @@ function ResetarSenha() {
         <h1>Recuperar Senha</h1>
         <form onSubmit={validarSenha}>
           <div className="form-fields">
-            <Input 
-              label="Senha" 
-              placeholder="Senha" 
-              type="password" 
-              value={senha} 
-              onChange={(e) => setSenha(e.target.value)} 
+            <Input
+              label="Senha"
+              placeholder="Senha"
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
             />
           </div>
           <div className="form-fields">
-            <Input 
-              label="Confirmar senha" 
-              placeholder="Insira a mesma senha" 
-              type="password" 
-              value={confirmarSenha} 
-              onChange={(e) => setConfirmarSenha(e.target.value)} 
+            <Input
+              label="Confirmar senha"
+              placeholder="Insira a mesma senha"
+              type="password"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
             />
             {erroInput && <span className="form-error">{erroInput}</span>}
           </div>
@@ -916,9 +1609,9 @@ function ResetarSenha() {
 function RecuperarSenha() {
   const [email, setEmail] = useState("");
   const [erroEmail, setErroEmail] = useState("");
-  
+
   const padraoEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  
+
   async function validarEmail(e) {
     e.preventDefault();
     setErroEmail("");
@@ -935,13 +1628,16 @@ function RecuperarSenha() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({email}),
+        body: JSON.stringify({ email }),
       });
 
       const dados = await resposta.json();
 
-      if (resposta.ok && dados.sucesso) { 
-        window.alert(dados.mensagem || "Se o e-mail estiver cadastrado, você receberá as instruções para recuperar sua senha.");
+      if (resposta.ok && dados.sucesso) {
+        window.alert(
+          dados.mensagem ||
+            "Se o e-mail estiver cadastrado, você receberá as instruções para recuperar sua senha.",
+        );
       } else {
         setErroEmail(dados.erro || "Não foi possível solicitar a recuperação.");
       }
@@ -949,7 +1645,7 @@ function RecuperarSenha() {
       setErroEmail("Erro ao se comunicar com o servidor.");
     }
   }
-  
+
   return (
     <main className="form-page cadastro-page">
       <section className="form-card cadastro-card">
@@ -959,12 +1655,13 @@ function RecuperarSenha() {
         <h1>Recuperar Senha</h1>
         <form onSubmit={validarEmail}>
           <div className="form-fields">
-            <Input 
-              label="E-mail" 
+            <Input
+              label="E-mail"
               type="email"
-              placeholder="E-mail" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} />
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             {erroEmail && <span className="form-error">{erroEmail}</span>}
           </div>
           <Button type="submit" className="btn-orange btn-large form-submit">
@@ -1001,9 +1698,12 @@ function Cadastro() {
 
     if (!nome.trim()) novosErros.nome = "O nome é obrigatório.";
     if (!sobrenome.trim()) novosErros.sobrenome = "*O sobrenome é obrigatório.";
-    if (!email.includes("@") || !email.includes(".")) novosErros.email = "*Digite um e-mail válido.";
-    if (senha.length < 8) novosErros.senha = "*A senha deve ter pelo menos 8 caracteres.";
-    if (!dataNascimento) novosErros.dataNascimento = "*A data de nascimento é obrigatória.";
+    if (!email.includes("@") || !email.includes("."))
+      novosErros.email = "*Digite um e-mail válido.";
+    if (senha.length < 8)
+      novosErros.senha = "*A senha deve ter pelo menos 8 caracteres.";
+    if (!dataNascimento)
+      novosErros.dataNascimento = "*A data de nascimento é obrigatória.";
     if (!sexo) novosErros.sexo = "*Selecione o sexo.";
     if (!genero) novosErros.genero = "*Selecione o gênero.";
 
@@ -1065,59 +1765,160 @@ function Cadastro() {
         <form onSubmit={cadastrar}>
           <div className="form-fields">
             <div>
-              <Input label="Nome" placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+              <Input
+                label="Nome"
+                placeholder="Nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
               {erros.nome && <span className="form-error">{erros.nome}</span>}
             </div>
 
             <div>
-              <Input label="Sobrenome" placeholder="Sobrenome" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} />
-              {erros.sobrenome && <span className="form-error">{erros.sobrenome}</span>}
+              <Input
+                label="Sobrenome"
+                placeholder="Sobrenome"
+                value={sobrenome}
+                onChange={(e) => setSobrenome(e.target.value)}
+              />
+              {erros.sobrenome && (
+                <span className="form-error">{erros.sobrenome}</span>
+              )}
             </div>
 
             <div>
-              <Input label="E-mail" placeholder="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                label="E-mail"
+                placeholder="E-mail"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               {erros.email && <span className="form-error">{erros.email}</span>}
             </div>
 
             <div>
-              <Input label="Senha" placeholder="Senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+              <Input
+                label="Senha"
+                placeholder="Senha"
+                type="password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
               {erros.senha && <span className="form-error">{erros.senha}</span>}
             </div>
 
             <div className="field-row compact-row">
               <div>
-                <Input label="Telefone" placeholder="(11) 11111-1111" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                <Input
+                  label="Telefone"
+                  placeholder="(11) 11111-1111"
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
+                />
               </div>
               <div>
-                <Input label="Data de nascimento" placeholder="dd/mm/aaaa" type="date" value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} />
-                {erros.dataNascimento && <span className="form-error">{erros.dataNascimento}</span>}
+                <Input
+                  label="Data de nascimento"
+                  placeholder="dd/mm/aaaa"
+                  type="date"
+                  value={dataNascimento}
+                  onChange={(e) => setDataNascimento(e.target.value)}
+                />
+                {erros.dataNascimento && (
+                  <span className="form-error">{erros.dataNascimento}</span>
+                )}
               </div>
             </div>
 
             <fieldset className="radio-group">
               <legend>Sexo:</legend>
-              <Form.Check inline type="radio" name="sexo" label="Masculino" value="m" onChange={(e) => setSexo(e.target.value)} />
-              <Form.Check inline type="radio" name="sexo" label="Feminino" value="f" onChange={(e) => setSexo(e.target.value)} />
-              {erros.sexo && <span className="form-error" style={{ display: "block" }}>{erros.sexo}</span>}
+              <Form.Check
+                inline
+                type="radio"
+                name="sexo"
+                label="Masculino"
+                value="m"
+                onChange={(e) => setSexo(e.target.value)}
+              />
+              <Form.Check
+                inline
+                type="radio"
+                name="sexo"
+                label="Feminino"
+                value="f"
+                onChange={(e) => setSexo(e.target.value)}
+              />
+              {erros.sexo && (
+                <span className="form-error" style={{ display: "block" }}>
+                  {erros.sexo}
+                </span>
+              )}
             </fieldset>
 
             <fieldset className="radio-group gender-group">
               <legend>Gênero:</legend>
               <div className="gender-options">
-                <Form.Check inline type="radio" name="genero" label="Masculino" value="Masculino" onChange={(e) => setGenero(e.target.value)} />
-                <Form.Check inline type="radio" name="genero" label="Feminino" value="Feminino" onChange={(e) => setGenero(e.target.value)} />
-                <Form.Check inline type="radio" name="genero" label="Não binário" value="Não binário" onChange={(e) => setGenero(e.target.value)} />
-                <Form.Check inline type="radio" name="genero" label="Outro:" value="Outro" onChange={(e) => setGenero(e.target.value)} />
-                <Form.Control className="other-input" placeholder="Outro" value={outroGenero} onChange={(e) => setOutroGenero(e.target.value)} disabled={genero !== "Outro"} />
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Masculino"
+                  value="Masculino"
+                  onChange={(e) => setGenero(e.target.value)}
+                />
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Feminino"
+                  value="Feminino"
+                  onChange={(e) => setGenero(e.target.value)}
+                />
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Não binário"
+                  value="Não binário"
+                  onChange={(e) => setGenero(e.target.value)}
+                />
+                <Form.Check
+                  inline
+                  type="radio"
+                  name="genero"
+                  label="Outro:"
+                  value="Outro"
+                  onChange={(e) => setGenero(e.target.value)}
+                />
+                <Form.Control
+                  className="other-input"
+                  placeholder="Outro"
+                  value={outroGenero}
+                  onChange={(e) => setOutroGenero(e.target.value)}
+                  disabled={genero !== "Outro"}
+                />
               </div>
-              {erros.genero && <span className="form-error" style={{ display: "block" }}>{erros.genero}</span>}
-              {erros.outroGenero && <span className="form-error" style={{ display: "block" }}>{erros.outroGenero}</span>}
+              {erros.genero && (
+                <span className="form-error" style={{ display: "block" }}>
+                  {erros.genero}
+                </span>
+              )}
+              {erros.outroGenero && (
+                <span className="form-error" style={{ display: "block" }}>
+                  {erros.outroGenero}
+                </span>
+              )}
             </fieldset>
 
             <div className="state-city-row">
               <label className="field state-field">
                 <span>Estado</span>
-                <select className="select-button" value={estado} onChange={(e) => setEstado(e.target.value)}>
+                <select
+                  className="select-button"
+                  value={estado}
+                  onChange={(e) => setEstado(e.target.value)}
+                >
                   <option value="">Selecionar</option>
                   <option value="AC">AC</option>
                   <option value="AL">AL</option>
@@ -1147,30 +1948,62 @@ function Cadastro() {
                   <option value="SE">SE</option>
                   <option value="TO">TO</option>
                 </select>
-                {erros.estado && <span className="form-error">{erros.estado}</span>}
+                {erros.estado && (
+                  <span className="form-error">{erros.estado}</span>
+                )}
               </label>
 
               <div>
-                <Input label="Cidade" placeholder="Cidade" className="city-field" value={cidade} onChange={(e) => setCidade(e.target.value)} />
-                {erros.cidade && <span className="form-error">{erros.cidade}</span>}
+                <Input
+                  label="Cidade"
+                  placeholder="Cidade"
+                  className="city-field"
+                  value={cidade}
+                  onChange={(e) => setCidade(e.target.value)}
+                />
+                {erros.cidade && (
+                  <span className="form-error">{erros.cidade}</span>
+                )}
               </div>
             </div>
 
             <div>
-              <Input label="Bairro" placeholder="Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} />
-              {erros.bairro && <span className="form-error">{erros.bairro}</span>}
+              <Input
+                label="Bairro"
+                placeholder="Bairro"
+                value={bairro}
+                onChange={(e) => setBairro(e.target.value)}
+              />
+              {erros.bairro && (
+                <span className="form-error">{erros.bairro}</span>
+              )}
             </div>
 
             <div>
-              <Input label="Logradouro" placeholder="Logradouro" value={logradouro} onChange={(e) => setLogradouro(e.target.value)} />
+              <Input
+                label="Logradouro"
+                placeholder="Logradouro"
+                value={logradouro}
+                onChange={(e) => setLogradouro(e.target.value)}
+              />
             </div>
 
             <div className="field-row address-row">
               <div>
-                <Input label="Número" placeholder="Número" value={numero} onChange={(e) => setNumero(e.target.value)} />
+                <Input
+                  label="Número"
+                  placeholder="Número"
+                  value={numero}
+                  onChange={(e) => setNumero(e.target.value)}
+                />
               </div>
               <div>
-                <Input label="Complemento" placeholder="Complemento" value={complemento} onChange={(e) => setComplemento(e.target.value)} />
+                <Input
+                  label="Complemento"
+                  placeholder="Complemento"
+                  value={complemento}
+                  onChange={(e) => setComplemento(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -1213,12 +2046,12 @@ function Login() {
     if (temErro) return;
 
     let rotaTipo;
-    if(tipo == "us") {
+    if (tipo === "us") {
       rotaTipo = "cliente";
     } else {
       rotaTipo = "administrador";
     }
-    
+
     const resposta = await fetch(`/routes.php?rota=login&tipo=${rotaTipo}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1229,7 +2062,7 @@ function Login() {
     const dados = await resposta.json();
 
     if (resposta.ok && dados.sucesso) {
-      window.location.assign("/teste.php");
+      window.location.assign("/biblioteca");
     } else {
       setErroSenha(dados.erro);
     }
@@ -1238,7 +2071,11 @@ function Login() {
   return (
     <main className="login-page">
       <section className="login-panel">
-        <form className="login-form" aria-label="Formulário de login" onSubmit={validarLogin}>
+        <form
+          className="login-form"
+          aria-label="Formulário de login"
+          onSubmit={validarLogin}
+        >
           <a href="/" aria-label="Voltar para a página inicial">
             <img className="login-logo" src={logo} alt="Legados Culturais" />
           </a>
@@ -1246,14 +2083,28 @@ function Login() {
             <h1>Entrar</h1>
             <div className="account-type">
               <span>Tipo de conta:</span>
-              <select className="select-button" onChange={(e) => setTipo(e.target.value)}>
+              <select
+                className="select-button"
+                onChange={(e) => setTipo(e.target.value)}
+              >
                 <option value="us">Usuário</option>
-                <option value="ad">Admin</option>
+                <option value="adm">Admin</option>
               </select>
             </div>
-            <Input label="E-mail" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              label="E-mail"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             {erroEmail && <span className="form-error">{erroEmail}</span>}
-            <Input label="Senha" placeholder="Senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+            <Input
+              label="Senha"
+              placeholder="Senha"
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
             {erroSenha && <span className="form-error">{erroSenha}</span>}
             <div className="forgot-password">
               <a href="/recuperar-senha">Esqueci a minha senha?</a>
@@ -1264,38 +2115,127 @@ function Login() {
           </div>
         </form>
       </section>
-      <div className="login-image" style={{ backgroundImage: `linear-gradient(rgba(32,32,24,.30), rgba(32,32,24,.30)), url(${cityPhoto})` }} aria-hidden="true" />
+      <div
+        className="login-image"
+        style={{
+          backgroundImage: `linear-gradient(rgba(32,32,24,.30), rgba(32,32,24,.30)), url(${cityPhoto})`,
+        }}
+        aria-hidden="true"
+      />
     </main>
   );
 }
 
 export default function App() {
   const [repos, setRepos] = useState(loadRepos);
+  const [session, setSession] = useState({
+    loading: true,
+    id_usuario: null,
+    tipo: null,
+  });
   const { path, navigate } = useLibraryLocation();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    let ativo = true;
+    fetch("/routes.php?rota=sessao", { credentials: "include" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok)
+          throw new Error(data.erro || "Não foi possível verificar a sessão.");
+        if (ativo)
+          setSession({
+            loading: false,
+            id_usuario: data.id_usuario || null,
+            tipo: data.tipo || null,
+          });
+      })
+      .catch((error) => {
+        console.warn("Sessão não disponível:", error);
+        if (ativo) setSession({ loading: false, id_usuario: null, tipo: null });
+      });
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let ativo = true;
+    fetch("/routes.php?rota=exibirRepositorios", { credentials: "include" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (response.ok && data.sucesso && ativo)
+          setRepos(data.repositorios || []);
+      })
+      .catch((error) =>
+        console.warn(
+          "A lista do servidor não está disponível; mantendo dados locais.",
+          error,
+        ),
+      );
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined")
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(repos));
-    }
   }, [repos]);
 
   if (path === "/cadastro" || path === "/cadastro/") return <Cadastro />;
   if (path === "/login" || path === "/login/") return <Login />;
-  if (path === "/biblioteca" || path === "/biblioteca/") return <LibraryPage repos={repos} setRepos={setRepos} navigate={navigate} />;
-  if (path === "/biblioteca/usuarios" || path === "/biblioteca/usuarios/") return <UsersPage />;
-  if (path === "/biblioteca/novo" || path === "/biblioteca/novo/") return <FormPage repos={repos} setRepos={setRepos} navigate={navigate} mode="create" />;
-  if(path === "/recuperar-senha" || path === "/recuperar-senha/") return <RecuperarSenha />;
-  if(path === "/resetar-senha" || path === "/resetar-senha/") return <ResetarSenha />;
+  if (path === "/perfil" || path === "/perfil/")
+    return <ProfilePage session={session} navigate={navigate} />;
+  if (path === "/biblioteca" || path === "/biblioteca/")
+    return (
+      <LibraryPage
+        repos={repos}
+        setRepos={setRepos}
+        navigate={navigate}
+        session={session}
+      />
+    );
+  if (path === "/biblioteca/usuarios" || path === "/biblioteca/usuarios/")
+    return <UsersPage session={session} navigate={navigate} />;
+  if (path === "/biblioteca/novo" || path === "/biblioteca/novo/")
+    return (
+      <FormPage
+        repos={repos}
+        setRepos={setRepos}
+        navigate={navigate}
+        mode="create"
+        session={session}
+      />
+    );
+  if (path === "/recuperar-senha" || path === "/recuperar-senha/")
+    return <RecuperarSenha />;
+  if (path === "/resetar-senha" || path === "/resetar-senha/")
+    return <ResetarSenha />;
 
   const repoMatch = path.match(/^\/biblioteca\/repositorio\/(\d+)$/);
-  if (repoMatch) {
-    return <RepositoryPage repos={repos} setRepos={setRepos} navigate={navigate} repoId={repoMatch[1]} />;
-  }
+  if (repoMatch)
+    return (
+      <RepositoryPage
+        repos={repos}
+        setRepos={setRepos}
+        navigate={navigate}
+        repoId={repoMatch[1]}
+        session={session}
+      />
+    );
 
   const editMatch = path.match(/^\/biblioteca\/editar\/(\d+)$/);
-  if (editMatch) {
-    return <FormPage repos={repos} setRepos={setRepos} navigate={navigate} repoId={editMatch[1]} mode="edit" />;
-  }
+  if (editMatch)
+    return (
+      <FormPage
+        repos={repos}
+        setRepos={setRepos}
+        navigate={navigate}
+        repoId={editMatch[1]}
+        mode="edit"
+        session={session}
+      />
+    );
 
   return <Home />;
 }
