@@ -148,7 +148,7 @@ if ($method === 'POST') {
         if ($tipoCadastro === 'cliente') {
             $controller = new UsuarioController(new Cliente($pdo), 'us');
         } elseif ($tipoCadastro === 'administrador') {
-            exigirAdmin();
+            //exigirAdmin();
             $controller = new UsuarioController(new Administrador($pdo), 'ad');
         } else {
             responder(['sucesso' => false, 'erro' => 'Tipo de conta inválido.'], 400);

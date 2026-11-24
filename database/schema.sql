@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS usuario(
 	id_usuario INTEGER GENERATED ALWAYS AS IDENTITY,
-	tipo CHAR(2) DEFAULT 'us',
+	tipo CHAR(3) DEFAULT 'us',
 	nome VARCHAR(50) NOT NULL,
 	sobrenome VARCHAR(100) NOT NULL,
 	email VARCHAR(250) NOT NULL,
@@ -209,6 +209,16 @@ RETURNS TRIGGER LANGUAGE plpgsql AS $$
 	END;
 $$;
 
+-- DELETAR RECUPERACAO_SENHA SEM UM USUARIO CORRESPONDENTE
+CREATE OR REPLACE FUNCTION function_delete_recuperacao_usuario()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM recuperacao_senha
+		WHERE id_usuario = OLD.id_usuario;
+		RETURN OLD;
+	END;
+$$;
+
 -- TRIGGERS
 -- USUARIO SEM CORRESPONDENCIA EM HISTORICO APOS DELETE 
 CREATE TRIGGER trigger_fk_historico_usuario
@@ -257,3 +267,9 @@ CREATE TRIGGER trigger_fk_detalhe_tag_repositorio
 BEFORE DELETE ON repositorio
 FOR EACH ROW
 EXECUTE FUNCTION function_delete_detalhe_tag_repositorio();
+
+--RECUPERACAO_SENHA SEM CORRESPONDENCIA DE USUARIO
+CREATE TRIGGER trigger_fk_recuperacao_usuario
+BEFORE DELETE ON usuario
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_recuperacao_usuario();
