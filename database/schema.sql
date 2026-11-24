@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS repositorio(
 
 CREATE TABLE IF NOT EXISTS historico(
 	id_historico INTEGER GENERATED ALWAYS AS IDENTITY,
-	data_historico TIMESTAMP NOT NULL,
+	data_historico TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	id_usuario INTEGER NOT NULL,
 	id_repositorio INTEGER NOT NULL,
 
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS estrela(
 
 	CONSTRAINT pk_estrela
 		PRIMARY KEY (id_estrela),
-	CONSTRAINT fk_estrela_usuario
+	CONSTRAINT fk_estrela_usuario 
 		FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
 	CONSTRAINT fk_estrela_repositorio
 		FOREIGN KEY (id_repositorio) REFERENCES repositorio(id_repositorio)
@@ -127,5 +127,133 @@ CREATE TABLE recuperacao_senha (
 	CONSTRAINT uk_token
 		UNIQUE (token)
 );
--- Migração para bancos já criados antes do campo nome_arquivo.
-ALTER TABLE repositorio ADD COLUMN IF NOT EXISTS nome_arquivo VARCHAR(255);
+
+-- FUNCTIONS
+-- DELETAR HISTORICO DE USUARIO INEXISTENTE
+CREATE OR REPLACE FUNCTION function_delete_historico_usuario()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM historico
+		WHERE id_usuario = OLD.id_usuario;
+		RETURN OLD;
+	END;
+$$;
+
+-- DELETAR HISTORICO DE REPOSITORIO INEXISTENTE
+CREATE OR REPLACE FUNCTION function_delete_historico_repositorio()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM historico
+		WHERE id_repositorio = OLD.id_repositorio;
+		RETURN OLD;
+	END;
+$$;
+
+-- DELETAR COMENTARIO DE USUARIO INEXISTENTE
+CREATE OR REPLACE FUNCTION function_delete_comentario_usuario()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM comentario
+		WHERE id_usuario = OLD.id_usuario;
+		RETURN OLD;
+	END;
+$$;
+
+-- DELETAR COMENTARIO DE REPOSITORIO INEXISTENTE
+CREATE OR REPLACE FUNCTION function_delete_comentario_repositorio()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM comentario
+		WHERE id_repositorio = OLD.id_repositorio;
+		RETURN OLD;
+	END;
+$$;	
+
+-- DELETAR COMENTARIO RESPOSTA SEM UM COMENTARIO RESPONDIDO CORRESPONDENTE
+CREATE OR REPLACE FUNCTION function_delete_comentario_resposta()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM comentario
+		WHERE id_comentario_resposta = OLD.id_comentario;
+		RETURN OLD;
+	END;
+$$;
+
+-- DELETAR ESTRELA SEM UM USUARIO CORRESPONDENTE
+CREATE OR REPLACE FUNCTION function_delete_estrela_usuario()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM estrela
+		WHERE id_usuario = OLD.id_usuario;
+		return OLD;
+	END;
+$$;
+
+-- DELETAR ESTRELA SEM UM REPOSITORIO CORRESPONDENTE
+CREATE OR REPLACE FUNCTION function_delete_estrela_repositorio()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN
+		DELETE FROM estrela
+		WHERE id_repositorio = OLD.id_repositorio;
+		return OLD;
+	END;
+$$;
+
+-- DELETAR DETALHE_TAG SEM UM REPOSITORIO CORRESPONDENTE
+CREATE OR REPLACE FUNCTION function_delete_detalhe_tag_repositorio()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+	BEGIN 
+		DELETE FROM detalhe_tag
+		WHERE id_repositorio = OLD.id_repositorio;
+		RETURN OLD;
+	END;
+$$;
+
+-- TRIGGERS
+-- USUARIO SEM CORRESPONDENCIA EM HISTORICO APOS DELETE 
+CREATE TRIGGER trigger_fk_historico_usuario
+BEFORE DELETE ON usuario
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_historico_usuario();
+
+-- REPOSITORIO SEM CORRESPONDENCIA EM HISTORICO APOS DELETE 	
+CREATE TRIGGER trigger_fk_historico_repositorio
+BEFORE DELETE ON repositorio
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_historico_repositorio();
+
+-- USUARIO SEM CORRESPONDENCIA EM COMENTARIO APOS DELETE 
+CREATE TRIGGER trigger_fk_comentario_usuario
+BEFORE DELETE ON usuario
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_comentario_usuario();
+
+-- REPOSITORIO SEM CORRESPONDENCIA EM COMENTARIO APOS DELETE 
+CREATE TRIGGER trigger_fk_comentario_repositorio
+BEFORE DELETE ON repositorio
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_comentario_repositorio();
+
+-- COMENTARIO DE RESPOSTA SEM CORRESPONDENCIA NO COMENTARIO RESPONDIDO APOS DELETE 
+CREATE TRIGGER trigger_fk_comentario_resposta
+BEFORE DELETE ON comentario
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_comentario_resposta();
+
+-- USUARIO SEM CORRESPONDENCIA EM ESTRELA
+CREATE TRIGGER trigger_fk_estrela_usuario
+BEFORE DELETE ON usuario
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_estrela_usuario();
+
+-- REPOSITORIO SEM CORRESPONDENCIA EM ESTRELA
+CREATE TRIGGER trigger_fk_estrela_repositorio
+BEFORE DELETE ON repositorio
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_estrela_repositorio();
+
+-- REPOSITORIO SEM CORRESPONDENCIA EM DETALHE_TAG
+CREATE TRIGGER trigger_fk_detalhe_tag_repositorio
+BEFORE DELETE ON repositorio
+FOR EACH ROW
+EXECUTE FUNCTION function_delete_detalhe_tag_repositorio();
