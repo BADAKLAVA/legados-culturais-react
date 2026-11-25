@@ -343,7 +343,7 @@ function LibraryNav({ active, session, navigate }) {
         type="button"
         title="Configurações"
         aria-label="Configurações"
-        onClick={() => window.alert("Configurações: ainda não disponíveis.")}
+        onClick={() => navigate("/configuracoes")}
         dangerouslySetInnerHTML={{ __html: icons.settings }}
       />
       <button
@@ -476,7 +476,8 @@ function LibraryPage({ repos, setRepos, navigate, session }) {
   return (
     <div className="library-app">
       <LibraryNav active="library" session={session} navigate={navigate} />
-      <main className="main">
+      <TextReader />
+      <main className="main" id="conteudo-leitura">
         <a
           href="/"
           className="brand brand-link"
@@ -672,7 +673,8 @@ function RepositoryPage({ repos, setRepos, navigate, repoId, session }) {
   return (
     <div className="library-app">
       <LibraryNav active="library" session={session} navigate={navigate} />
-      <main className="main">
+      <TextReader />
+      <main className="main" id="conteudo-leitura">
         <div className="repo-page">
           <div className="header-line">
             <button
@@ -996,7 +998,8 @@ function FormPage({ repos, setRepos, navigate, repoId, mode, session }) {
   return (
     <div className="library-app">
       <LibraryNav active="library" session={session} navigate={navigate} />
-      <main className="main">
+      <TextReader />
+      <main className="main" id="conteudo-leitura">
         <div className="form-page">
           <div className="form-top">
             <button
@@ -1167,7 +1170,8 @@ function UsersPage({ session, navigate }) {
   return (
     <div className="library-app">
       <LibraryNav active="users" session={session} navigate={navigate} />
-      <main className="main">
+      <TextReader />
+      <main className="main" id="conteudo-leitura">
         <div className="form-page">
           <div className="header-line">
             <button
@@ -1309,7 +1313,8 @@ function ProfilePage({ session, navigate }) {
   return (
     <div className="library-app">
       <LibraryNav active="profile" session={session} navigate={navigate} />
-      <main className="main">
+      <TextReader />
+      <main className="main" id="conteudo-leitura">
         <section className="profile-page">
           <div className="profile-header">
             <div
@@ -1497,6 +1502,384 @@ function ProfilePage({ session, navigate }) {
             </section>
           )}
         </section>
+      </main>
+    </div>
+  );
+}
+
+const preferenciasPadrao = {
+  tamanhoFonte: "16px",
+  espacamento: "1.5",
+  leitorAtivo: "nao",
+};
+
+// Carrega as preferências salvas no navegador
+function carregarPreferencias() {
+  try {
+    const salvas = localStorage.getItem("preferencias");
+
+    if (!salvas) {
+      return { ...preferenciasPadrao };
+    }
+
+    const dados = JSON.parse(salvas);
+
+    return {
+      tamanhoFonte: ["14px", "16px", "20px", "24px"].includes(
+        dados.tamanhoFonte
+      )
+        ? dados.tamanhoFonte
+        : preferenciasPadrao.tamanhoFonte,
+
+      espacamento: ["1.2", "1.5", "2"].includes(dados.espacamento)
+        ? dados.espacamento
+        : preferenciasPadrao.espacamento,
+
+      leitorAtivo: ["sim", "nao"].includes(dados.leitorAtivo)
+        ? dados.leitorAtivo
+        : preferenciasPadrao.leitorAtivo,
+    };
+  } catch (erro) {
+    console.error("Erro ao carregar preferências:", erro);
+
+    return { ...preferenciasPadrao };
+  }
+}
+
+// Aplica as preferências ao documento
+function aplicarPreferencias(preferencias) {
+  if (typeof document === "undefined") return;
+
+  document.documentElement.style.setProperty(
+    "--font-size-base",
+    preferencias.tamanhoFonte
+  );
+
+  document.documentElement.style.setProperty(
+    "--line-height-base",
+    preferencias.espacamento
+  );
+}
+
+function TextReader() {
+  const [ativado, setAtivado] = useState(
+    () => carregarPreferencias().leitorAtivo === "sim"
+  );
+
+  const [estado, setEstado] = useState("parado");
+
+  useEffect(() => {
+    function atualizarPreferencias() {
+      const preferencias = carregarPreferencias();
+
+      setAtivado(preferencias.leitorAtivo === "sim");
+
+      if (
+        preferencias.leitorAtivo === "nao" &&
+        "speechSynthesis" in window
+      ) {
+        window.speechSynthesis.cancel();
+        setEstado("parado");
+      }
+    }
+
+    window.addEventListener(
+      "preferenciasAtualizadas",
+      atualizarPreferencias
+    );
+
+    return () => {
+      window.removeEventListener(
+        "preferenciasAtualizadas",
+        atualizarPreferencias
+      );
+
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  function iniciarLeitura() {
+    if (
+      !("speechSynthesis" in window) ||
+      typeof SpeechSynthesisUtterance === "undefined"
+    ) {
+      window.alert(
+        "Seu navegador não oferece suporte à leitura de texto."
+      );
+      return;
+    }
+
+    const conteudo = document.getElementById("conteudo-leitura");
+
+    if (!conteudo) {
+      window.alert("Não foi encontrado conteúdo para leitura.");
+      return;
+    }
+
+    // Cria uma cópia para não modificar o conteúdo original
+    const copia = conteudo.cloneNode(true);
+
+    // Remove controles e elementos que não precisam ser lidos
+    copia
+      .querySelectorAll(
+        "button, input, select, textarea, svg, [aria-hidden='true']"
+      )
+      .forEach((elemento) => elemento.remove());
+
+    const texto = copia.innerText.trim();
+
+    if (!texto) {
+      window.alert("Não existe texto para leitura nesta página.");
+      return;
+    }
+
+    // Interrompe uma leitura anterior
+    window.speechSynthesis.cancel();
+
+    const fala = new SpeechSynthesisUtterance(texto);
+
+    fala.lang = "pt-BR";
+    fala.rate = 1;
+    fala.pitch = 1;
+
+    // Tenta utilizar uma voz em português
+    const vozes = window.speechSynthesis.getVoices();
+
+    const vozPortugues = vozes.find(
+      (voz) => voz.lang.toLowerCase() === "pt-br"
+    ) || vozes.find(
+      (voz) => voz.lang.toLowerCase().startsWith("pt")
+    );
+
+    if (vozPortugues) {
+      fala.voice = vozPortugues;
+    }
+
+    fala.onstart = () => {
+      setEstado("lendo");
+    };
+
+    fala.onend = () => {
+      setEstado("parado");
+    };
+
+    fala.onerror = () => {
+      setEstado("parado");
+    };
+
+    window.speechSynthesis.speak(fala);
+  }
+
+  function pausarLeitura() {
+    window.speechSynthesis.pause();
+    setEstado("pausado");
+  }
+
+  function continuarLeitura() {
+    window.speechSynthesis.resume();
+    setEstado("lendo");
+  }
+
+  function pararLeitura() {
+    window.speechSynthesis.cancel();
+    setEstado("parado");
+  }
+
+  // Não mostra os controles quando o leitor está desativado
+  if (!ativado) {
+    return null;
+  }
+
+  return (
+    <div className="text-reader" aria-label="Controles do leitor de texto">
+
+      <button
+        type="button"
+        onClick={iniciarLeitura}
+        disabled={estado === "lendo" || estado === "pausado"}
+      >
+        <span aria-hidden="true">🔊</span>
+        Ler página
+      </button>
+
+      {estado === "lendo" && (
+        <button
+          type="button"
+          onClick={pausarLeitura}
+        >
+          Pausar
+        </button>
+      )}
+
+      {estado === "pausado" && (
+        <button
+          type="button"
+          onClick={continuarLeitura}
+        >
+          Continuar
+        </button>
+      )}
+
+      {(estado === "lendo" || estado === "pausado") && (
+        <button
+          type="button"
+          onClick={pararLeitura}
+        >
+          Parar
+        </button>
+      )}
+
+    </div>
+  );
+}
+
+function SettingsPage({ navigate, session }) {
+  const [preferencias, setPreferencias] = useState(carregarPreferencias);
+
+  // Salva e aplica as preferências sempre que forem alteradas
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "preferencias",
+        JSON.stringify(preferencias)
+      );
+    } catch (erro) {
+      console.error("Erro ao salvar preferências:", erro);
+    }
+
+    aplicarPreferencias(preferencias);
+
+    if (
+      preferencias.leitorAtivo === "nao" &&
+      "speechSynthesis" in window
+    ) {
+      window.speechSynthesis.cancel();
+    }
+
+    window.dispatchEvent(new Event("preferenciasAtualizadas"));
+  }, [preferencias]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setPreferencias((anterior) => ({
+      ...anterior,
+      [name]: value,
+    }));
+  }
+
+  return (
+    <div className="library-app">
+      <LibraryNav
+        active="settings"
+        session={session}
+        navigate={navigate}
+      />
+      <TextReader/>
+      <main className="main" id="conteudo-leitura">
+        <div className="form-page">
+          <div className="form-card settings-card">
+            <h1 className="form-title">Configurações</h1>
+
+            <div className="form-fields">
+
+              {/* TAMANHO DA FONTE */}
+              <fieldset className="radio-group">
+                <legend className="settings-label">
+                  Tamanho da fonte
+                </legend>
+
+                <div className="settings-options">
+                  {[
+                    ["14px", "Pequeno"],
+                    ["16px", "Médio"],
+                    ["20px", "Grande"],
+                    ["24px", "Muito grande"],
+                  ].map(([valor, texto]) => (
+                    <label className="settings-radio" key={valor}>
+                      <input
+                        type="radio"
+                        name="tamanhoFonte"
+                        value={valor}
+                        checked={preferencias.tamanhoFonte === valor}
+                        onChange={handleChange}
+                      />
+
+                      {texto}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              {/* ESPAÇAMENTO ENTRE LINHAS */}
+              <fieldset className="radio-group">
+                <legend className="settings-label">
+                  Espaçamento entre linhas
+                </legend>
+
+                <div className="settings-options">
+                  {[
+                    ["1.2", "Pequeno"],
+                    ["1.5", "Normal"],
+                    ["2", "Grande"],
+                  ].map(([valor, texto]) => (
+                    <label className="settings-radio" key={valor}>
+                      <input
+                        type="radio"
+                        name="espacamento"
+                        value={valor}
+                        checked={preferencias.espacamento === valor}
+                        onChange={handleChange}
+                      />
+
+                      {texto}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              {/* LEITOR DE TEXTO */}
+              <fieldset className="radio-group">
+                <legend className="settings-label">
+                  Leitor de texto
+                </legend>
+
+                <div className="settings-options">
+                  <label className="settings-radio">
+                    <input
+                      type="radio"
+                      name="leitorAtivo"
+                      value="sim"
+                      checked={preferencias.leitorAtivo === "sim"}
+                      onChange={handleChange}
+                    />
+
+                    Ativado
+                  </label>
+
+                  <label className="settings-radio">
+                    <input
+                      type="radio"
+                      name="leitorAtivo"
+                      value="nao"
+                      checked={preferencias.leitorAtivo === "nao"}
+                      onChange={handleChange}
+                    />
+
+                    Desativado
+                  </label>
+                </div>
+
+                <p className="settings-description">
+                  Permite ouvir textos e descrições da biblioteca em voz alta.
+                </p>
+              </fieldset>
+
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
@@ -2128,65 +2511,131 @@ function Login() {
 
 export default function App() {
   const [repos, setRepos] = useState(loadRepos);
+
   const [session, setSession] = useState({
     loading: true,
     id_usuario: null,
     tipo: null,
   });
+
   const { path, navigate } = useLibraryLocation();
 
+  // Verifica a sessão do usuário
   useEffect(() => {
     let ativo = true;
-    fetch("/routes.php?rota=sessao", { credentials: "include" })
+
+    fetch("/routes.php?rota=sessao", {
+      credentials: "include",
+    })
       .then(async (response) => {
         const data = await response.json();
-        if (!response.ok)
-          throw new Error(data.erro || "Não foi possível verificar a sessão.");
-        if (ativo)
+
+        if (!response.ok) {
+          throw new Error(
+            data.erro || "Não foi possível verificar a sessão."
+          );
+        }
+
+        if (ativo) {
           setSession({
             loading: false,
             id_usuario: data.id_usuario || null,
             tipo: data.tipo || null,
           });
+        }
       })
       .catch((error) => {
         console.warn("Sessão não disponível:", error);
-        if (ativo) setSession({ loading: false, id_usuario: null, tipo: null });
+
+        if (ativo) {
+          setSession({
+            loading: false,
+            id_usuario: null,
+            tipo: null,
+          });
+        }
       });
+
     return () => {
       ativo = false;
     };
   }, []);
 
+  // Carrega os repositórios do servidor
   useEffect(() => {
     let ativo = true;
-    fetch("/routes.php?rota=exibirRepositorios", { credentials: "include" })
+
+    fetch("/routes.php?rota=exibirRepositorios", {
+      credentials: "include",
+    })
       .then(async (response) => {
         const data = await response.json();
-        if (response.ok && data.sucesso && ativo)
+
+        if (response.ok && data.sucesso && ativo) {
           setRepos(data.repositorios || []);
+        }
       })
       .catch((error) =>
         console.warn(
           "A lista do servidor não está disponível; mantendo dados locais.",
-          error,
-        ),
+          error
+        )
       );
+
     return () => {
       ativo = false;
     };
   }, []);
 
+  // Salva os repositórios no navegador
   useEffect(() => {
-    if (typeof window !== "undefined")
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(repos));
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(repos)
+      );
+    }
   }, [repos]);
 
-  if (path === "/cadastro" || path === "/cadastro/") return <Cadastro />;
-  if (path === "/login" || path === "/login/") return <Login />;
-  if (path === "/perfil" || path === "/perfil/")
-    return <ProfilePage session={session} navigate={navigate} />;
-  if (path === "/biblioteca" || path === "/biblioteca/")
+  // Recupera e aplica as preferências salvas
+  useEffect(() => {
+    const preferencias = carregarPreferencias();
+
+    aplicarPreferencias(preferencias);
+  }, []);
+
+  // CADASTRO
+  if (path === "/cadastro" || path === "/cadastro/") {
+    return <Cadastro />;
+  }
+
+  // LOGIN
+  if (path === "/login" || path === "/login/") {
+    return <Login />;
+  }
+
+  // PERFIL
+  if (path === "/perfil" || path === "/perfil/") {
+    return (
+      <ProfilePage
+        session={session}
+        navigate={navigate}
+      />
+    );
+  }
+
+  // CONFIGURAÇÕES
+  if (path === "/configuracoes" || path === "/configuracoes/") {
+    return (
+      <SettingsPage
+        navigate={navigate}
+        session={session}
+      />
+    );
+  }
+
+  // BIBLIOTECA
+  if (path === "/biblioteca" || path === "/biblioteca/") {
     return (
       <LibraryPage
         repos={repos}
@@ -2195,9 +2644,26 @@ export default function App() {
         session={session}
       />
     );
-  if (path === "/biblioteca/usuarios" || path === "/biblioteca/usuarios/")
-    return <UsersPage session={session} navigate={navigate} />;
-  if (path === "/biblioteca/novo" || path === "/biblioteca/novo/")
+  }
+
+  // RELATÓRIO DE USUÁRIOS
+  if (
+    path === "/biblioteca/usuarios" ||
+    path === "/biblioteca/usuarios/"
+  ) {
+    return (
+      <UsersPage
+        session={session}
+        navigate={navigate}
+      />
+    );
+  }
+
+  // CRIAR REPOSITÓRIO
+  if (
+    path === "/biblioteca/novo" ||
+    path === "/biblioteca/novo/"
+  ) {
     return (
       <FormPage
         repos={repos}
@@ -2207,13 +2673,30 @@ export default function App() {
         session={session}
       />
     );
-  if (path === "/recuperar-senha" || path === "/recuperar-senha/")
-    return <RecuperarSenha />;
-  if (path === "/resetar-senha" || path === "/resetar-senha/")
-    return <ResetarSenha />;
+  }
 
-  const repoMatch = path.match(/^\/biblioteca\/repositorio\/(\d+)$/);
-  if (repoMatch)
+  // RECUPERAR SENHA
+  if (
+    path === "/recuperar-senha" ||
+    path === "/recuperar-senha/"
+  ) {
+    return <RecuperarSenha />;
+  }
+
+  // REDEFINIR SENHA
+  if (
+    path === "/resetar-senha" ||
+    path === "/resetar-senha/"
+  ) {
+    return <ResetarSenha />;
+  }
+
+  // PÁGINA DE UM REPOSITÓRIO
+  const repoMatch = path.match(
+    /^\/biblioteca\/repositorio\/(\d+)$/
+  );
+
+  if (repoMatch) {
     return (
       <RepositoryPage
         repos={repos}
@@ -2223,9 +2706,14 @@ export default function App() {
         session={session}
       />
     );
+  }
 
-  const editMatch = path.match(/^\/biblioteca\/editar\/(\d+)$/);
-  if (editMatch)
+  // EDITAR REPOSITÓRIO
+  const editMatch = path.match(
+    /^\/biblioteca\/editar\/(\d+)$/
+  );
+
+  if (editMatch) {
     return (
       <FormPage
         repos={repos}
@@ -2236,6 +2724,8 @@ export default function App() {
         session={session}
       />
     );
+  }
 
+  // PÁGINA INICIAL
   return <Home />;
 }
