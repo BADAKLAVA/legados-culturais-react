@@ -41,7 +41,26 @@ class RepositorioController {
             throw new InvalidArgumentException('O arquivo enviado é inválido.');
         }
         if (strlen($nome) > 255) throw new InvalidArgumentException('O nome do arquivo deve ter até 255 caracteres.');
-        return ['nome' => $nome, 'tipo' => $extensao, 'tmp' => $arquivo['tmp_name']];
+
+        $mimesPermitidos = [
+            '.txt' => ['text/plain', 'application/x-empty'],
+            '.pdf' => ['application/pdf'],
+            '.doc' => ['application/msword', 'application/x-ole-storage', 'application/CDFV2'],
+            '.docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip'],
+            '.odt' => ['application/vnd.oasis.opendocument.text', 'application/zip'],
+            '.png' => ['image/png'],
+            '.jpg' => ['image/jpeg'],
+            '.jpeg' => ['image/jpeg'],
+            '.gif' => ['image/gif'],
+            '.webp' => ['image/webp']
+        ];
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($arquivo['tmp_name']);
+        if (!$mime || !in_array($mime, $mimesPermitidos[$extensao] ?? [], true)) {
+            throw new InvalidArgumentException('O conteúdo do arquivo não corresponde à extensão informada.');
+        }
+
+        return ['nome' => $nome, 'tipo' => $extensao, 'tmp' => $arquivo['tmp_name'], 'mime' => $mime];
     }
 
     private function validarTags($tags): array {
@@ -72,17 +91,33 @@ class RepositorioController {
         }
     }
 
-    private function pastaUploads(): string {
-        $pasta = dirname(__DIR__) . '/uploads/repositorios';
-        if (!is_dir($pasta) && !mkdir($pasta, 0755, true) && !is_dir($pasta)) {
-            throw new RuntimeException('Não foi possível preparar a pasta de arquivos.');
+    /** Remove um arquivo do Drive ou, em registros antigos, do armazenamento local. */
+    private function removerArquivoArmazenado(?string $caminho): void {
+        if (!$caminho) return;
+
+        if (str_starts_with($caminho, 'gdrive:')) {
+            $fileId = substr($caminho, 7);
+            if ($fileId === '') return;
+            try {
+                (new GoogleDriveStorage())->delete($fileId);
+            } catch (Throwable $e) {
+                // A remoção do registro no banco já pode ter sido confirmada; não esconda a falha no log.
+                error_log('Não foi possível remover arquivo do Google Drive: ' . $e->getMessage());
+            }
+            return;
         }
-        return $pasta;
+
+        // Compatibilidade com arquivos locais que já existiam antes da integração.
+        $base = realpath(dirname(__DIR__) . '/uploads/repositorios');
+        $arquivo = realpath(dirname(__DIR__) . '/' . ltrim($caminho, '/'));
+        if ($base && $arquivo && str_starts_with($arquivo, $base . DIRECTORY_SEPARATOR) && is_file($arquivo)) {
+            @unlink($arquivo);
+        }
     }
 
     public function criar(): void {
         $dados = $this->dadosRecebidos();
-        $arquivoSalvo = null;
+        $driveFileId = null;
 
         try {
             $titulo = trim((string)($dados['title'] ?? ''));
@@ -96,42 +131,46 @@ class RepositorioController {
             if (($nomeEnviado !== '' && $nomeEnviado !== $arquivo['nome']) || ($tipoEnviado !== '' && $tipoEnviado !== $arquivo['tipo'])) {
                 throw new InvalidArgumentException('Os metadados do arquivo não correspondem ao arquivo selecionado.');
             }
-            $pasta = $this->pastaUploads();
-            $nomeInterno = bin2hex(random_bytes(16)) . $arquivo['tipo'];
-            $caminhoRelativo = 'uploads/repositorios/' . $nomeInterno;
+
+            // O arquivo é enviado primeiro. Se o banco falhar, o objeto é removido no catch.
+            $storage = new GoogleDriveStorage();
+            $driveFileId = $storage->upload($arquivo['tmp'], $arquivo['nome'], $arquivo['mime']);
+            $caminho = 'gdrive:' . $driveFileId;
             $data = (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('Y-m-d H:i:s');
 
             $this->pdo->beginTransaction();
             $id = $this->repositorio->criarRepositorio(
-                $titulo, $descricao, $arquivo['tipo'], $caminhoRelativo, $arquivo['nome'], $data
+                $titulo, $descricao, $arquivo['tipo'], $caminho, $arquivo['nome'], $data
             );
             if (!$id) throw new RuntimeException('Não foi possível criar o repositório no banco de dados.');
 
-            $arquivoSalvo = $pasta . '/' . $nomeInterno;
-            if (!move_uploaded_file($arquivo['tmp'], $arquivoSalvo)) {
-                throw new RuntimeException('Não foi possível armazenar o arquivo enviado.');
-            }
             $this->salvarTags((int)$id, $tags);
             $this->pdo->commit();
 
             echo json_encode(['sucesso' => true, 'id' => (int)$id, 'mensagem' => 'Repositório criado com sucesso.']);
         } catch (InvalidArgumentException $e) {
             if ($this->pdo->inTransaction()) $this->pdo->rollBack();
-            if ($arquivoSalvo && is_file($arquivoSalvo)) unlink($arquivoSalvo);
+            if ($driveFileId) {
+                try { (new GoogleDriveStorage())->delete($driveFileId); }
+                catch (Throwable $cleanupError) { error_log('Falha ao limpar upload incompleto no Drive: ' . $cleanupError->getMessage()); }
+            }
             http_response_code(400);
             echo json_encode(['sucesso' => false, 'erro' => $e->getMessage()]);
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) $this->pdo->rollBack();
-            if ($arquivoSalvo && is_file($arquivoSalvo)) unlink($arquivoSalvo);
+            if ($driveFileId) {
+                try { (new GoogleDriveStorage())->delete($driveFileId); }
+                catch (Throwable $cleanupError) { error_log('Falha ao limpar upload incompleto no Drive: ' . $cleanupError->getMessage()); }
+            }
             error_log('Erro ao criar repositório: ' . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['sucesso' => false, 'erro' => 'Erro ao criar o repositório.']);
+            echo json_encode(['sucesso' => false, 'erro' => 'Erro ao criar o repositório. Verifique a configuração do armazenamento.']);
         }
     }
 
     public function editar(int $id): void {
         $dados = $this->dadosRecebidos();
-        $novoArquivoSalvo = null;
+        $novoDriveFileId = null;
 
         try {
             $existente = $this->repositorio->obterRepositorio($id);
@@ -158,15 +197,10 @@ class RepositorioController {
             $caminho = $existente['filePath'];
             $nomeArquivo = $existente['fileName'];
             if ($arquivo) {
-                $pasta = $this->pastaUploads();
-                $nomeInterno = bin2hex(random_bytes(16)) . $arquivo['tipo'];
-                $caminho = 'uploads/repositorios/' . $nomeInterno;
+                $novoDriveFileId = (new GoogleDriveStorage())->upload($arquivo['tmp'], $arquivo['nome'], $arquivo['mime']);
+                $caminho = 'gdrive:' . $novoDriveFileId;
                 $tipo = $arquivo['tipo'];
                 $nomeArquivo = $arquivo['nome'];
-                $novoArquivoSalvo = $pasta . '/' . $nomeInterno;
-                if (!move_uploaded_file($arquivo['tmp'], $novoArquivoSalvo)) {
-                    throw new RuntimeException('Não foi possível armazenar o novo arquivo.');
-                }
             }
 
             $this->pdo->beginTransaction();
@@ -177,22 +211,28 @@ class RepositorioController {
             $this->salvarTags($id, $tags);
             $this->pdo->commit();
 
+            // Só apaga o arquivo anterior depois de confirmar a atualização no banco.
             if ($arquivo && !empty($existente['filePath'])) {
-                $arquivoAntigo = dirname(__DIR__) . '/' . ltrim($existente['filePath'], '/');
-                if (is_file($arquivoAntigo)) unlink($arquivoAntigo);
+                $this->removerArquivoArmazenado((string)$existente['filePath']);
             }
             echo json_encode(['sucesso' => true, 'mensagem' => 'Repositório atualizado com sucesso.']);
         } catch (InvalidArgumentException $e) {
             if ($this->pdo->inTransaction()) $this->pdo->rollBack();
-            if ($novoArquivoSalvo && is_file($novoArquivoSalvo)) unlink($novoArquivoSalvo);
+            if ($novoDriveFileId) {
+                try { (new GoogleDriveStorage())->delete($novoDriveFileId); }
+                catch (Throwable $cleanupError) { error_log('Falha ao limpar novo arquivo após erro de edição: ' . $cleanupError->getMessage()); }
+            }
             http_response_code(400);
             echo json_encode(['sucesso' => false, 'erro' => $e->getMessage()]);
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) $this->pdo->rollBack();
-            if ($novoArquivoSalvo && is_file($novoArquivoSalvo)) unlink($novoArquivoSalvo);
+            if ($novoDriveFileId) {
+                try { (new GoogleDriveStorage())->delete($novoDriveFileId); }
+                catch (Throwable $cleanupError) { error_log('Falha ao limpar novo arquivo após erro de edição: ' . $cleanupError->getMessage()); }
+            }
             error_log('Erro ao editar repositório: ' . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['sucesso' => false, 'erro' => 'Erro ao editar o repositório.']);
+            echo json_encode(['sucesso' => false, 'erro' => 'Erro ao editar o repositório. Verifique a configuração do armazenamento.']);
         }
     }
 
@@ -207,8 +247,7 @@ class RepositorioController {
             $this->pdo->beginTransaction();
             if (!$this->repositorio->excluirRepositorio($id)) throw new RuntimeException('Falha ao excluir registro.');
             $this->pdo->commit();
-            $arquivo = dirname(__DIR__) . '/' . ltrim($existente['filePath'] ?? '', '/');
-            if ($arquivo && is_file($arquivo)) unlink($arquivo);
+            $this->removerArquivoArmazenado($existente['filePath'] ?? null);
             echo json_encode(['sucesso' => true]);
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) $this->pdo->rollBack();

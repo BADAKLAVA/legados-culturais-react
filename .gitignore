@@ -1,4 +1,57 @@
+
+# Configurações e variáveis de ambiente
 .env
-/vendor/
-/uploads/
-backend/.env.example
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependências e builds
+node_modules/
+**/node_modules/
+vendor/
+**/vendor/
+dist/
+**/dist/
+build/
+**/build/
+
+# Uploads dos usuários
+uploads/
+backend/uploads/
+
+# Credenciais e chaves
+secrets/
+credentials/
+**/credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+# Google OAuth
+**/client_secret*.json
+**/token*.json
+**/*service-account*.json
+**/*service_account*.json
+**/credentials.json
+
+# Banco de dados e backups
+database/backups/
+db-dumps/
+*.dump
+*.backup
+*.bak
+*.sql.gz
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

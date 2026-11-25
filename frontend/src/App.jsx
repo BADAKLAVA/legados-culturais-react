@@ -3,6 +3,494 @@ import { Button, Form, Nav, Navbar } from "react-bootstrap";
 import logo from "./assets/logo.png";
 import cityPhoto from "./assets/login-city.png";
 
+function RatingDisplay({ rating = 0, total = 0 }) {
+  const media = Number(rating) || 0;
+  const quantidade = Number(total) || 0;
+
+  return (
+    <div
+      className="repo-rating"
+      aria-label={`Média de ${media.toFixed(1)} de 5 estrelas`}
+    >
+      <span className="repo-rating-stars" aria-hidden="true">
+        {[1, 2, 3, 4, 5].map((estrela) => (
+          <span
+            key={estrela}
+            className={estrela <= Math.round(media) ? "filled" : ""}
+          >
+            ★
+          </span>
+        ))}
+      </span>
+      <span className="repo-rating-value">
+        {quantidade ? `${media.toFixed(1)} (${quantidade})` : "Sem avaliações"}
+      </span>
+    </div>
+  );
+}
+
+/*
+
+Como usar nas páginas React:
+
+1. Na página de detalhes de um repositório:jsx
+import { SecaoComentarios } from '../components/SecaoComentarios';
+// ...
+<SecaoComentarios idRepositorio={repositorio.id} />
+Use o código com cuidado.
+2. Na Home ou em qualquer card de destaque (mostrando sozinho o comentário de maior nota):jsx
+import { ComentarioDestaque } from '../components/ComentarioDestaque';
+// ...
+<ComentarioDestaque idRepositorio={repositorio.id} />
+*/
+
+export function SecaoComentarios({ idRepositorio, onResumoChange }) {
+  const [dados, setDados] = useState({
+    media_estrelas: 0,
+    total_avaliacoes: 0,
+    comentarios: [],
+  });
+  const [sessao, setSessao] = useState({
+    autenticado: false,
+    id_usuario: null,
+    tipo: null,
+  });
+
+  const [nota, setNota] = useState(5);
+  const [hoverNota, setHoverNota] = useState(0);
+  const [texto, setTexto] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState("");
+
+  // Carrega a sessão atual e os comentários do repositório
+  const carregarDados = async () => {
+    try {
+      const [resSessao, resComentarios] = await Promise.all([
+        fetch("/routes.php?rota=sessao", { credentials: "include" }),
+        fetch(`/routes.php?rota=exibirComentarios&id=${idRepositorio}`, {
+          credentials: "include",
+        }),
+      ]);
+
+      const jsonSessao = await resSessao.json();
+      const jsonComentarios = await resComentarios.json();
+
+      if (jsonSessao.sucesso) setSessao(jsonSessao);
+      if (jsonComentarios.sucesso) {
+        setDados(jsonComentarios.data);
+        setNota(
+          jsonComentarios.data.minha_nota
+            ? Number(jsonComentarios.data.minha_nota)
+            : 5,
+        );
+        onResumoChange?.({
+          media_estrelas: jsonComentarios.data.media_estrelas,
+          total_avaliacoes: jsonComentarios.data.total_avaliacoes,
+        });
+      }
+    } catch (err) {
+      console.error("Erro ao carregar avaliações:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (idRepositorio) carregarDados();
+  }, [idRepositorio]);
+
+  // Envia nova avaliação (nota + comentário)
+  const handleEnviar = async (e) => {
+    e.preventDefault();
+    setErro("");
+
+    if (!texto.trim()) {
+      setErro("Escreva um comentário antes de enviar.");
+      return;
+    }
+
+    setEnviando(true);
+    try {
+      const res = await fetch("/routes.php?rota=criar-comentario", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_repositorio: idRepositorio,
+          nota: nota,
+          texto: texto.trim(),
+        }),
+      });
+
+      const json = await res.json();
+      if (!json.sucesso) {
+        setErro(json.erro || "Erro ao publicar comentário.");
+      } else {
+        setTexto("");
+        setNota(5);
+        await carregarDados(); // Atualiza a lista e a média na hora
+      }
+    } catch (err) {
+      setErro("Falha de conexão com o servidor.");
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  // Like ou Dislike
+  const handleReagir = async (idComentario, tipo) => {
+    if (!sessao.autenticado)
+      return alert("Faça login para curtir comentários.");
+
+    try {
+      const res = await fetch(
+        `/routes.php?rota=reagir-comentario&id=${idComentario}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tipo }),
+        },
+      );
+      const json = await res.json();
+      if (json.sucesso) carregarDados();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Excluir comentário (próprio ou se for admin)
+  const handleExcluir = async (idComentario) => {
+    if (!window.confirm("Deseja realmente excluir este comentário?")) return;
+
+    try {
+      const res = await fetch(
+        `/routes.php?rota=excluir-comentario&id=${idComentario}`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+      const json = await res.json();
+      if (json.sucesso) carregarDados();
+      else alert(json.erro || "Não foi possível excluir.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <section className="comments review-comments">
+      {/* Cabeçalho com Média Geral */}
+      <div className="flex items-center justify-between border-b pb-4 mb-6">
+        <div>
+          <h3 className="text-xl font-bold text-gray-800">
+            Avaliações e Comentários
+          </h3>
+          <p className="text-sm text-gray-500">
+            {dados.total_avaliacoes}{" "}
+            {dados.total_avaliacoes === 1 ? "avaliação" : "avaliações"}
+          </p>
+        </div>
+
+        <span className="text-sm text-gray-500">
+          Média: {Number(dados.media_estrelas).toFixed(1)} / 5
+        </span>
+      </div>
+
+      {/* Formulário de Envio (Visível apenas se logado) */}
+      {sessao.autenticado ? (
+        <form
+          onSubmit={handleEnviar}
+          className="mb-8 bg-gray-50 p-4 rounded-lg border border-gray-200"
+        >
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Sua nota para este item:
+          </label>
+
+          {/* Seletor de Estrelas Interativo */}
+          <div className="flex items-center gap-1 mb-4">
+            {[1, 2, 3, 4, 5].map((estrela) => (
+              <button
+                key={estrela}
+                type="button"
+                onClick={() => setNota(estrela)}
+                onMouseEnter={() => setHoverNota(estrela)}
+                onMouseLeave={() => setHoverNota(0)}
+                className="text-3xl focus:outline-none transition-transform hover:scale-110"
+              >
+                <span
+                  className={
+                    (hoverNota || nota) >= estrela
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }
+                >
+                  ★
+                </span>
+              </button>
+            ))}
+            <span className="ml-2 text-sm text-gray-600 font-medium">
+              ({nota} de 5)
+            </span>
+          </div>
+
+          <textarea
+            rows="3"
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+            placeholder="Escreva sua opinião sobre este legado cultural..."
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+            maxLength={2000}
+          />
+
+          {erro && <p className="text-red-600 text-sm mt-2">{erro}</p>}
+
+          <div className="flex justify-end mt-3">
+            <button
+              type="submit"
+              disabled={enviando}
+              className="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            >
+              {enviando ? "Publicando..." : "Publicar Avaliação"}
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="mb-8 p-4 bg-gray-100 rounded-lg text-center text-sm text-gray-600">
+          Faça login na sua conta para deixar uma nota e comentar.
+        </div>
+      )}
+
+      {/* Lista de Comentários */}
+      <div className="space-y-4">
+        {dados.comentarios.length === 0 ? (
+          <p className="text-center text-gray-500 py-6">
+            Seja o primeiro a avaliar este item!
+          </p>
+        ) : (
+          dados.comentarios.map((item) => {
+            const podeExcluir =
+              sessao.autenticado &&
+              (sessao.tipo === "adm" ||
+                Number(sessao.id_usuario) === Number(item.id_usuario));
+
+            return (
+              <div key={item.id_comentario} className="comment-card">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    {item.caminho_foto_perfil ? (
+                      <img
+                        src={item.caminho_foto_perfil}
+                        alt={item.nome}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">
+                        {item.nome?.[0]}
+                        {item.sobrenome?.[0]}
+                      </div>
+                    )}
+                    <div>
+                      <span className="font-semibold text-sm text-gray-800">
+                        {item.nome} {item.sobrenome}
+                      </span>
+                      <span className="block text-xs text-gray-400">
+                        {new Date(item.data_comentario).toLocaleDateString(
+                          "pt-BR",
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  {item.nota && (
+                    <span className="text-yellow-500 font-bold text-sm">
+                      {"★".repeat(Math.round(Number(item.nota)))}
+                      <span className="text-gray-600 ml-1">
+                        ({Number(item.nota).toFixed(1)})
+                      </span>
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-gray-700 text-sm whitespace-pre-line mb-3">
+                  {item.texto}
+                </p>
+
+                {/* Barra de Ações (Like / Dislike / Excluir) */}
+                <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-200/60">
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => handleReagir(item.id_comentario, "like")}
+                      className={`review-reaction ${item.minha_reacao === "like" ? "active" : ""}`}
+                    >
+                      👍 Útil ({item.likes})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleReagir(item.id_comentario, "dislike")
+                      }
+                      className={`review-reaction ${item.minha_reacao === "dislike" ? "active" : ""}`}
+                    >
+                      👎 ({item.dislikes})
+                    </button>
+                  </div>
+
+                  {podeExcluir && (
+                    <button
+                      type="button"
+                      onClick={() => handleExcluir(item.id_comentario)}
+                      className="text-red-500 hover:underline"
+                    >
+                      Excluir
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function ComentarioDestaque({ idRepositorio }) {
+  const [destaque, setDestaque] = useState(null);
+
+  useEffect(() => {
+    if (!idRepositorio) return;
+
+    fetch(`/routes.php?rota=comentarioDestaque&id=${idRepositorio}`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.sucesso && json.destaque) {
+          setDestaque(json.destaque);
+        }
+      })
+      .catch((err) => console.error("Erro ao buscar destaque:", err));
+  }, [idRepositorio]);
+
+  if (!destaque) return null;
+
+  return (
+    <div className="featured-comment-card">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          {destaque.caminho_foto_perfil && (
+            <img
+              src={destaque.caminho_foto_perfil}
+              alt={destaque.nome}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+          )}
+          <span className="font-semibold text-gray-800">
+            {destaque.nome} {destaque.sobrenome}
+          </span>
+        </div>
+        <span className="text-yellow-500 font-bold">
+          ★ {Number(destaque.nota).toFixed(1)}
+        </span>
+      </div>
+
+      <p className="text-gray-600 italic text-sm mb-2">"{destaque.texto}"</p>
+
+      <div className="text-xs text-gray-400 flex justify-between">
+        <span>👍 {destaque.likes} acharam útil</span>
+        <span>
+          {new Date(destaque.data_comentario).toLocaleDateString("pt-BR")}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ComentariosDestaqueHome() {
+  const [destaques, setDestaques] = useState([]);
+
+  useEffect(() => {
+    let ativo = true;
+
+    const carregar = async () => {
+      try {
+        const response = await fetch("/routes.php?rota=comentariosDestaque", {
+          credentials: "include",
+          cache: "no-store",
+        });
+        const data = await response.json();
+        if (ativo && response.ok && data.sucesso) {
+          setDestaques(Array.isArray(data.destaques) ? data.destaques : []);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar comentários em destaque:", error);
+      }
+    };
+
+    carregar();
+    const intervalo = window.setInterval(carregar, 15000);
+    window.addEventListener("focus", carregar);
+    return () => {
+      ativo = false;
+      window.clearInterval(intervalo);
+      window.removeEventListener("focus", carregar);
+    };
+  }, []);
+
+  // A seção só é exibida quando existem dois comentários elegíveis.
+  if (destaques.length < 2) return null;
+
+  return (
+    <section className="reviews-section">
+      <div className="section-inner">
+        <h2>Comentários em destaque</h2>
+        <div className="reviews-grid">
+          {destaques.slice(0, 2).map((item) => (
+            <article className="review" key={item.id_comentario}>
+              <div className="review-head">
+                {item.caminho_foto_perfil ? (
+                  <img
+                    className="featured-avatar"
+                    src={item.caminho_foto_perfil}
+                    alt=""
+                  />
+                ) : (
+                  <div className="avatar" aria-hidden="true">
+                    <span />
+                  </div>
+                )}
+                <div>
+                  <div
+                    className="stars"
+                    aria-label={`${Number(item.nota).toFixed(1)} de 5 estrelas`}
+                  >
+                    {"★".repeat(Math.round(Number(item.nota)))}
+                    {"☆".repeat(5 - Math.round(Number(item.nota)))}
+                  </div>
+                  <div className="review-name">
+                    {item.nome} {item.sobrenome}
+                  </div>
+                </div>
+              </div>
+              <div className="review-line" />
+              <p className="featured-review-text">{item.texto}</p>
+              <div className="featured-review-footer">
+                <a href={`/biblioteca/repositorio/${item.id_repositorio}`}>
+                  {item.titulo_repositorio}
+                </a>
+                <span>
+                  ★ {Number(item.nota).toFixed(1)} · 👍 {item.likes}
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const STORAGE_KEY = "legados-library-repos";
 
 const initialRepos = [
@@ -281,37 +769,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="reviews-section">
-        <div className="section-inner">
-          <h2>Eles aprovaram, e você?</h2>
-          <div className="reviews-grid">
-            {[4, 5].map((stars, index) => (
-              <article className="review" key={index}>
-                <div className="review-head">
-                  <div className="avatar" aria-hidden="true">
-                    <span />
-                  </div>
-                  <div>
-                    <div
-                      className="stars"
-                      aria-label={`${stars} de 5 estrelas`}
-                    >
-                      {"★".repeat(stars)}
-                      {"☆".repeat(5 - stars)}
-                    </div>
-                    <div className="review-name">Lorem Ipsum</div>
-                  </div>
-                </div>
-                <div className="review-line" />
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ComentariosDestaqueHome />
     </main>
   );
 }
@@ -613,6 +1071,10 @@ function LibraryPage({ repos, setRepos, navigate, session }) {
                 <div className="repo-card-body">
                   <div className="repo-card-title">{repo.title}</div>
                   <div className="repo-card-desc">{repo.description}</div>
+                  <RatingDisplay
+                    rating={repo.media_estrelas}
+                    total={repo.total_avaliacoes}
+                  />
                   {repo.fileName && (
                     <div className="repo-card-file">{repo.fileName}</div>
                   )}
@@ -690,6 +1152,10 @@ function RepositoryPage({ repos, setRepos, navigate, repoId, session }) {
           <div className="repo-title-row">
             <h1 className="repo-title">{repo.title}</h1>
           </div>
+          <RatingDisplay
+            rating={repo.media_estrelas}
+            total={repo.total_avaliacoes}
+          />
 
           <div className="repo-meta">
             {(repo.tags || []).map((tag) => (
@@ -755,61 +1221,18 @@ function RepositoryPage({ repos, setRepos, navigate, repoId, session }) {
             {repo.description || "Sem descrição."}
           </div>
 
-          <section className="comments">
-            <h2>Comentários</h2>
-            {(repo.comments || []).map((comment, index) => (
-              <div
-                key={`${comment.name}-${index}`}
-                className={`comment ${comment.indent ? "indent" : ""}`}
-              >
-                <div className="comment-main">
-                  <div className="comment-head">
-                    <div
-                      className="avatar"
-                      dangerouslySetInnerHTML={{ __html: icons.user }}
-                    />
-                    <div>
-                      <span className="comment-role">
-                        {comment.admin ? "Administrador" : ""}
-                      </span>
-                      <span className="comment-name">{comment.name}</span>
-                    </div>
-                  </div>
-                  <div className="comment-text">{comment.text}</div>
-                  <div className="comment-footer">
-                    {!comment.admin && (
-                      <div className="reactions">
-                        <button type="button" className="reaction">
-                          ♡ 10
-                        </button>
-                        <button type="button" className="reaction">
-                          ♧ 10
-                        </button>
-                      </div>
-                    )}
-                    <button type="button" className="reply">
-                      Responder
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div className="comment-box">
-              <input
-                type="text"
-                placeholder={
-                  session?.id_usuario ? "Comentar" : "Entre para comentar"
-                }
-                disabled={!session?.id_usuario}
-              />
-              <button
-                type="button"
-                title="Enviar"
-                disabled={!session?.id_usuario}
-                dangerouslySetInnerHTML={{ __html: icons.send }}
-              />
-            </div>
-          </section>
+          <SecaoComentarios
+            idRepositorio={repo.id}
+            onResumoChange={(resumo) => {
+              setRepos((atuais) =>
+                atuais.map((item) =>
+                  Number(item.id) === Number(repo.id)
+                    ? { ...item, ...resumo }
+                    : item,
+                ),
+              );
+            }}
+          />
         </div>
       </main>
     </div>
@@ -1160,19 +1583,74 @@ function FormPage({ repos, setRepos, navigate, repoId, mode, session }) {
 }
 
 function UsersPage({ session, navigate }) {
+  const [relatorio, setRelatorio] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+
+  const carregarRelatorio = async () => {
+    setCarregando(true);
+    setErro("");
+    try {
+      const response = await fetch("/routes.php?rota=relatorio-site", {
+        credentials: "include",
+        cache: "no-store",
+      });
+      const data = await response.json();
+      if (!response.ok || !data.sucesso) {
+        throw new Error(data.erro || "Não foi possível carregar o relatório.");
+      }
+      setRelatorio(data.data);
+    } catch (error) {
+      setErro(error.message || "Erro ao carregar o relatório.");
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.id_usuario && session?.tipo === "adm") carregarRelatorio();
+  }, [session?.id_usuario, session?.tipo]);
+
+  if (session?.loading)
+    return (
+      <PermissionNotice
+        navigate={navigate}
+        message="Verificando permissões..."
+      />
+    );
+
   if (session?.tipo !== "adm" || !session?.id_usuario)
     return (
       <PermissionNotice
         navigate={navigate}
-        message="Apenas administradores podem acessar o relatório de usuários."
+        message="Apenas administradores podem acessar o relatório do site."
       />
     );
+
+  const metricas = [
+    [
+      "Visitantes ativos",
+      relatorio?.visitantes_ativos ?? 0,
+      "Últimos 5 minutos",
+    ],
+    [
+      "Visitantes únicos",
+      relatorio?.visitantes_30_dias ?? 0,
+      "Últimos 30 dias",
+    ],
+    ["Visualizações", relatorio?.visitas_30_dias ?? 0, "Últimos 30 dias"],
+    ["Logins", relatorio?.logins_hoje ?? 0, "Hoje"],
+    ["Logins", relatorio?.logins_30_dias ?? 0, "Últimos 30 dias"],
+    ["Downloads", relatorio?.downloads_hoje ?? 0, "Hoje"],
+    ["Downloads", relatorio?.downloads_30_dias ?? 0, "Últimos 30 dias"],
+  ];
+
   return (
     <div className="library-app">
       <LibraryNav active="users" session={session} navigate={navigate} />
       <TextReader />
       <main className="main" id="conteudo-leitura">
-        <div className="form-page">
+        <div className="form-page analytics-page">
           <div className="header-line">
             <button
               type="button"
@@ -1181,16 +1659,69 @@ function UsersPage({ session, navigate }) {
             >
               Voltar
             </button>
-            <h1 className="form-title">Relatório de usuários</h1>
-            <span />
+            <h1 className="form-title">Relatório do site</h1>
+            <button
+              type="button"
+              className="primary-btn analytics-refresh"
+              onClick={carregarRelatorio}
+              disabled={carregando}
+            >
+              {carregando ? "Atualizando..." : "Atualizar"}
+            </button>
           </div>
-          <div className="empty">
-            <p>Área demonstrativa do front-end.</p>
-            <p>
-              A tela fica acessível somente quando o perfil de administrador
-              está ativo.
-            </p>
-          </div>
+
+          {erro && <p className="analytics-error">{erro}</p>}
+          {carregando && !relatorio ? (
+            <p className="profile-empty">Carregando métricas...</p>
+          ) : (
+            <>
+              <p className="analytics-caption">
+                Métricas acumuladas nos últimos 30 dias, salvo quando indicado.
+              </p>
+              <div className="analytics-grid">
+                {metricas.map(([titulo, valor, periodo], index) => (
+                  <article
+                    className="analytics-card"
+                    key={`${titulo}-${periodo}-${index}`}
+                  >
+                    <span>{titulo}</span>
+                    <strong>{Number(valor).toLocaleString("pt-BR")}</strong>
+                    <small>{periodo}</small>
+                  </article>
+                ))}
+              </div>
+
+              <section className="analytics-pages">
+                <h2>Páginas mais visitadas</h2>
+                {relatorio?.paginas_mais_visitadas?.length ? (
+                  <div className="analytics-table-wrap">
+                    <table className="analytics-table">
+                      <thead>
+                        <tr>
+                          <th>Página</th>
+                          <th>Visualizações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {relatorio.paginas_mais_visitadas.map((pagina) => (
+                          <tr key={pagina.pagina}>
+                            <td>{pagina.pagina}</td>
+                            <td>
+                              {Number(pagina.visitas).toLocaleString("pt-BR")}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="profile-empty">
+                    Ainda não há visualizações registradas.
+                  </p>
+                )}
+              </section>
+            </>
+          )}
         </div>
       </main>
     </div>
@@ -1491,6 +2022,11 @@ function ProfilePage({ session, navigate }) {
                         <div>
                           <strong>{item.titulo}</strong>
                           <p>{item.descricao}</p>
+                          {item.nome_arquivo && (
+                            <small>
+                              {item.nome_arquivo} · {item.tipo_arquivo}
+                            </small>
+                          )}
                         </div>
                       </article>
                     ))}
@@ -1526,7 +2062,7 @@ function carregarPreferencias() {
 
     return {
       tamanhoFonte: ["14px", "16px", "20px", "24px"].includes(
-        dados.tamanhoFonte
+        dados.tamanhoFonte,
       )
         ? dados.tamanhoFonte
         : preferenciasPadrao.tamanhoFonte,
@@ -1552,18 +2088,18 @@ function aplicarPreferencias(preferencias) {
 
   document.documentElement.style.setProperty(
     "--font-size-base",
-    preferencias.tamanhoFonte
+    preferencias.tamanhoFonte,
   );
 
   document.documentElement.style.setProperty(
     "--line-height-base",
-    preferencias.espacamento
+    preferencias.espacamento,
   );
 }
 
 function TextReader() {
   const [ativado, setAtivado] = useState(
-    () => carregarPreferencias().leitorAtivo === "sim"
+    () => carregarPreferencias().leitorAtivo === "sim",
   );
 
   const [estado, setEstado] = useState("parado");
@@ -1574,24 +2110,18 @@ function TextReader() {
 
       setAtivado(preferencias.leitorAtivo === "sim");
 
-      if (
-        preferencias.leitorAtivo === "nao" &&
-        "speechSynthesis" in window
-      ) {
+      if (preferencias.leitorAtivo === "nao" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
         setEstado("parado");
       }
     }
 
-    window.addEventListener(
-      "preferenciasAtualizadas",
-      atualizarPreferencias
-    );
+    window.addEventListener("preferenciasAtualizadas", atualizarPreferencias);
 
     return () => {
       window.removeEventListener(
         "preferenciasAtualizadas",
-        atualizarPreferencias
+        atualizarPreferencias,
       );
 
       if ("speechSynthesis" in window) {
@@ -1605,9 +2135,7 @@ function TextReader() {
       !("speechSynthesis" in window) ||
       typeof SpeechSynthesisUtterance === "undefined"
     ) {
-      window.alert(
-        "Seu navegador não oferece suporte à leitura de texto."
-      );
+      window.alert("Seu navegador não oferece suporte à leitura de texto.");
       return;
     }
 
@@ -1624,7 +2152,7 @@ function TextReader() {
     // Remove controles e elementos que não precisam ser lidos
     copia
       .querySelectorAll(
-        "button, input, select, textarea, svg, [aria-hidden='true']"
+        "button, input, select, textarea, svg, [aria-hidden='true']",
       )
       .forEach((elemento) => elemento.remove());
 
@@ -1647,11 +2175,9 @@ function TextReader() {
     // Tenta utilizar uma voz em português
     const vozes = window.speechSynthesis.getVoices();
 
-    const vozPortugues = vozes.find(
-      (voz) => voz.lang.toLowerCase() === "pt-br"
-    ) || vozes.find(
-      (voz) => voz.lang.toLowerCase().startsWith("pt")
-    );
+    const vozPortugues =
+      vozes.find((voz) => voz.lang.toLowerCase() === "pt-br") ||
+      vozes.find((voz) => voz.lang.toLowerCase().startsWith("pt"));
 
     if (vozPortugues) {
       fala.voice = vozPortugues;
@@ -1694,7 +2220,6 @@ function TextReader() {
 
   return (
     <div className="text-reader" aria-label="Controles do leitor de texto">
-
       <button
         type="button"
         onClick={iniciarLeitura}
@@ -1705,32 +2230,22 @@ function TextReader() {
       </button>
 
       {estado === "lendo" && (
-        <button
-          type="button"
-          onClick={pausarLeitura}
-        >
+        <button type="button" onClick={pausarLeitura}>
           Pausar
         </button>
       )}
 
       {estado === "pausado" && (
-        <button
-          type="button"
-          onClick={continuarLeitura}
-        >
+        <button type="button" onClick={continuarLeitura}>
           Continuar
         </button>
       )}
 
       {(estado === "lendo" || estado === "pausado") && (
-        <button
-          type="button"
-          onClick={pararLeitura}
-        >
+        <button type="button" onClick={pararLeitura}>
           Parar
         </button>
       )}
-
     </div>
   );
 }
@@ -1741,20 +2256,14 @@ function SettingsPage({ navigate, session }) {
   // Salva e aplica as preferências sempre que forem alteradas
   useEffect(() => {
     try {
-      localStorage.setItem(
-        "preferencias",
-        JSON.stringify(preferencias)
-      );
+      localStorage.setItem("preferencias", JSON.stringify(preferencias));
     } catch (erro) {
       console.error("Erro ao salvar preferências:", erro);
     }
 
     aplicarPreferencias(preferencias);
 
-    if (
-      preferencias.leitorAtivo === "nao" &&
-      "speechSynthesis" in window
-    ) {
+    if (preferencias.leitorAtivo === "nao" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
 
@@ -1772,24 +2281,17 @@ function SettingsPage({ navigate, session }) {
 
   return (
     <div className="library-app">
-      <LibraryNav
-        active="settings"
-        session={session}
-        navigate={navigate}
-      />
-      <TextReader/>
+      <LibraryNav active="settings" session={session} navigate={navigate} />
+      <TextReader />
       <main className="main" id="conteudo-leitura">
         <div className="form-page">
           <div className="form-card settings-card">
             <h1 className="form-title">Configurações</h1>
 
             <div className="form-fields">
-
               {/* TAMANHO DA FONTE */}
               <fieldset className="radio-group">
-                <legend className="settings-label">
-                  Tamanho da fonte
-                </legend>
+                <legend className="settings-label">Tamanho da fonte</legend>
 
                 <div className="settings-options">
                   {[
@@ -1842,9 +2344,7 @@ function SettingsPage({ navigate, session }) {
 
               {/* LEITOR DE TEXTO */}
               <fieldset className="radio-group">
-                <legend className="settings-label">
-                  Leitor de texto
-                </legend>
+                <legend className="settings-label">Leitor de texto</legend>
 
                 <div className="settings-options">
                   <label className="settings-radio">
@@ -1855,7 +2355,6 @@ function SettingsPage({ navigate, session }) {
                       checked={preferencias.leitorAtivo === "sim"}
                       onChange={handleChange}
                     />
-
                     Ativado
                   </label>
 
@@ -1867,7 +2366,6 @@ function SettingsPage({ navigate, session }) {
                       checked={preferencias.leitorAtivo === "nao"}
                       onChange={handleChange}
                     />
-
                     Desativado
                   </label>
                 </div>
@@ -1876,7 +2374,6 @@ function SettingsPage({ navigate, session }) {
                   Permite ouvir textos e descrições da biblioteca em voz alta.
                 </p>
               </fieldset>
-
             </div>
           </div>
         </div>
@@ -2401,7 +2898,6 @@ function Cadastro() {
 }
 
 function Login() {
-  const [tipo, setTipo] = useState("us");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erroEmail, setErroEmail] = useState("");
@@ -2428,18 +2924,11 @@ function Login() {
     }
     if (temErro) return;
 
-    let rotaTipo;
-    if (tipo === "us") {
-      rotaTipo = "cliente";
-    } else {
-      rotaTipo = "administrador";
-    }
-
-    const resposta = await fetch(`/routes.php?rota=login&tipo=${rotaTipo}`, {
+    const resposta = await fetch("/routes.php?rota=login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ tipo, email, senha }),
+      body: JSON.stringify({ email, senha }),
     });
 
     const dados = await resposta.json();
@@ -2464,16 +2953,6 @@ function Login() {
           </a>
           <div className="login-content">
             <h1>Entrar</h1>
-            <div className="account-type">
-              <span>Tipo de conta:</span>
-              <select
-                className="select-button"
-                onChange={(e) => setTipo(e.target.value)}
-              >
-                <option value="us">Usuário</option>
-                <option value="adm">Admin</option>
-              </select>
-            </div>
             <Input
               label="E-mail"
               placeholder="E-mail"
@@ -2520,6 +2999,26 @@ export default function App() {
 
   const { path, navigate } = useLibraryLocation();
 
+  // Registra visualizações e mantém a sessão ativa para a métrica de visitantes online.
+  useEffect(() => {
+    const registrar = async (evento) => {
+      try {
+        await fetch("/routes.php?rota=registrar-acesso", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ evento, pagina: path }),
+        });
+      } catch (error) {
+        console.debug("Não foi possível registrar acesso:", error);
+      }
+    };
+
+    registrar("visualizacao");
+    const intervalo = window.setInterval(() => registrar("heartbeat"), 60000);
+    return () => window.clearInterval(intervalo);
+  }, [path]);
+
   // Verifica a sessão do usuário
   useEffect(() => {
     let ativo = true;
@@ -2531,9 +3030,7 @@ export default function App() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.erro || "Não foi possível verificar a sessão."
-          );
+          throw new Error(data.erro || "Não foi possível verificar a sessão.");
         }
 
         if (ativo) {
@@ -2578,8 +3075,8 @@ export default function App() {
       .catch((error) =>
         console.warn(
           "A lista do servidor não está disponível; mantendo dados locais.",
-          error
-        )
+          error,
+        ),
       );
 
     return () => {
@@ -2590,10 +3087,7 @@ export default function App() {
   // Salva os repositórios no navegador
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(repos)
-      );
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(repos));
     }
   }, [repos]);
 
@@ -2616,22 +3110,12 @@ export default function App() {
 
   // PERFIL
   if (path === "/perfil" || path === "/perfil/") {
-    return (
-      <ProfilePage
-        session={session}
-        navigate={navigate}
-      />
-    );
+    return <ProfilePage session={session} navigate={navigate} />;
   }
 
   // CONFIGURAÇÕES
   if (path === "/configuracoes" || path === "/configuracoes/") {
-    return (
-      <SettingsPage
-        navigate={navigate}
-        session={session}
-      />
-    );
+    return <SettingsPage navigate={navigate} session={session} />;
   }
 
   // BIBLIOTECA
@@ -2647,23 +3131,12 @@ export default function App() {
   }
 
   // RELATÓRIO DE USUÁRIOS
-  if (
-    path === "/biblioteca/usuarios" ||
-    path === "/biblioteca/usuarios/"
-  ) {
-    return (
-      <UsersPage
-        session={session}
-        navigate={navigate}
-      />
-    );
+  if (path === "/biblioteca/usuarios" || path === "/biblioteca/usuarios/") {
+    return <UsersPage session={session} navigate={navigate} />;
   }
 
   // CRIAR REPOSITÓRIO
-  if (
-    path === "/biblioteca/novo" ||
-    path === "/biblioteca/novo/"
-  ) {
+  if (path === "/biblioteca/novo" || path === "/biblioteca/novo/") {
     return (
       <FormPage
         repos={repos}
@@ -2676,25 +3149,17 @@ export default function App() {
   }
 
   // RECUPERAR SENHA
-  if (
-    path === "/recuperar-senha" ||
-    path === "/recuperar-senha/"
-  ) {
+  if (path === "/recuperar-senha" || path === "/recuperar-senha/") {
     return <RecuperarSenha />;
   }
 
   // REDEFINIR SENHA
-  if (
-    path === "/resetar-senha" ||
-    path === "/resetar-senha/"
-  ) {
+  if (path === "/resetar-senha" || path === "/resetar-senha/") {
     return <ResetarSenha />;
   }
 
   // PÁGINA DE UM REPOSITÓRIO
-  const repoMatch = path.match(
-    /^\/biblioteca\/repositorio\/(\d+)$/
-  );
+  const repoMatch = path.match(/^\/biblioteca\/repositorio\/(\d+)$/);
 
   if (repoMatch) {
     return (
@@ -2709,9 +3174,7 @@ export default function App() {
   }
 
   // EDITAR REPOSITÓRIO
-  const editMatch = path.match(
-    /^\/biblioteca\/editar\/(\d+)$/
-  );
+  const editMatch = path.match(/^\/biblioteca\/editar\/(\d+)$/);
 
   if (editMatch) {
     return (

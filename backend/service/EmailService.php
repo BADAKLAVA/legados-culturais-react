@@ -9,16 +9,16 @@ class EmailService {
 
     public function enviarRecuperacao($destinatario, $token) {
         try {
-            $apiKey = getenv("RESEND_API_KEY");
-            $remetente = getenv("RESEND_FROM");
+            $apiKey = $_ENV["RESEND_API_KEY"] ?? getenv("RESEND_API_KEY");
+            $remetente = $_ENV["RESEND_FROM"] ?? getenv("RESEND_FROM");
 
             if (!$apiKey || !$remetente) {
                 error_log("Chave ou remetente do Resend não configurado.");
                 return false;
             }
 
-            $link = "https://legados-culturais-react.onrender.com/resetar-senha?token="
-                . urlencode($token);
+            $appUrl = rtrim((string)($_ENV["APP_URL"] ?? getenv("APP_URL") ?: "https://seu-servico.onrender.com"), "/");
+            $link = $appUrl . "/resetar-senha?token=" . urlencode($token);
 
             $html = "
                 <h2>Recuperação de senha</h2>

@@ -2542,3 +2542,241 @@ html {
     padding: 8px 11px;
   }
 }
+/* Avaliações e notas dos repositórios */
+.library-app .repo-rating {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 8px 0 14px;
+  color: #5c5c4e;
+  font-size: 0.9rem;
+}
+
+.library-app .repo-rating-stars {
+  display: inline-flex;
+  gap: 2px;
+  color: #c9c6b9;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.library-app .repo-rating-stars .filled {
+  color: #d89a35;
+}
+
+.library-app .repo-rating-value {
+  font-weight: 600;
+}
+
+.library-app .review-comments {
+  max-width: 900px;
+  margin: 34px auto 0;
+  padding: 26px;
+  border: 1px solid #e8e3c4;
+  border-radius: 18px;
+  background: #fffef5;
+  box-shadow: var(--shadow);
+}
+
+.library-app .review-comments > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 17px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e8e3c4;
+}
+
+.library-app .review-comments h3 {
+  margin: 0 0 5px;
+  color: var(--green);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.library-app .review-comments form {
+  padding: 18px;
+  margin-bottom: 24px;
+  border: 1px solid #e8e3c4;
+  border-radius: 12px;
+  background: #faf8e9;
+}
+
+.library-app .review-comments form textarea {
+  width: 100%;
+  min-height: 94px;
+  padding: 12px;
+  border: 1px solid #d8d3b7;
+  border-radius: 10px;
+  background: #fff;
+  resize: vertical;
+}
+
+.library-app .review-comments form button[type="submit"] {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--green);
+  color: white;
+  font-weight: 700;
+}
+
+.library-app .comment-card {
+  padding: 17px;
+  margin-top: 13px;
+  border: 1px solid #ebe7d4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.library-app .comment-card p {
+  margin: 12px 0;
+  color: #45463d;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.library-app .review-reaction {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #f3f0df;
+  color: #545447;
+  cursor: pointer;
+}
+
+.library-app .review-reaction.active {
+  background: #e7edda;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.featured-comment-card {
+  height: 100%;
+  padding: 18px;
+  border: 1px solid #e8e3c4;
+  border-radius: 14px;
+  background: #fffef5;
+  box-shadow: var(--shadow);
+}
+
+.featured-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.featured-review-text {
+  overflow-wrap: anywhere;
+}
+
+.featured-review-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  color: #77745f;
+  font-size: 0.8rem;
+}
+
+.library-app .analytics-page {
+  max-width: 1100px;
+}
+
+.library-app .analytics-caption {
+  margin: 12px 0 20px;
+  color: #686858;
+}
+
+.library-app .analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.library-app .analytics-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid #e8e3c4;
+  border-radius: 14px;
+  background: #fffef5;
+  box-shadow: var(--shadow);
+}
+
+.library-app .analytics-card span,
+.library-app .analytics-card small {
+  color: #656555;
+}
+
+.library-app .analytics-card strong {
+  color: var(--green);
+  font-size: 1.9rem;
+}
+
+.library-app .analytics-pages {
+  margin-top: 28px;
+  padding: 22px;
+  border: 1px solid #e8e3c4;
+  border-radius: 14px;
+  background: #fffef5;
+}
+
+.library-app .analytics-pages h2 {
+  margin: 0 0 16px;
+  color: var(--green);
+  font-size: 1.25rem;
+}
+
+.library-app .analytics-table-wrap {
+  overflow-x: auto;
+}
+
+.library-app .analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.library-app .analytics-table th,
+.library-app .analytics-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #ebe7d4;
+  text-align: left;
+}
+
+.library-app .analytics-table th {
+  color: var(--green);
+}
+
+.library-app .analytics-error {
+  color: #a52f27;
+}
+
+@media (max-width: 640px) {
+  .library-app .review-comments {
+    padding: 17px;
+  }
+
+  .library-app .review-comments > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.library-app .review-comments form button[type="button"] {
+  padding: 0 2px;
+  background: transparent;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.library-app .review-comments .text-yellow-400 {
+  color: #e0a12d;
+}
+
+.library-app .review-comments .text-gray-300 {
+  color: #c9c6b9;
+}

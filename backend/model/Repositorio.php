@@ -29,6 +29,8 @@ class Repositorio {
                         r.tipo AS \"fileType\",
                         r.nome_arquivo AS \"fileName\",
                         r.data_repositorio AS \"date\",
+                        COALESCE((SELECT ROUND(AVG(e.nota), 1) FROM estrela e WHERE e.id_repositorio = r.id_repositorio), 0) AS media_estrelas,
+                        (SELECT COUNT(*) FROM estrela e WHERE e.id_repositorio = r.id_repositorio) AS total_avaliacoes,
                         COALESCE(JSON_AGG(t.nome) FILTER (WHERE t.nome IS NOT NULL), '[]'::json) AS tags
                     FROM repositorio r
                     LEFT JOIN detalhe_tag dt ON r.id_repositorio = dt.id_repositorio

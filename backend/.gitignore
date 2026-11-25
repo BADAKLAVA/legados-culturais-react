@@ -1,4 +1,11 @@
 .env
+.env.*
+!.env.example
 /vendor/
 /uploads/
-/.env.example
+*.log
+credentials/
+scripts/token*.json
+scripts/*client_secret*.json
+client_secret*.json
+token.json

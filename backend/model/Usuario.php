@@ -176,7 +176,9 @@ class Usuario {
     public function listarDownloads($idUsuario) {
         try {
             $sql = "SELECT h.data_historico, r.id_repositorio AS id, r.titulo AS titulo,
-                           COALESCE(r.descricao, '') AS descricao
+                           COALESCE(r.descricao, '') AS descricao,
+                           COALESCE(r.nome_arquivo, '') AS nome_arquivo,
+                           COALESCE(r.tipo, '') AS tipo_arquivo
                     FROM historico h
                     INNER JOIN repositorio r ON r.id_repositorio = h.id_repositorio
                     WHERE h.id_usuario = ?

@@ -23,9 +23,11 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libpq-dev \
         libzip-dev \
+        libcurl4-openssl-dev \
         unzip \
         zip \
-    && docker-php-ext-install pdo pdo_pgsql zip \
+    && docker-php-ext-install curl pdo pdo_pgsql zip \
+    && printf "upload_max_filesize=26M\npost_max_size=28M\nmax_execution_time=120\n" > /usr/local/etc/php/conf.d/uploads.ini \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -38,7 +40,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Instalar dependências PHP, caso exista composer.json
 RUN if [ -f /app/backend/composer.json ]; then \
-      composer install \
+      composer update google/apiclient \
+        --with-dependencies \
         --working-dir=/app/backend \
         --no-dev \
         --optimize-autoloader; \

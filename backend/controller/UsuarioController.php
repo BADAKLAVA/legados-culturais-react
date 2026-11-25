@@ -1,14 +1,17 @@
 <?php 
 require_once __DIR__ . "/../model/Usuario.php";
 require_once __DIR__ . "/../model/RecuperacaoSenha.php";
+require_once __DIR__ . "/../model/Analytics.php";
 
 class UsuarioController {
     private Usuario $usuario;
     private string $tipoCadastro;
+    private ?Analytics $analytics;
 
-    public function __construct(Usuario $usuario, string $tipoCadastro = 'us') {
+    public function __construct(Usuario $usuario, string $tipoCadastro = 'us', ?Analytics $analytics = null) {
         $this->usuario = $usuario;
         $this->tipoCadastro = $tipoCadastro === 'ad' ? 'ad' : 'us';
+        $this->analytics = $analytics;
     }
 
     public function cadastrar() {
@@ -158,6 +161,13 @@ class UsuarioController {
 
         error_log($_SESSION["id_usuario"]);
         error_log($_SESSION["tipo"]);
+
+        $this->analytics?->registrarEvento(
+            'login',
+            '/login',
+            (int)$usuarioDados['id_usuario'],
+            Analytics::hashSessaoAtual()
+        );
 
         echo json_encode([
             "sucesso" => true
