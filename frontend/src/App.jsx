@@ -2086,17 +2086,9 @@ function carregarPreferencias() {
 function aplicarPreferencias(preferencias) {
   if (typeof document === "undefined") return;
 
-  const tamanhoFonte = Number.parseFloat(preferencias.tamanhoFonte) || 16;
-
   document.documentElement.style.setProperty(
     "--font-size-base",
     preferencias.tamanhoFonte,
-  );
-
-  // Mantém também os tamanhos de fonte baseados em vw proporcionais.
-  document.documentElement.style.setProperty(
-    "--font-scale",
-    String(tamanhoFonte / 16),
   );
 
   document.documentElement.style.setProperty(
