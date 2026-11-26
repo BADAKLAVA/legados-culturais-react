@@ -28,8 +28,6 @@ class GoogleDriveStorage {
         $client->setClientSecret($clientSecret);
         $client->setScopes([Google\Service\Drive::DRIVE_FILE]);
         $client->setAccessType('offline');
-        $client->setAccessToken(['refresh_token' => $refreshToken]);
-
         $token = $client->fetchAccessTokenWithRefreshToken($refreshToken);
         if (isset($token['error'])) {
             $mensagem = $token['error_description'] ?? $token['error'];
