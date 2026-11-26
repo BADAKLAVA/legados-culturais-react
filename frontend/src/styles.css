@@ -2781,27 +2781,57 @@ html {
   color: #c9c6b9;
 }
 
-/* Comentário em destaque */
+/* =========================================
+   COMENTÁRIOS EM DESTAQUE - HOME
+========================================= */
 
-.library-app .featured-comment-card {
-  background: #fffef5;
-  border: 1px solid #e8e3c4;
-  border-radius: 14px;
-  box-shadow: var(--shadow);
+.reviews-section {
+  background: #626f38;
+  color: #fffceb;
 }
 
-.library-app .featured-comment-card .font-semibold {
-  color: #334a1c;
+/* Título da seção */
+.reviews-section h2 {
+  color: #fffceb;
 }
 
-.library-app .featured-comment-card .text-yellow-500 {
-  color: #d89a35;
+/* Nome do usuário */
+.reviews-section .review-name {
+  color: #fffceb;
 }
 
-.library-app .featured-comment-card .text-gray-600 {
-  color: #2f302b;
+/* Estrelas */
+.reviews-section .stars {
+  color: #fffceb;
 }
 
-.library-app .featured-comment-card .text-gray-400 {
-  color: #67783a;
+/* Avatar padrão */
+.reviews-section .avatar {
+  background: #e5a253;
+  color: #fffceb;
+}
+
+/* Linha divisória */
+.reviews-section .review-line {
+  background: rgba(255, 252, 235, 0.65);
+}
+
+/* Texto do comentário */
+.reviews-section .review p {
+  color: #fffceb;
+}
+
+/* Rodapé: repositório, nota, curtidas e data */
+.reviews-section .featured-review-footer {
+  color: #d8d5b9;
+}
+
+/* Nome do repositório */
+.reviews-section .featured-review-footer a {
+  color: #fffceb;
+}
+
+/* Nota e curtidas */
+.reviews-section .featured-review-footer span {
+  color: #d8d5b9;
 }
