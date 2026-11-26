@@ -34,6 +34,14 @@ require_once dirname(__DIR__) . '/model/Analytics.php';
 header('Content-Type: application/json; charset=UTF-8');
 header('Cache-Control: no-store');
 
+// Nunca devolver HTML de erro: a API sempre responde JSON.
+ini_set('display_errors', '0');
+set_exception_handler(function (Throwable $e): void {
+    error_log('Erro não tratado: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['sucesso' => false, 'erro' => 'Erro interno do servidor.'], JSON_UNESCAPED_UNICODE);
+});
+
 function responder(array $dados, int $status = 200): void {
     http_response_code($status);
     echo json_encode($dados, JSON_UNESCAPED_UNICODE);
