@@ -289,18 +289,16 @@ export function SecaoComentarios({ idRepositorio, onResumoChange }) {
                         {item.sobrenome?.[0]}
                       </div>
                     )}
-                    <div>
+                    <div className="comment-author">
                       <span className="font-semibold text-sm text-gray-800">
                         {item.nome} {item.sobrenome}
                       </span>
-                      <span className="block text-xs text-gray-400">
-                        {new Date(item.data_comentario).toLocaleDateString(
-                          "pt-BR",
-                        )}
+
+                      <span className="comment-date">
+                        {new Date(item.data_comentario).toLocaleDateString("pt-BR")}
                       </span>
                     </div>
                   </div>
-
                   {item.nota && (
                     <span className="text-yellow-500 font-bold text-sm">
                       {"★".repeat(Math.round(Number(item.nota)))}
@@ -314,23 +312,25 @@ export function SecaoComentarios({ idRepositorio, onResumoChange }) {
                 <p className="text-gray-700 text-sm whitespace-pre-line mb-3">
                   {item.texto}
                 </p>
-
                 {/* Barra de Ações (Like / Dislike / Excluir) */}
-                <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-200/60">
-                  <div className="flex items-center gap-4">
+                <div className="comment-actions">
+                  <div className="comment-reactions">
                     <button
                       type="button"
                       onClick={() => handleReagir(item.id_comentario, "like")}
-                      className={`review-reaction ${item.minha_reacao === "like" ? "active" : ""}`}
+                      className={`review-reaction ${
+                        item.minha_reacao === "like" ? "active" : ""
+                      }`}
                     >
                       👍 Útil ({item.likes})
                     </button>
+
                     <button
                       type="button"
-                      onClick={() =>
-                        handleReagir(item.id_comentario, "dislike")
-                      }
-                      className={`review-reaction ${item.minha_reacao === "dislike" ? "active" : ""}`}
+                      onClick={() => handleReagir(item.id_comentario, "dislike")}
+                      className={`review-reaction ${
+                        item.minha_reacao === "dislike" ? "active" : ""
+                      }`}
                     >
                       👎 ({item.dislikes})
                     </button>
@@ -340,7 +340,7 @@ export function SecaoComentarios({ idRepositorio, onResumoChange }) {
                     <button
                       type="button"
                       onClick={() => handleExcluir(item.id_comentario)}
-                      className="text-red-500 hover:underline"
+                      className="comment-delete"
                     >
                       Excluir
                     </button>
@@ -2086,9 +2086,17 @@ function carregarPreferencias() {
 function aplicarPreferencias(preferencias) {
   if (typeof document === "undefined") return;
 
+  const tamanhoFonte = Number.parseFloat(preferencias.tamanhoFonte) || 16;
+
   document.documentElement.style.setProperty(
     "--font-size-base",
     preferencias.tamanhoFonte,
+  );
+
+  // Mantém também os tamanhos de fonte baseados em vw proporcionais.
+  document.documentElement.style.setProperty(
+    "--font-scale",
+    String(tamanhoFonte / 16),
   );
 
   document.documentElement.style.setProperty(

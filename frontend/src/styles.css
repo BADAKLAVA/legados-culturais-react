@@ -1,4 +1,5 @@
 :root {
+  --font-scale: 1;
   --cream: #fffceb;
   --cream-2: #fdf8dc;
   --green: #334a1c;
@@ -69,7 +70,7 @@ button {
   display: flex;
   justify-content: center;
   gap: 26px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .main-nav .nav-link {
   padding: 0;
@@ -125,12 +126,12 @@ button {
   min-height: 44px;
   min-width: 96px;
   padding: 0 22px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .btn-large {
   min-width: 310px;
   min-height: 66px;
-  font-size: 25px;
+  font-size: 1.5625rem;
 }
 
 .hero {
@@ -146,7 +147,7 @@ button {
 .hero h1 {
   margin: 0 0 48px;
   font:
-    400 clamp(2.25rem, 5.2vw, 3.55rem)/1.05 Georgia,
+    400 clamp(2.25rem, calc(5.2vw * var(--font-scale, 1)), 3.55rem)/1.05 Georgia,
     "Times New Roman",
     serif;
   letter-spacing: -0.025em;
@@ -155,7 +156,7 @@ button {
   max-width: 650px;
   margin: 0 auto 62px;
   text-align: left;
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1.25;
 }
 .hero-copy p {
@@ -180,7 +181,7 @@ button {
 .signup-copy h2 {
   margin: 0;
   font:
-    400 clamp(2.2rem, 4.3vw, 3.15rem)/1 Georgia,
+    400 clamp(2.2rem, calc(4.3vw * var(--font-scale, 1)), 3.15rem)/1 Georgia,
     "Times New Roman",
     serif;
 }
@@ -199,7 +200,7 @@ button {
   color: #fefce3;
   border-radius: 8px;
   padding: 13px 20px;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 .contact-form input::placeholder,
@@ -215,7 +216,7 @@ button {
   justify-self: center;
   min-width: 200px;
   margin-top: 22px;
-  font-size: 16px;
+  font-size: 1.0rem;
   font-weight: 700;
 }
 
@@ -233,7 +234,7 @@ button {
 .signup-copy p {
   max-width: 580px;
   margin: 30px 0 38px;
-  font-size: 19px;
+  font-size: 1.1875rem;
   line-height: 1.22;
 }
 .reading-photo {
@@ -261,7 +262,7 @@ button {
 .reviews-section h2 {
   margin: 0 0 63px;
   text-align: center;
-  font-size: clamp(2.2rem, 4.8vw, 3.35rem);
+  font-size: clamp(2.2rem, calc(4.8vw * var(--font-scale, 1)), 3.35rem);
   font-weight: 400;
 }
 .reviews-grid {
@@ -305,12 +306,12 @@ button {
   bottom: 7px;
 }
 .stars {
-  font-size: 15px;
+  font-size: 0.9375rem;
   letter-spacing: 1px;
   color: #f7f4da;
 }
 .review-name {
-  font-size: 19px;
+  font-size: 1.1875rem;
 }
 .review-line {
   height: 1px;
@@ -318,7 +319,7 @@ button {
   margin: 8px 0 14px;
 }
 .review p {
-  font-size: 16px;
+  font-size: 1.0rem;
   line-height: 1.17;
   margin: 0;
 }
@@ -345,7 +346,7 @@ button {
 .form-card h1 {
   margin: 0 0 26px;
   text-align: center;
-  font-size: clamp(3rem, 5vw, 4.45rem);
+  font-size: clamp(3rem, calc(5vw * var(--font-scale, 1)), 4.45rem);
   font-weight: 400;
 }
 .form-fields {
@@ -360,7 +361,7 @@ button {
 .field > label,
 .radio-group legend,
 .account-type > span {
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 700;
 }
 .field input,
@@ -373,7 +374,7 @@ button {
   padding: 9px 15px;
   outline: 0;
   min-height: 44px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .field input::placeholder,
 .other-input::placeholder {
@@ -384,7 +385,7 @@ button {
   display: block;
   margin-top: 2px;
   color: #c62828;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.25;
 }
@@ -412,7 +413,7 @@ button {
   align-items: center;
   gap: 5px;
   margin-right: 14px;
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 700;
 }
 input[type="radio"] {
@@ -454,7 +455,7 @@ input[type="radio"]:checked::after {
   border-radius: 9px;
   background: var(--green-2);
   color: #fefde8;
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 700;
   cursor: default;
 }
@@ -465,7 +466,7 @@ input[type="radio"]:checked::after {
   display: flex;
   margin: 42px auto 0;
   min-width: 225px;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 .login-page {
@@ -489,7 +490,7 @@ input[type="radio"]:checked::after {
 .login-content h1 {
   margin: 0 0 35px;
   text-align: center;
-  font-size: clamp(3.7rem, 6vw, 5.2rem);
+  font-size: clamp(3.7rem, calc(6vw * var(--font-scale, 1)), 5.2rem);
   line-height: 0.95;
   font-weight: 400;
 }
@@ -506,22 +507,22 @@ input[type="radio"]:checked::after {
   margin-bottom: 24px;
 }
 .login-content .field > span {
-  font-size: 23px;
+  font-size: 1.4375rem;
 }
 .login-content .field input {
   min-height: 64px;
   border-radius: 12px;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .login-content .form-error {
   margin: -16px 0 24px;
-  font-size: 16px;
+  font-size: 1.0rem;
 }
 .login-submit {
   display: flex;
   margin: 96px auto 0;
   min-width: 320px;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .login-image {
   min-height: 100vh;
@@ -580,7 +581,7 @@ input[type="radio"]:checked::after {
   .main-nav {
     flex: initial;
     gap: 16px;
-    font-size: 12px;
+    font-size: 0.75rem;
     overflow-x: auto;
     justify-content: flex-start;
   }
@@ -594,7 +595,7 @@ input[type="radio"]:checked::after {
     min-width: 0;
     min-height: 39px;
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 0.75rem;
     white-space: nowrap;
   }
   .hero-inner {
@@ -608,13 +609,13 @@ input[type="radio"]:checked::after {
   }
   .hero-copy {
     width: min(100%, 510px);
-    font-size: 17px;
+    font-size: 1.0625rem;
     margin-bottom: 40px;
   }
   .btn-large {
     min-width: min(100%, 290px);
     min-height: 58px;
-    font-size: 20px;
+    font-size: 1.25rem;
   }
   .section-inner {
     width: calc(100% - 36px);
@@ -628,7 +629,7 @@ input[type="radio"]:checked::after {
   }
   .contact-form input,
   .contact-form textarea {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
   .signup-inner {
     min-height: 0;
@@ -669,11 +670,11 @@ input[type="radio"]:checked::after {
   .field > label,
   .radio-group legend,
   .account-type > span {
-    font-size: 16px;
+    font-size: 1.0rem;
   }
   .field input,
   .other-input {
-    font-size: 15px;
+    font-size: 0.9375rem;
     min-height: 41px;
   }
   .compact-row,
@@ -685,7 +686,7 @@ input[type="radio"]:checked::after {
     gap: 7px 10px;
   }
   .gender-options label {
-    font-size: 15px;
+    font-size: 0.9375rem;
     margin-right: 4px;
   }
   .gender-options .other-input {
@@ -699,7 +700,7 @@ input[type="radio"]:checked::after {
   .form-submit {
     margin-top: 28px;
     min-width: 200px;
-    font-size: 19px;
+    font-size: 1.1875rem;
   }
 }
 
@@ -747,7 +748,7 @@ input[type="radio"]:checked::after {
 }
 
 .library-app .page-title {
-  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-size: clamp(2.5rem, calc(4vw * var(--font-scale, 1)), 4rem);
 }
 
 .library-app .search-wrap {
@@ -1043,7 +1044,7 @@ input[type="radio"]:checked::after {
 .library-app .repo-title {
   text-align: left;
   margin: 0;
-  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-size: clamp(2.2rem, calc(4vw * var(--font-scale, 1)), 3rem);
 }
 
 .library-app .repo-meta {
@@ -1236,7 +1237,7 @@ input[type="radio"]:checked::after {
 
 .library-app .form-title {
   margin: 0;
-  font-size: clamp(2.1rem, 4vw, 3rem);
+  font-size: clamp(2.1rem, calc(4vw * var(--font-scale, 1)), 3rem);
 }
 
 .library-app .danger-btn {
@@ -1410,7 +1411,7 @@ input[type="radio"]:checked::after {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.34);
   color: var(--text);
-  font-size: 16px;
+  font-size: 1.0rem;
 }
 
 .library-search .form-control::placeholder {
@@ -1423,7 +1424,7 @@ input[type="radio"]:checked::after {
   height: 52px;
   padding: 0;
   border-radius: 12px;
-  font-size: 30px;
+  font-size: 1.875rem;
   line-height: 1;
 }
 
@@ -1440,7 +1441,7 @@ input[type="radio"]:checked::after {
   border-radius: 999px;
   background: rgba(255, 248, 229, 0.8);
   color: var(--green);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
   padding: 8px 14px;
   transition: all 0.2s ease;
@@ -1464,7 +1465,7 @@ input[type="radio"]:checked::after {
   display: grid;
   gap: 6px;
   color: var(--green);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 700;
 }
 
@@ -1595,16 +1596,16 @@ input[type="radio"]:checked::after {
     width: 150px;
   }
   .login-content .field > span {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   .login-content .field input {
     min-height: 54px;
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .login-submit {
     margin-top: 55px;
     min-width: 250px;
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
@@ -1619,7 +1620,7 @@ input[type="radio"]:checked::after {
   }
   .main-nav {
     gap: 11px;
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .header-actions {
     gap: 4px;
@@ -1627,13 +1628,13 @@ input[type="radio"]:checked::after {
   .btn-small {
     min-height: 36px;
     padding: 0 8px;
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .hero h1 {
     font-size: 2rem;
   }
   .review p {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
@@ -1646,7 +1647,7 @@ input[type="radio"]:checked::after {
 
 .forgot-password a {
   color: #d97832;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-decoration: none;
 }
 
@@ -1788,7 +1789,7 @@ input[type="radio"]:checked::after {
 }
 
 .library-app .form-title {
-  font-size: clamp(2.3rem, 4.4vw, 3.5rem);
+  font-size: clamp(2.3rem, calc(4.4vw * var(--font-scale, 1)), 3.5rem);
   overflow-wrap: anywhere;
 }
 
@@ -1908,7 +1909,7 @@ input[type="radio"]:checked::after {
 .profile-header h1 {
   margin: 0;
   color: var(--green);
-  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-size: clamp(1.7rem, calc(4vw * var(--font-scale, 1)), 2.4rem);
   overflow-wrap: anywhere;
 }
 
@@ -1978,7 +1979,7 @@ input[type="radio"]:checked::after {
 
 .settings-label {
   color: var(--green);
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: bold;
 }
 
@@ -1993,7 +1994,7 @@ input[type="radio"]:checked::after {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: var(--text);
   cursor: pointer;
 }
@@ -2008,7 +2009,7 @@ input[type="radio"]:checked::after {
 .settings-description {
   margin: 0;
   color: var(--text);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 @media (max-width: 720px) {
@@ -2017,11 +2018,11 @@ input[type="radio"]:checked::after {
   }
 
   .settings-label {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 
   .settings-radio {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
@@ -2205,7 +2206,7 @@ input[type="radio"]:checked::after {
   .library-app .form-top .form-title {
     grid-column: 1 / -1;
     grid-row: 1;
-    font-size: clamp(2rem, 8vw, 2.8rem);
+    font-size: clamp(2rem, calc(8vw * var(--font-scale, 1)), 2.8rem);
   }
   .library-app .form-top .back-btn,
   .library-app .form-top .danger-btn {
@@ -2637,18 +2638,86 @@ html {
   overflow-wrap: anywhere;
 }
 
+
+/* Barra de ações dos comentários */
+.library-app .comment-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid #ebe7d4;
+}
+
+/* Agrupamento de like e dislike */
+.library-app .comment-reactions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Botões de like e dislike */
 .library-app .review-reaction {
-  padding: 5px 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  min-height: 34px;
+  padding: 6px 12px;
+
+  border: 1px solid #e8e3c4;
   border-radius: 999px;
+
   background: #f3f0df;
   color: #545447;
+
+  font-size: 0.82rem;
+  font-weight: 500;
+
   cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.library-app .review-reaction:hover {
+  background: #e9e5cf;
 }
 
 .library-app .review-reaction.active {
   background: #e7edda;
+  border-color: #a9b88a;
   color: var(--green);
   font-weight: 700;
+}
+
+/* Botão de excluir */
+.library-app .comment-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+  padding: 6px 13px;
+
+  border: 1px solid #334a1c;
+  border-radius: 999px;
+
+  background: #334a1c;
+  color: #fffceb;
+
+  font-size: 0.82rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.library-app .comment-delete:hover {
+  background: #5d6d32;
+  border-color: #5d6d32;
 }
 
 .featured-comment-card {
@@ -2658,6 +2727,21 @@ html {
   border-radius: 14px;
   background: #fffef5;
   box-shadow: var(--shadow);
+}
+
+
+.library-app .comment-author {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.library-app .comment-date {
+  display: block;
+  color: #99958a;
+  font-size: 0.75rem;
+  line-height: 1.3;
 }
 
 .featured-avatar {
