@@ -379,13 +379,13 @@ export function ComentarioDestaque({ idRepositorio }) {
     <div className="featured-comment-card">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          {destaque.caminho_foto_perfil && (
+          {/*destaque.caminho_foto_perfil && (
             <img
               src={destaque.caminho_foto_perfil}
               alt={destaque.nome}
               className="w-8 h-8 rounded-full object-cover"
             />
-          )}
+          )*/}
           <span className="font-semibold text-gray-800">
             {destaque.nome} {destaque.sobrenome}
           </span>
@@ -449,7 +449,7 @@ function ComentariosDestaqueHome() {
           {destaques.slice(0, 2).map((item) => (
             <article className="review" key={item.id_comentario}>
               <div className="review-head">
-                {item.caminho_foto_perfil ? (
+                {/*item.caminho_foto_perfil ? (
                   <img
                     className="featured-avatar"
                     src={item.caminho_foto_perfil}
@@ -459,7 +459,7 @@ function ComentariosDestaqueHome() {
                   <div className="avatar" aria-hidden="true">
                     <span />
                   </div>
-                )}
+                )*/}
                 <div>
                   <div
                     className="stars"
