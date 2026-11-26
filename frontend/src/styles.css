@@ -2780,3 +2780,28 @@ html {
 .library-app .review-comments .text-gray-300 {
   color: #c9c6b9;
 }
+
+/* Comentário em destaque */
+
+.library-app .featured-comment-card {
+  background: #fffef5;
+  border: 1px solid #e8e3c4;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.library-app .featured-comment-card .font-semibold {
+  color: #334a1c;
+}
+
+.library-app .featured-comment-card .text-yellow-500 {
+  color: #d89a35;
+}
+
+.library-app .featured-comment-card .text-gray-600 {
+  color: #2f302b;
+}
+
+.library-app .featured-comment-card .text-gray-400 {
+  color: #67783a;
+}
