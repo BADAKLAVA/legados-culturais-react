@@ -482,7 +482,7 @@ function ComentariosDestaqueHome() {
               <div className="review-line" />
               <p className="featured-review-text">{item.texto}</p>
               <div className="featured-review-footer">
-                <a href={`/biblioteca/repositorio/${item.id_repositorio}`}>
+                <a href={`/biblioteca/repositorio/${item.id_repositorio}`} className="italic-text">
                   {item.titulo_repositorio}
                 </a>
                 <span>

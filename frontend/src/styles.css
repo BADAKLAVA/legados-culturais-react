@@ -2835,3 +2835,8 @@ html {
 .reviews-section .featured-review-footer span {
   color: #d8d5b9;
 }
+
+.italic-text {
+  font-style: italic;
+  color: #2B2B2B;
+}
