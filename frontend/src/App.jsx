@@ -29,21 +29,6 @@ function RatingDisplay({ rating = 0, total = 0 }) {
   );
 }
 
-/*
-
-Como usar nas páginas React:
-
-1. Na página de detalhes de um repositório:jsx
-import { SecaoComentarios } from '../components/SecaoComentarios';
-// ...
-<SecaoComentarios idRepositorio={repositorio.id} />
-Use o código com cuidado.
-2. Na Home ou em qualquer card de destaque (mostrando sozinho o comentário de maior nota):jsx
-import { ComentarioDestaque } from '../components/ComentarioDestaque';
-// ...
-<ComentarioDestaque idRepositorio={repositorio.id} />
-*/
-
 export function SecaoComentarios({ idRepositorio, onResumoChange }) {
   const [dados, setDados] = useState({
     media_estrelas: 0,
@@ -685,7 +670,7 @@ function Header() {
       <Navbar.Toggle aria-controls="main-navigation" aria-label="Abrir menu" />
       <Navbar.Collapse id="main-navigation">
         <Nav as="nav" className="main-nav" aria-label="Navegação principal">
-          <Nav.Link href="#sobre">Quem somos</Nav.Link>
+          <Nav.Link href="https://c0rdiano.github.io/PI_Legados_Culturais/">Quem somos</Nav.Link>
           <Nav.Link href="#contato">Contato</Nav.Link>
           <Nav.Link href="/biblioteca">Biblioteca</Nav.Link>
         </Nav>
@@ -733,26 +718,10 @@ function Home() {
             className="contact-form"
             aria-label="Formulário visual de contato"
           >
-            <Form.Control type="text" placeholder="Nome" aria-label="Nome" />
-            <Form.Control
-              type="email"
-              placeholder="E-mail"
-              aria-label="E-mail"
-            />
-            <Form.Control
-              type="text"
-              placeholder="Assunto"
-              aria-label="Assunto"
-            />
-            <Form.Control
-              as="textarea"
-              placeholder="Mensagem"
-              aria-label="Mensagem"
-              rows={5}
-            />
-            <Button type="button" className="btn-orange contact-submit">
-              Enviar mensagem
-            </Button>
+            <p>Meios de contato:</p>
+            <p>✉ contato@legadosculturais.com.br<br />
+            ☏ (11) 99999-0000<br />
+            ⌖ São Paulo, Brasil</p>
           </div>
         </div>
       </section>

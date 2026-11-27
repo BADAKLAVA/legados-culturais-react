@@ -929,10 +929,10 @@ input[type="radio"]:checked::after {
 
 .library-app .repo-card {
   display: grid;
-  grid-template-columns: 80px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 12px 12px 0;
+  min-width: 0;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
+  align-items: stretch;
+  padding: 0 12px 0 0;
   border: 2px solid rgba(51, 74, 28, 0.14);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.36);
@@ -941,9 +941,10 @@ input[type="radio"]:checked::after {
 }
 
 .library-app .repo-card-icon {
-  width: 80px;
-  height: 100%;
-  min-height: 92px;
+  width: 74px;
+  height: auto;
+  min-height: 90px;
+  align-self: stretch;
   display: grid;
   place-items: center;
   border-radius: 16px 0 0 16px;
@@ -958,11 +959,12 @@ input[type="radio"]:checked::after {
 
 .library-app .repo-card-body {
   min-width: 0;
+  padding: 10px 12px;
 }
 
 .library-app .repo-card-title {
-  margin: 0 0 8px;
-  font-size: 1.25rem;
+  margin: 0 0 5px;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--green);
 }
@@ -970,8 +972,8 @@ input[type="radio"]:checked::after {
 .library-app .repo-card-desc {
   margin: 0;
   color: var(--text);
-  line-height: 1.35;
-  font-size: 0.94rem;
+  line-height: 1.25;
+  font-size: 0.9rem;
 }
 
 .library-app .card-actions {
@@ -1730,6 +1732,7 @@ input[type="radio"]:checked::after {
 
 .library-app .repo-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 
 .library-app .repo-card {
@@ -2248,18 +2251,21 @@ input[type="radio"]:checked::after {
   }
   .library-app .repo-card {
     grid-template-columns: 54px minmax(0, 1fr);
-    padding: 10px;
+    padding: 0 10px 0 0;
+    align-items: stretch;
   }
+
   .library-app .repo-card-icon {
     width: 54px;
-    min-height: 74px;
-    border-radius: 12px;
+    height: auto;
+    min-height: 0;
+    align-self: stretch;
+    border-radius: 12px 0 0 12px;
   }
-  .library-app .card-actions {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    justify-content: flex-end;
-    padding: 0;
+
+  .library-app .repo-card-body {
+    min-width: 0;
+    padding: 10px 14px;
   }
   .library-app .repo-title {
     font-size: 2rem;
@@ -2548,9 +2554,9 @@ html {
   align-items: center;
   flex-wrap: wrap;
   gap: 9px;
-  margin: 8px 0 14px;
+  margin: 5px 0 0;
   color: #5c5c4e;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .library-app .repo-rating-stars {
