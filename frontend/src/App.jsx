@@ -285,7 +285,7 @@ export function SecaoComentarios({ idRepositorio, onResumoChange }) {
                         {item.nome} {item.sobrenome}
                       </span>
                       <span>
-                        
+                        { " " }
                       </span>
                       <span className="comment-date">
                         {new Date(item.data_comentario).toLocaleDateString("pt-BR")}
