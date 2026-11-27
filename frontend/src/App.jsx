@@ -277,7 +277,7 @@ export function SecaoComentarios({ idRepositorio, onResumoChange }) {
               <div key={item.id_comentario} className="comment-card">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    {item.caminho_foto_perfil ? (
+                    {/*item.caminho_foto_perfil ? (
                       <img
                         src={item.caminho_foto_perfil}
                         alt={item.nome}
@@ -288,7 +288,13 @@ export function SecaoComentarios({ idRepositorio, onResumoChange }) {
                         {item.nome?.[0]}
                         {item.sobrenome?.[0]}
                       </div>
-                    )}
+                    )*/}
+                    {
+                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">
+                        {item.nome?.[0]}
+                        {item.sobrenome?.[0]}
+                      </div>
+                    }
                     <div className="comment-author">
                       <span className="font-semibold text-sm text-gray-800">
                         {item.nome} {item.sobrenome}
@@ -1848,10 +1854,11 @@ function ProfilePage({ session, navigate }) {
       <main className="main" id="conteudo-leitura">
         <section className="profile-page">
           <div className="profile-header">
+            {/*
             <div
               className="profile-avatar"
               dangerouslySetInnerHTML={{ __html: icons.user }}
-            />
+            />*/}
             <h1>
               {formData.nome || "Nome"} {formData.sobrenome || "e sobrenome"}
             </h1>
