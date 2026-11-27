@@ -1,6 +1,7 @@
 # Legados Culturais
 
 Aplicação React/Vite no frontend e PHP com PostgreSQL no backend. Os arquivos anexados aos repositórios são armazenados em uma pasta privada do Google Drive; o navegador nunca recebe as credenciais do Google.
+Site: https://legados-culturais-react.onrender.com/
 
 ## Desenvolvimento local
 
